@@ -1,0 +1,34 @@
+syntax = "proto3";
+option java_package = "br.dev.matheushenrique.grpc";
+package floccus;
+option java_multiple_files = true;
+service FloccusRedeService {
+  rpc CriarRede (CriarRedeRequest) returns (RedeResponse);
+  rpc ExcluirRede (ExcluirRedeRequest) returns (ExcluirRedeResponse);
+  //  rpc CriarContainer (CriarContainerRequest) returns (CriarContainerResponse);
+  //  rpc RemoverContainer (RemoverContainerRequest) returns (RemoverContainerResponse);
+}
+message CriarRedeRequest{
+  string nome = 1;
+  string usuario = 2;
+  optional string subnet = 3;
+}
+
+message ExcluirRedeRequest{
+  string id = 1;
+  string nome = 2;
+  string usuario = 5;
+}
+
+message RedeResponse{
+  string id = 1;
+  string nome = 2;
+  string subnet = 3;
+  string gateway = 4;
+  string usuario = 5;
+}
+
+message ExcluirRedeResponse {
+  bool sucesso = 1;
+  string mensagem = 2;
+}

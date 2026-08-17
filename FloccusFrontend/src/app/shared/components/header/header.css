@@ -1,0 +1,161 @@
+.header {
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 24px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+/* LADO ESQUERDO */
+
+.header-left {
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+}
+
+
+/* BOTÃO SIDEBAR */
+
+.sidebar-toggle {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #4b5563;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.sidebar-toggle:hover {
+    background: #f3f4f6;
+
+    color: #111827;
+}
+
+
+/* TÍTULO */
+
+.header-title {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.header-title h1 {
+    margin: 0;
+
+    color: #111827;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.header-title span {
+    color: #6b7280;
+
+    font-size: 12px;
+}
+
+
+/* AÇÕES */
+
+.header-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+
+/* NOTIFICAÇÃO */
+
+.header-button {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease;
+}
+
+.header-button:hover {
+    background: #f3f4f6;
+}
+
+
+/* PERFIL */
+
+.profile {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.profile-avatar {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #4f46e5;
+
+    color: #ffffff;
+
+    font-weight: 600;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.profile-info strong {
+    font-size: 13px;
+}
+
+.profile-info span {
+    color: #6b7280;
+
+    font-size: 11px;
+}

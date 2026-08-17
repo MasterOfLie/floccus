@@ -1,0 +1,100 @@
+<aside class="sidebar" [class.collapsed]="collapsed()">
+
+    <!-- LOGO -->
+
+    <div class="sidebar-header">
+
+        <div class="logo">
+
+            @if (collapsed()) {
+
+            <img src="/logo-icon.png" alt="Logo" class="logo-icon">
+
+            } @else {
+
+            <img src="/logo-full.png" alt="Meu Sistema" class="logo-full">
+
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- MENU -->
+
+    <nav class="navigation">
+
+        <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+            class="navigation-item">
+
+            <span class="icon">
+                <i class="bi bi-house"></i>
+            </span>
+
+            @if (!collapsed()) {
+            <span class="label">
+                Dashboard
+            </span>
+            }
+
+        </a>
+        <a routerLink="/containers" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+            class="navigation-item">
+
+            <span class="icon">
+                <i class="bi bi-hdd-stack"></i>
+            </span>
+
+            @if (!collapsed()) {
+            <span class="label">
+                Containers
+            </span>
+            }
+
+        </a>
+
+        <a routerLink="/users" routerLinkActive="active" class="navigation-item">
+
+            <span class="icon">
+                <i class="bi bi-people"></i>
+            </span>
+
+            @if (!collapsed()) {
+            <span class="label">
+                Usuários
+            </span>
+            }
+
+        </a>
+
+    </nav>
+
+
+    <!-- USUÁRIO -->
+
+    <div class="sidebar-footer">
+
+        <div class="user-avatar">
+            M
+        </div>
+
+        @if (!collapsed()) {
+
+        <div class="user-info">
+
+            <strong>
+                Matheus
+            </strong>
+
+            <span>
+                Administrador
+            </span>
+
+        </div>
+
+        }
+
+    </div>
+
+</aside>

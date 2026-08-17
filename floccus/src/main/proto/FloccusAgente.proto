@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package floccus;
+
+option java_multiple_files = true;
+option java_package = "br.dev.matheushenrique.grpc";
+
+service FloccusAgenteStatus {
+  rpc FloccusStatus (FloccusStatusInt) returns (FloccusStatusOut);
+}
+
+message FloccusStatusInt{
+  string chave = 1;
+
+}
+message FloccusStatusOut{
+  string chave = 1;
+
+}

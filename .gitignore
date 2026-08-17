@@ -1,0 +1,62 @@
+# =========================
+# Java / Maven
+# =========================
+**/target/
+**/out/
+**/build/
+
+# Arquivos compilados
+*.class
+
+# Logs
+*.log
+
+# =========================
+# IntelliJ IDEA
+# =========================
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# =========================
+# VS Code
+# =========================
+.vscode/
+
+# =========================
+# Spring Boot
+# =========================
+**/application-local.properties
+**/application-local.yml
+
+# =========================
+# Angular / Node
+# =========================
+**/node_modules/
+**/.angular/
+**/dist/
+**/coverage/
+
+# Cache npm
+.npm/
+
+# =========================
+# Ambiente / Secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Sistema operacional
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs e temporários
+# =========================
+*.tmp
+*.temp
+*.swp

@@ -1,0 +1,9 @@
+floccus:
+  agent:
+    port: 50051
+    secret-key: "floccus-super-secret-token-token-xyz"
+  backend:
+    host: "192.168.1.100"
+    port: 8080
+  docker:
+    host: "unix:///var/run/docker.sock"

@@ -1,0 +1,13 @@
+<configuration>
+    <!-- Define o padrão de formatação dos logs com cores -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %magenta([FloccusAgente]) [%thread] %highlight(%-5level) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Define o nível global de log (INFO esconde logs internos desnecessários do gRPC/Docker) -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

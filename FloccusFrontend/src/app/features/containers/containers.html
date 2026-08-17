@@ -1,0 +1,87 @@
+<div class="page">
+
+  <!-- CABEÇALHO -->
+  <div class="page-header">
+    <div>
+      <h1>Containers</h1>
+      <p>Gerencie os containers Docker.</p>
+    </div>
+
+    <button type="button" class="refresh-button" (click)="listarContainers()">
+      Atualizar
+    </button>
+  </div>
+
+  <!-- CARREGANDO -->
+  @if (carregando()) {
+  <div class="loading">
+    Carregando containers...
+  </div>
+  }
+
+  <!-- ERRO -->
+  @if (erro()) {
+  <div class="error">
+    {{ erro() }}
+  </div>
+  }
+
+  <!-- CONTAINERS -->
+  @if (!carregando() && !erro()) {
+  <div class="container-list">
+
+    @for (container of containers(); track container.id) {
+
+    <a [routerLink]="['/containers', container.id]" class="card-link">
+      <div class="container-card">
+
+        <div class="container-header">
+          <div>
+            <h2>{{ container.nome }}</h2>
+
+            <span class="container-id">
+              {{ container.id }}
+            </span>
+          </div>
+
+          <span class="status" [ngClass]="{
+            'running': container.status.toLowerCase().includes('up') || container.status.toLowerCase().includes('running'),
+            'exited': container.status.toLowerCase().includes('exited')
+          }">
+            {{ traduzirStatus(container.status) }}
+          </span>
+        </div>
+
+        <div class="container-info">
+
+          <div>
+            <span class="label">
+              Imagem
+            </span>
+
+            <strong>
+              {{ container.image }}
+            </strong>
+          </div>
+
+          <div>
+            <span class="label">
+              Status
+            </span>
+
+            <strong>
+              {{ container.status }}
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+    </a>
+
+    }
+
+  </div>
+  }
+
+</div>

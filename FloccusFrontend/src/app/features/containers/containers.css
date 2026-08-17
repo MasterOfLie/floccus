@@ -1,0 +1,212 @@
+.page {
+    width: 100%;
+}
+
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 24px;
+}
+
+
+.page-header h1 {
+    margin: 0;
+
+    font-size: 24px;
+    font-weight: 600;
+
+    color: #111827;
+}
+
+
+.page-header p {
+    margin: 6px 0 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+.refresh-button {
+    padding: 10px 16px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: #4f46e5;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: background 0.2s;
+}
+
+
+.refresh-button:hover {
+    background: #4338ca;
+}
+
+
+.container-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(320px, 1fr));
+
+    gap: 16px;
+}
+
+
+.container-card {
+    padding: 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+
+    transition:
+        box-shadow 0.2s,
+        transform 0.2s;
+}
+
+
+.container-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+
+.container-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+}
+
+
+.container-header h2 {
+    margin: 0;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    color: #111827;
+}
+
+
+.container-id {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #9ca3af;
+
+    font-size: 11px;
+
+    font-family: monospace;
+}
+
+
+.status {
+    padding: 5px 8px;
+
+    border-radius: 6px;
+
+    background: #f3f4f6;
+
+    color: #6b7280;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+}
+
+
+.status.running {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status.exited {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.text-running {
+    color: #166534 !important;
+}
+
+.text-exited {
+    color: #991b1b !important;
+}
+
+
+.container-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+.container-info>div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.label {
+    color: #9ca3af;
+
+    font-size: 11px;
+}
+
+
+.container-info strong {
+    color: #374151;
+
+    font-size: 13px;
+}
+
+
+.loading {
+    padding: 40px;
+
+    text-align: center;
+
+    color: #6b7280;
+}
+
+
+.error {
+    padding: 16px;
+
+    border-radius: 8px;
+
+    background: #fef2f2;
+
+    color: #dc2626;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}

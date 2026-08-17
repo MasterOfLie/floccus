@@ -1,0 +1,61 @@
+<header class="header">
+
+    <div class="header-left">
+
+        <button class="sidebar-toggle" type="button" (click)="toggleSidebar()"
+            [attr.aria-label]="collapsed() ? 'Expandir menu' : 'Recolher menu'">
+
+            @if (collapsed()) {
+            <i class="bi bi-list"></i>
+            } @else {
+            <i class="bi bi-list"></i>
+            }
+
+        </button>
+
+
+        <div class="header-title">
+
+            <h1>
+                Dashboard
+            </h1>
+
+            <span>
+                Visão geral do sistema
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="header-actions">
+
+        <button class="header-button" type="button">
+            <i class="bi bi-bell"></i>
+        </button>
+
+
+        <div class="profile">
+
+            <div class="profile-avatar">
+                M
+            </div>
+
+            <div class="profile-info">
+
+                <strong>
+                    Matheus
+                </strong>
+
+                <span>
+                    Administrador
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>

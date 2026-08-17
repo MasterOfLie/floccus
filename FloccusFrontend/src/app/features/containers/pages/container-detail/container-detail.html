@@ -1,0 +1,32 @@
+<div class="page">
+  <div class="page-header">
+    <h1>Detalhes do Container</h1>
+    <button class="back-button" routerLink="/containers">← Voltar</button>
+  </div>
+
+  @if (loading()) {
+    <div class="loading">Carregando...</div>
+  } @else if (error()) {
+    <div class="error">{{ error() }}</div>
+  } @else if (container()) {
+    <div class="detail-card">
+      <h2>{{ container()?.nome }}</h2>
+      <p><strong>ID:</strong> {{ container()?.id }}</p>
+      <p><strong>Imagem:</strong> {{ container()?.image }}</p>
+      <p><strong>Status:</strong> {{ container()?.status }}</p>
+
+      <div class="actions">
+        <button (click)="start()" [disabled]="!container() || container()?.status === 'running'">Iniciar</button>
+        <button (click)="stop()"  [disabled]="!container() || container()?.status !== 'running'">Parar</button>
+        <button (click)="openConsole()" [disabled]="!container()">Abrir Console</button>
+      </div>
+
+      @if (consoleLoading()) {
+        <div class="loading">Carregando console...</div>
+      } @else if (consoleOutput()) {
+        <pre class="console-output">{{ consoleOutput() }}</pre>
+      }
+    </div>
+  }
+</div>
+

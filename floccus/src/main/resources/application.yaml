@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: floccus
+
+  datasource:
+    url: jdbc:sqlite:floccus.db
+    driver-class-name: org.sqlite.JDBC
+
+  jpa:
+    # Nome da classe do Dialeto no Hibernate 7+
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
