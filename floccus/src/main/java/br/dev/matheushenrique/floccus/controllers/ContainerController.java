@@ -6,7 +6,7 @@ import br.dev.matheushenrique.floccus.dto.ResponseDTO;
 import br.dev.matheushenrique.floccus.services.ContainerService;
 import br.dev.matheushenrique.floccus.services.GrpcClientService;
 import br.dev.matheushenrique.grpc.AgenteDockerServiceGrpc;
-import br.dev.matheushenrique.grpc.ListarContainersInt;
+import br.dev.matheushenrique.grpc.ListarContainersRequest;
 import io.grpc.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ public class ContainerController {
                     agenteConexaoDto,
                     AgenteDockerServiceGrpc::newBlockingStub,
                     stub -> stub.listarContainers(
-                            ListarContainersInt.newBuilder().setMostrarTodos(true).build()
+                            ListarContainersRequest.newBuilder().setMostrarTodos(true).build()
                     ).getContainersList()
             );
             List<ContainerDTO> response = containersList.stream()

@@ -1,17 +1,18 @@
 syntax = "proto3";
+
 option java_multiple_files = true;
 option java_package = "br.dev.matheushenrique.grpc";
+
 package floccus;
 
 service AgenteDockerService {
-  rpc ListarContainers (ListarContainersInt) returns (ListarContainersOut);
-//  rpc CriarContainer (CriarContainerRequest) returns (CriarContainerResponse);
-  rpc IniciarContainer (IniciarContainerRequest) returns (IniciarContainerResponse);
-  rpc PararContainer (PararContainerRequest) returns (PararContainerResponse);
-//  rpc RemoverContainer (RemoverContainerRequest) returns (RemoverContainerResponse);
+  rpc ListarContainers (ListarContainersRequest) returns (ListarContainersResponse);
+  rpc IniciarContainer (ContainerRequest) returns (ContainerResponse);
+  rpc PararContainer (ContainerRequest) returns (ContainerResponse);
+  rpc ReiniciarContainer (ContainerRequest) returns (ContainerResponse);
 }
 
-message ContainerModel{
+message ContainerModel {
   string id = 1;
   string nome = 2;
   string imagem = 3;
@@ -30,39 +31,18 @@ message FloccusNetwork {
   string mac = 5;
 }
 
-message ListarContainersOut {
-  repeated ContainerModel containers = 1;
-}
-message ListarContainersInt{
+message ListarContainersRequest {
   bool mostrar_todos = 1;
 }
 
-message IniciarContainerRequest{
+message ListarContainersResponse {
+  repeated ContainerModel containers = 1;
+}
+
+message ContainerRequest {
   string id = 1;
 }
 
-message IniciarContainerResponse{
-  string id = 1;
-  string nome = 2;
-  string imagem = 3;
-  string status = 4;
-  repeated FloccusNetwork redes = 6;
-  string memoria = 7;
-  string cpu = 8;
-  string diretorio = 9;
-}
-
-message PararContainerRequest{
-  string id = 1;
-}
-
-message PararContainerResponse{
-  string id = 1;
-  string nome = 2;
-  string imagem = 3;
-  string status = 4;
-  repeated FloccusNetwork redes = 6;
-  string memoria = 7;
-  string cpu = 8;
-  string diretorio = 9;
+message ContainerResponse {
+  ContainerModel container = 1;
 }

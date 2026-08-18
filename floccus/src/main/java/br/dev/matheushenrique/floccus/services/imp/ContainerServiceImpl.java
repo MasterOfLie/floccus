@@ -6,8 +6,7 @@ import br.dev.matheushenrique.floccus.dto.RedeContainerDTO;
 import br.dev.matheushenrique.floccus.services.ContainerService;
 import br.dev.matheushenrique.floccus.services.GrpcClientService;
 import br.dev.matheushenrique.grpc.AgenteDockerServiceGrpc;
-import br.dev.matheushenrique.grpc.IniciarContainerRequest;
-import br.dev.matheushenrique.grpc.PararContainerRequest;
+import br.dev.matheushenrique.grpc.ContainerRequest;
 import io.grpc.StatusRuntimeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ContainerServiceImpl implements ContainerService {
-
     private final GrpcClientService grpcClientService;
 
     @Override
@@ -27,10 +25,10 @@ public class ContainerServiceImpl implements ContainerService {
                 agenteConexaoDto,
                 AgenteDockerServiceGrpc::newBlockingStub,
                 stub -> stub.iniciarContainer(
-                        IniciarContainerRequest.newBuilder().setId(containerID).build()
+                        ContainerRequest.newBuilder().setId(containerID).build()
                 )
         );
-        List<RedeContainerDTO> redes = container.getRedesList().stream()
+        List<RedeContainerDTO> redes = container.getContainer().getRedesList().stream()
                 .map(redeProto -> new RedeContainerDTO(
                         redeProto.getNome(),
                         redeProto.getIp(),
@@ -39,10 +37,10 @@ public class ContainerServiceImpl implements ContainerService {
                 ))
                 .toList();
         return ContainerDTO.builder()
-                .id(container.getId())
-                .nome(container.getNome())
-                .image(container.getImagem())
-                .status(container.getStatus())
+                .id(container.getContainer().getId())
+                .nome(container.getContainer().getNome())
+                .image(container.getContainer().getImagem())
+                .status(container.getContainer().getStatus())
                 .redes(redes)
                 .build();
     }
@@ -54,10 +52,10 @@ public class ContainerServiceImpl implements ContainerService {
                 agenteConexaoDto,
                 AgenteDockerServiceGrpc::newBlockingStub,
                 stub -> stub.pararContainer(
-                        PararContainerRequest.newBuilder().setId(containerID).build()
+                        ContainerRequest.newBuilder().setId(containerID).build()
                 )
         );
-        List<RedeContainerDTO> redes = container.getRedesList().stream()
+        List<RedeContainerDTO> redes = container.getContainer().getRedesList().stream()
                 .map(redeProto -> new RedeContainerDTO(
                         redeProto.getNome(),
                         redeProto.getIp(),
@@ -66,10 +64,10 @@ public class ContainerServiceImpl implements ContainerService {
                 ))
                 .toList();
         return ContainerDTO.builder()
-                .id(container.getId())
-                .nome(container.getNome())
-                .image(container.getImagem())
-                .status(container.getStatus())
+                .id(container.getContainer().getId())
+                .nome(container.getContainer().getNome())
+                .image(container.getContainer().getImagem())
+                .status(container.getContainer().getStatus())
                 .redes(redes)
                 .build();
     }

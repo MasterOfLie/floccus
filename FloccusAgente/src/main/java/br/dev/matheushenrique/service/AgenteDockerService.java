@@ -18,7 +18,7 @@ public class AgenteDockerService extends AgenteDockerServiceGrpc.AgenteDockerSer
 
     private final DockerClient dockerClient;
     @Override
-    public void listarContainers(ListarContainersInt request, StreamObserver<ListarContainersOut> responseObserver) {
+    public void listarContainers(ListarContainersRequest request, StreamObserver<ListarContainersResponse> responseObserver) {
         log.info("[Docker API] Listando containers...");
         try {
             List<Container> containers = dockerClient.listContainersCmd()
@@ -39,11 +39,9 @@ public class AgenteDockerService extends AgenteDockerServiceGrpc.AgenteDockerSer
                         .setStatus(c.getState())
                         .build());
             }
-
-            ListarContainersOut resposta = ListarContainersOut.newBuilder()
+            ListarContainersResponse resposta = ListarContainersResponse.newBuilder()
                     .addAllContainers(listaModels)
                     .build();
-            System.out.println(containers);
             responseObserver.onNext(resposta);
             responseObserver.onCompleted();
 
@@ -56,7 +54,7 @@ public class AgenteDockerService extends AgenteDockerServiceGrpc.AgenteDockerSer
     }
 
     @Override
-    public void iniciarContainer(IniciarContainerRequest request, StreamObserver<IniciarContainerResponse> responseObserver) {
+    public void iniciarContainer(ContainerRequest request, StreamObserver<ContainerResponse> responseObserver) {
         try {
             dockerClient.startContainerCmd(request.getId()).exec();
             InspectContainerResponse containerCmd = dockerClient.inspectContainerCmd(request.getId()).exec();
@@ -73,15 +71,17 @@ public class AgenteDockerService extends AgenteDockerServiceGrpc.AgenteDockerSer
                     redes.add(floccusNetwork);
                 });
             }
-            IniciarContainerResponse iniciarContainerResponse =
-                    IniciarContainerResponse.newBuilder()
-                            .setNome(containerCmd.getName())
-                            .setId(containerCmd.getId())
-                            .setImagem(containerCmd.getConfig().getImage())
-                            .setStatus(containerCmd.getState().getStatus())
-                            .addAllRedes(redes)
-                            .build();
-            responseObserver.onNext(iniciarContainerResponse);
+            ContainerModel container = ContainerModel.newBuilder()
+                    .setNome(containerCmd.getName())
+                    .setId(containerCmd.getId())
+                    .setImagem(containerCmd.getConfig().getImage())
+                    .setStatus(containerCmd.getState().getStatus())
+                    .addAllRedes(redes)
+                    .build();
+            ContainerResponse response = ContainerResponse.newBuilder()
+                    .setContainer(container)
+                    .build();
+            responseObserver.onNext(response);
             responseObserver.onCompleted();
         } catch (NotModifiedException e){
             log.warn("Container " + request.getId() + " já em execução");
@@ -102,7 +102,7 @@ public class AgenteDockerService extends AgenteDockerServiceGrpc.AgenteDockerSer
     }
 
     @Override
-    public void pararContainer(PararContainerRequest request, StreamObserver<PararContainerResponse> responseObserver) {
+    public void pararContainer(ContainerRequest request, StreamObserver<ContainerResponse> responseObserver) {
         try {
             dockerClient.stopContainerCmd(request.getId()).exec();
             InspectContainerResponse containerCmd = dockerClient.inspectContainerCmd(request.getId()).exec();
@@ -119,15 +119,17 @@ public class AgenteDockerService extends AgenteDockerServiceGrpc.AgenteDockerSer
                     redes.add(floccusNetwork);
                 });
             }
-            PararContainerResponse pararContainerResponse =
-                    PararContainerResponse.newBuilder()
-                            .setNome(containerCmd.getName())
-                            .setId(containerCmd.getId())
-                            .setImagem(containerCmd.getConfig().getImage())
-                            .setStatus(containerCmd.getState().getStatus())
-                            .addAllRedes(redes)
-                            .build();
-            responseObserver.onNext(pararContainerResponse);
+            ContainerModel container = ContainerModel.newBuilder()
+                    .setNome(containerCmd.getName())
+                    .setId(containerCmd.getId())
+                    .setImagem(containerCmd.getConfig().getImage())
+                    .setStatus(containerCmd.getState().getStatus())
+                    .addAllRedes(redes)
+                    .build();
+            ContainerResponse response = ContainerResponse.newBuilder()
+                    .setContainer(container)
+                    .build();
+            responseObserver.onNext(response);
             responseObserver.onCompleted();
         } catch (NotModifiedException e){
             log.warn("Container " + request.getId() + " já em parado");
