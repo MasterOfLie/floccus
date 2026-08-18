@@ -24,6 +24,11 @@ export class ContainerService {
   stop(id: string): Observable<void> {
     return this.http.get<void>(this.apiUrl + `/parar/${id}`);
   }
+
+  restart(id: string): Observable<void> {
+    return this.http.get<void>(this.apiUrl + `/reiniciar/${id}`);
+  }
+
   getLogs(id: string): Observable<string> {
     return this.http.get(`${this.apiUrl}/${id}/logs`, { responseType: 'text' });
   }

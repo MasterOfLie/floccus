@@ -57,4 +57,12 @@ public class ContainerController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO(e.getStatus().getDescription(), false));
         }
     }
+    @GetMapping("/reiniciar/{containerId}")
+    public ResponseEntity<?> reiniciarContainer(@PathVariable String containerId){
+        try {
+            return ResponseEntity.ok(containerService.reiniciarContainer(containerId));
+        }catch (StatusRuntimeException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO(e.getStatus().getDescription(), false));
+        }
+    }
 }

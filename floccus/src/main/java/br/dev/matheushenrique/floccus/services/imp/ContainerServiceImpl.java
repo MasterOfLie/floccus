@@ -71,4 +71,31 @@ public class ContainerServiceImpl implements ContainerService {
                 .redes(redes)
                 .build();
     }
+
+    @Override
+    public ContainerDTO reiniciarContainer(String containerID) throws StatusRuntimeException {
+        AgenteConexaoDto agenteConexaoDto = new AgenteConexaoDto("localhost", 50051, "floccus-super-secret-token-token-xyz");
+        var container = grpcClientService.floccusAgente(
+                agenteConexaoDto,
+                AgenteDockerServiceGrpc::newBlockingStub,
+                stub -> stub.reiniciarContainer(
+                        ContainerRequest.newBuilder().setId(containerID).build()
+                )
+        );
+        List<RedeContainerDTO> redes = container.getContainer().getRedesList().stream()
+                .map(redeProto -> new RedeContainerDTO(
+                        redeProto.getNome(),
+                        redeProto.getIp(),
+                        redeProto.getGateway(),
+                        redeProto.getMac()
+                ))
+                .toList();
+        return ContainerDTO.builder()
+                .id(container.getContainer().getId())
+                .nome(container.getContainer().getNome())
+                .image(container.getContainer().getImagem())
+                .status(container.getContainer().getStatus())
+                .redes(redes)
+                .build();
+    }
 }

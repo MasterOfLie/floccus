@@ -7,5 +7,6 @@ public interface ContainerService {
 
     ContainerDTO iniciarContainer (String containerID) throws StatusRuntimeException;
     ContainerDTO pararContainer (String containerID) throws StatusRuntimeException;
+    ContainerDTO reiniciarContainer (String containerID) throws StatusRuntimeException;
 
 }

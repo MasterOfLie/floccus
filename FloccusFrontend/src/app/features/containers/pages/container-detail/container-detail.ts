@@ -55,6 +55,15 @@ export class ContainerDetail implements OnInit {
     });
   }
 
+  restart(): void {
+    const id = this.container()?.id;
+    if (!id) return;
+    this.containerService.restart(id).subscribe({
+      next: () => this.refreshStatus(),
+      error: () => this.error.set('Falha ao reiniciar container.')
+    });
+  }
+
   stop(): void {
     const id = this.container()?.id;
     if (!id) return;
