@@ -33,7 +33,7 @@ public class ContainerController {
                     ).getContainersList()
             );
             List<ContainerDTO> response = containersList.stream()
-                    .map(c -> new ContainerDTO(c.getId(), c.getNome(), c.getImagem(), c.getStatus(), null))
+                    .map(c -> new ContainerDTO(c.getId(), c.getNome(), c.getImagem(), c.getStatus(), null, null, null, null, null))
                     .toList();
 
             return ResponseEntity.ok(response);
@@ -61,6 +61,14 @@ public class ContainerController {
     public ResponseEntity<?> reiniciarContainer(@PathVariable String containerId){
         try {
             return ResponseEntity.ok(containerService.reiniciarContainer(containerId));
+        }catch (StatusRuntimeException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO(e.getStatus().getDescription(), false));
+        }
+    }
+    @GetMapping("/{containerId}")
+    public ResponseEntity<?> detalharContainer(@PathVariable String containerId){
+        try {
+            return ResponseEntity.ok(containerService.detalharContainer(containerId));
         }catch (StatusRuntimeException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO(e.getStatus().getDescription(), false));
         }

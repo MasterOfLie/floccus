@@ -1,67 +1,367 @@
 .page {
-  width: 100%;
-  padding: 24px;
+  padding: 32px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .page-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.page-header h1 {
+  margin: 4px 0 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.breadcrumb {
+  font-size: 13px;
+  color: #8b8f98;
 }
 
 .back-button {
-  background: none;
-  border: none;
-  color: #4f46e5;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.loading {
-  padding: 40px;
-  text-align: center;
-  color: #6b7280;
-}
-
-.error {
-  padding: 16px;
+  border: 1px solid #dfe2e7;
+  background: white;
+  color: #343840;
+  padding: 9px 16px;
   border-radius: 8px;
-  background: #fef2f2;
-  color: #dc2626;
+  cursor: pointer;
+  transition: .2s;
 }
 
+.back-button:hover {
+  background: #f5f6f8;
+}
+
+/* Cards principais */
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.info-card,
 .detail-card {
-  background: #fff;
+  background: white;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
+}
+
+.info-card {
   padding: 20px;
 }
 
-.actions button {
-  margin-right: 8px;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  background: #4f46e5;
-  color: #fff;
-  font-size: 14px;
+.card-label {
+  display: block;
+  color: #737780;
+  font-size: 13px;
+  margin-bottom: 10px;
 }
 
-.actions button[disabled] {
-  opacity: 0.5;
+.metric {
+  font-size: 24px;
+}
+
+/* Status */
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-transform: capitalize;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #9ca3af;
+}
+
+.status-dot.running {
+  background: #22c55e;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, .12);
+}
+
+/* Grid */
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.detail-card {
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.section-header p {
+  margin: 4px 0 0;
+  color: #858991;
+  font-size: 13px;
+}
+
+/* Informações */
+
+.details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail-item span {
+  font-size: 12px;
+  color: #858991;
+}
+
+.detail-item strong {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mono {
+  font-family: monospace;
+  font-size: 13px !important;
+}
+
+/* Ações */
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.action-button {
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 14px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: .2s;
+}
+
+.action-button:disabled {
+  opacity: .45;
   cursor: not-allowed;
 }
 
-.console-output {
-  margin-top: 16px;
-  background: #111827;
-  color: #fff;
-  padding: 12px;
+.action-button.start {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.action-button.restart {
+  background: #fef3c7;
+  color: #a16207;
+}
+
+.action-button.stop {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.action-button.console {
+  background: #eef2ff;
+  color: #4338ca;
+}
+
+.action-button:not(:disabled):hover {
+  filter: brightness(.96);
+}
+
+/* Redes */
+
+.count {
+  background: #f1f3f5;
+  color: #555b63;
+  padding: 4px 9px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.network-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.network-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid #e8eaed;
+  border-radius: 9px;
+}
+
+.network-icon {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
-  max-height: 300px;
-  overflow-y: auto;
+  background: #f3f4f6;
+  font-size: 18px;
+}
+
+.network-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.network-info strong {
+  font-size: 14px;
+}
+
+.network-info span,
+.network-details span {
+  font-size: 12px;
+  color: #777c84;
+}
+
+.network-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: right;
+}
+
+/* Console */
+
+.console-output {
+  background: #111827;
+  color: #d1d5db;
+  padding: 18px;
+  border-radius: 8px;
+  min-height: 180px;
+  max-height: 500px;
+  overflow: auto;
   font-family: monospace;
   font-size: 13px;
+  line-height: 1.5;
+}
+
+.console-card {
+  margin-top: 0;
+}
+
+.console-loading,
+.state-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 50px;
+  color: #737780;
+}
+
+.state-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.state-card.error {
+  justify-content: flex-start;
+  color: #b91c1c;
+}
+
+/* Loading */
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ddd;
+  border-top-color: #555;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.empty {
+  padding: 30px;
+  text-align: center;
+  color: #858991;
+  border: 1px dashed #dfe2e7;
+  border-radius: 8px;
+}
+
+/* Responsivo */
+
+@media (max-width: 900px) {
+  .overview-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 20px;
+  }
+
+  .overview-grid,
+  .details {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header {
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .network-item {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .network-details {
+    width: 100%;
+    text-align: left;
+    margin-left: 52px;
+  }
 }

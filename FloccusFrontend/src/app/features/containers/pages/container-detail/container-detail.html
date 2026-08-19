@@ -1,32 +1,227 @@
 <div class="page">
   <div class="page-header">
-    <h1>Detalhes do Container</h1>
-    <button class="back-button" routerLink="/containers">← Voltar</button>
+    <div>
+      <span class="breadcrumb">Containers / Detalhes</span>
+      <h1>{{ container()?.nome }}</h1>
+    </div>
+
+    <button class="back-button" routerLink="/containers">
+      ← Voltar
+    </button>
   </div>
 
   @if (loading()) {
-  <div class="loading">Carregando...</div>
+  <div class="state-card">
+    <div class="spinner"></div>
+    <span>Carregando container...</span>
+  </div>
   } @else if (error()) {
-  <div class="error">{{ error() }}</div>
+  <div class="state-card error">
+    <span>⚠</span>
+    <div>
+      <strong>Não foi possível carregar o container</strong>
+      <p>{{ error() }}</p>
+    </div>
+  </div>
   } @else if (container()) {
-  <div class="detail-card">
-    <h2>{{ container()?.nome }}</h2>
-    <p><strong>ID:</strong> {{ container()?.id }}</p>
-    <p><strong>Imagem:</strong> {{ container()?.image }}</p>
-    <p><strong>Status:</strong> {{ container()?.status }}</p>
 
-    <div class="actions">
-      <button (click)="start()" [disabled]="!container() || container()?.status === 'running'">Iniciar</button>
-      <button (click)="restart()" [disabled]="!container() || container()?.status !== 'running'">Reiniciar</button>
-      <button (click)="stop()" [disabled]="!container() || container()?.status !== 'running'">Parar</button>
-      <button (click)="openConsole()" [disabled]="!container()">Abrir Console</button>
+  <!-- Informações principais -->
+  <div class="overview-grid">
+
+    <div class="info-card">
+      <span class="card-label">Status</span>
+
+      <div class="status">
+        <span class="status-dot" [class.running]="container()?.status === 'running'"></span>
+
+        <strong>{{ container()?.status }}</strong>
+      </div>
     </div>
 
-    @if (consoleLoading()) {
-    <div class="loading">Carregando console...</div>
-    } @else if (consoleOutput()) {
-    <pre class="console-output">{{ consoleOutput() }}</pre>
-    }
+    <div class="info-card">
+      <span class="card-label">CPU</span>
+      <strong class="metric">{{ container()?.cpu || '0%' }}</strong>
+    </div>
+
+    <div class="info-card">
+      <span class="card-label">Memória</span>
+      <strong class="metric">
+        {{ container()?.memoria || '0 MB' }}
+      </strong>
+    </div>
+
+    <div class="info-card">
+      <span class="card-label"> {{
+        container()?.status === 'running' ? 'Em execução há' : 'Parado há'
+        }}</span>
+      <strong>
+        {{ container()?.tempoStatus || '-' }}
+      </strong>
+    </div>
+
   </div>
+
+  <div class="content-grid">
+
+    <!-- Informações -->
+    <section class="detail-card">
+      <div class="section-header">
+        <div>
+          <h2>Informações</h2>
+          <p>Detalhes do container</p>
+        </div>
+      </div>
+
+      <div class="details">
+
+        <div class="detail-item">
+          <span>Nome</span>
+          <strong>{{ container()?.nome }}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>ID</span>
+          <strong class="mono">{{ container()?.id }}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Imagem</span>
+          <strong class="mono">{{ container()?.image }}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Diretório</span>
+          <strong class="mono">
+            {{ container()?.diretorio || '-' }}
+          </strong>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Ações -->
+    <section class="detail-card">
+      <div class="section-header">
+        <div>
+          <h2>Ações</h2>
+          <p>Gerencie o container</p>
+        </div>
+      </div>
+
+      <div class="actions">
+
+        <button class="action-button start" (click)="start()"
+          [disabled]="!container() || container()?.status === 'running'">
+          <span><i class="bi bi-play-fill"></i></span>
+          Iniciar
+        </button>
+
+        <button class="action-button restart" (click)="restart()"
+          [disabled]="!container() || container()?.status !== 'running'">
+          <span><i class="bi bi-arrow-clockwise"></i></span>
+          Reiniciar
+        </button>
+
+        <button class="action-button stop" (click)="stop()"
+          [disabled]="!container() || container()?.status !== 'running'">
+          <span><i class="bi bi-stop-fill"></i></span>
+          Parar
+        </button>
+
+        <button class="action-button console" (click)="openConsole()" [disabled]="!container()">
+          <span><i class="bi bi-terminal"></i></span>
+          Abrir Console
+        </button>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Redes
+  <section class="detail-card">
+    <div class="section-header">
+      <div>
+        <h2>Redes</h2>
+        <p>Interfaces de rede conectadas ao container</p>
+      </div>
+
+      <span class="count">
+        {{ container()?.redes?.length || 0 }}
+      </span>
+    </div>
+
+    @if (container()?.redes?.length) {
+
+    <div class="network-list">
+
+      @for (rede of container()?.redes; track rede.nome) {
+
+      <div class="network-item">
+
+        <div class="network-icon">
+          ⇄
+        </div>
+
+        <div class="network-info">
+          <strong>{{ rede.nome }}</strong>
+
+          <span>
+            IP: {{ rede.ip || '-' }}
+          </span>
+        </div>
+
+        <div class="network-details">
+          <span>
+            Gateway: {{ rede.gateway || '-' }}
+          </span>
+
+          <span class="mono">
+            MAC: {{ rede.mac || '-' }}
+          </span>
+        </div>
+
+      </div>
+
+      }
+
+    </div>
+
+    } @else {
+
+    <div class="empty">
+      Nenhuma rede encontrada.
+    </div>
+
+    }
+  </section> -->
+
+  <!-- Console
+  @if (consoleLoading()) {
+
+  <div class="detail-card console-card">
+    <div class="console-loading">
+      <div class="spinner"></div>
+      <span>Carregando console...</span>
+    </div>
+  </div> -->
+
+  <!-- } @else if (consoleOutput()) {
+
+  <section class="detail-card console-card">
+
+    <div class="section-header">
+      <div>
+        <h2>Console</h2>
+        <p>Saída do container</p>
+      </div>
+    </div>
+
+    <pre class="console-output">{{ consoleOutput() }}</pre>
+
+  </section>
+
+  } -->
+
   }
 </div>

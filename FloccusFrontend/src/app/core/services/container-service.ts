@@ -28,6 +28,9 @@ export class ContainerService {
   restart(id: string): Observable<void> {
     return this.http.get<void>(this.apiUrl + `/reiniciar/${id}`);
   }
+  detalharContainer(id: string): Observable<Container> {
+    return this.http.get<Container>(this.apiUrl + `/${id}`);
+  }
 
   getLogs(id: string): Observable<string> {
     return this.http.get(`${this.apiUrl}/${id}/logs`, { responseType: 'text' });

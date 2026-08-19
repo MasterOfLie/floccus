@@ -4,4 +4,8 @@ export interface Container {
     image: string;
     status: string;
     redes: unknown;
+    memoria: string;
+    cpu: string;
+    diretorio: string;
+    tempoStatus: string;
 }

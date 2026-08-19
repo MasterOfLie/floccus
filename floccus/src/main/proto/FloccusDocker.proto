@@ -10,6 +10,7 @@ service AgenteDockerService {
   rpc IniciarContainer (ContainerRequest) returns (ContainerResponse);
   rpc PararContainer (ContainerRequest) returns (ContainerResponse);
   rpc ReiniciarContainer (ContainerRequest) returns (ContainerResponse);
+  rpc DetalharContainer (ContainerRequest) returns (ContainerResponse);
 }
 
 message ContainerModel {
@@ -21,6 +22,7 @@ message ContainerModel {
   string memoria = 7;
   string cpu = 8;
   string diretorio = 9;
+  string tempo_status = 10;
 }
 
 message FloccusNetwork {

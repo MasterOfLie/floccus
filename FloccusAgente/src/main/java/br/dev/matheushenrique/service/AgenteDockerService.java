@@ -191,4 +191,51 @@ public class AgenteDockerService extends AgenteDockerServiceGrpc.AgenteDockerSer
         }
     }
 
+    @Override
+    public void detalharContainer(ContainerRequest request, StreamObserver<ContainerResponse> responseObserver) {
+        try {
+            InspectContainerResponse containerCmd = dockerClient.inspectContainerCmd(request.getId()).exec();
+            List<FloccusNetwork> redes = new ArrayList<>();
+            var networkSettings = containerCmd.getNetworkSettings();
+            if (networkSettings != null && networkSettings.getNetworks() != null) {
+                networkSettings.getNetworks().forEach((nomeRede, dadosRede) -> {
+                    FloccusNetwork floccusNetwork = FloccusNetwork.newBuilder()
+                            .setNome(nomeRede) // O nome da rede é a chave do Map
+                            .setIp(dadosRede.getIpAddress() != null ? dadosRede.getIpAddress() : "")
+                            .setGateway(dadosRede.getGateway() != null ? dadosRede.getGateway() : "")
+                            .setMac(dadosRede.getMacAddress() != null ? dadosRede.getMacAddress() : "")
+                            .build();
+                    redes.add(floccusNetwork);
+                });
+            }
+            ContainerModel container = ContainerModel.newBuilder()
+                    .setNome(containerCmd.getName())
+                    .setId(containerCmd.getId())
+                    .setImagem(containerCmd.getConfig().getImage())
+                    .setStatus(containerCmd.getState().getStatus())
+                    .setTempoStatus(
+                            Boolean.TRUE.equals(containerCmd.getState().getRunning())
+                                    ? containerCmd.getState().getStartedAt()
+                                    : containerCmd.getState().getFinishedAt()
+                    )
+                    .addAllRedes(redes)
+                    .build();
+            ContainerResponse response = ContainerResponse.newBuilder()
+                    .setContainer(container)
+                    .build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        } catch (NotFoundException e){
+            log.warn(e.getMessage());
+            responseObserver.onError(Status.FAILED_PRECONDITION
+                    .withDescription("Erro ao obter container " + request.getId())
+                    .asRuntimeException());
+        } catch (Exception e ) {
+            System.out.println(e);
+            responseObserver.onError(io.grpc.Status.INTERNAL
+                    .withDescription("Erro na comunicação interna com o Docker.")
+                    .asRuntimeException());
+        }
+    }
+
 }

@@ -11,6 +11,8 @@ import io.grpc.StatusRuntimeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -95,6 +97,45 @@ public class ContainerServiceImpl implements ContainerService {
                 .nome(container.getContainer().getNome())
                 .image(container.getContainer().getImagem())
                 .status(container.getContainer().getStatus())
+                .redes(redes)
+                .build();
+    }
+
+    @Override
+    public ContainerDTO detalharContainer(String containerID) throws StatusRuntimeException {
+        AgenteConexaoDto agenteConexaoDto = new AgenteConexaoDto("localhost", 50051, "floccus-super-secret-token-token-xyz");
+        var container = grpcClientService.floccusAgente(
+                agenteConexaoDto,
+                AgenteDockerServiceGrpc::newBlockingStub,
+                stub -> stub.detalharContainer(
+                        ContainerRequest.newBuilder().setId(containerID).build()
+                )
+        );
+        Instant inicio = Instant.parse(container.getContainer().getTempoStatus());
+        Duration uptime = Duration.between(inicio, Instant.now());
+        long dias = uptime.toDays();
+        long horas = uptime.toHours() % 24;
+        long minutos = uptime.toMinutes() % 60;
+        String tempoStatus = String.format(
+                "%d dias, %d horas e %d minutos",
+                dias,
+                horas,
+                minutos
+        );
+        List<RedeContainerDTO> redes = container.getContainer().getRedesList().stream()
+                .map(redeProto -> new RedeContainerDTO(
+                        redeProto.getNome(),
+                        redeProto.getIp(),
+                        redeProto.getGateway(),
+                        redeProto.getMac()
+                ))
+                .toList();
+        return ContainerDTO.builder()
+                .id(container.getContainer().getId())
+                .nome(container.getContainer().getNome())
+                .image(container.getContainer().getImagem())
+                .status(container.getContainer().getStatus())
+                .tempoStatus(tempoStatus)
                 .redes(redes)
                 .build();
     }
