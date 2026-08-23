@@ -1,4 +1,6 @@
-<aside class="sidebar" [class.collapsed]="collapsed()">
+<div class="sidebar-backdrop" [class.visible]="mobileOpen()" (click)="closeMobile()"></div>
+
+<aside class="sidebar" [class.collapsed]="collapsed()" [class.mobile-open]="mobileOpen()">
 
     <!-- LOGO -->
 
@@ -25,48 +27,24 @@
 
     <nav class="navigation">
 
-        <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-            class="navigation-item">
+        @for (item of menuItems; track item.route) {
+
+        <a [routerLink]="item.route" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: item.exact ?? false }" class="navigation-item">
 
             <span class="icon">
-                <i class="bi bi-house"></i>
+                <i [class]="'bi ' + item.icon"></i>
             </span>
 
             @if (!collapsed()) {
             <span class="label">
-                Dashboard
-            </span>
-            }
-
-        </a>
-        <a routerLink="/containers" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-            class="navigation-item">
-
-            <span class="icon">
-                <i class="bi bi-hdd-stack"></i>
-            </span>
-
-            @if (!collapsed()) {
-            <span class="label">
-                Containers
+                {{ item.label }}
             </span>
             }
 
         </a>
 
-        <a routerLink="/users" routerLinkActive="active" class="navigation-item">
-
-            <span class="icon">
-                <i class="bi bi-people"></i>
-            </span>
-
-            @if (!collapsed()) {
-            <span class="label">
-                Usuários
-            </span>
-            }
-
-        </a>
+        }
 
     </nav>
 

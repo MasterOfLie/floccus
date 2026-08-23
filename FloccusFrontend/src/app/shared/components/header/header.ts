@@ -18,4 +18,8 @@ export class Header {
     this.sidebarService.toggle();
   }
 
+  toggleMobileSidebar(): void {
+    this.sidebarService.toggleMobile();
+  }
+
 }

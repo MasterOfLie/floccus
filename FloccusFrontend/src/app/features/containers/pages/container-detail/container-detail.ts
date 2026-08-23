@@ -3,11 +3,12 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ContainerService } from '../../../../core/services/container-service';
 import { Container } from '../../models/ContainerModel';
+import { TerminalLogs } from '../../../../shared/components/terminal-logs/terminal-logs';
 
 @Component({
   selector: 'app-container-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TerminalLogs],
   templateUrl: './container-detail.html',
   styleUrl: './container-detail.css',
 })
@@ -18,8 +19,7 @@ export class ContainerDetail implements OnInit {
   container = signal<Container | null>(null);
   loading = signal(false);
   error = signal('');
-  consoleOutput = signal('');
-  consoleLoading = signal(false);
+  showConsole = signal(false);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -32,11 +32,9 @@ export class ContainerDetail implements OnInit {
 
   private loadContainer(id: string): void {
     this.loading.set(true);
-    // Simple reuse of listar and filter locally; replace with dedicated endpoint if available
-    this.containerService.listar().subscribe({
-      next: (list) => {
-        const found = list.find(c => c.id === id) || null;
-        this.container.set(found);
+    this.containerService.detalharContainer(id).subscribe({
+      next: (container) => {
+        this.container.set(container);
         this.loading.set(false);
       },
       error: () => {
@@ -80,19 +78,7 @@ export class ContainerDetail implements OnInit {
   }
 
   openConsole(): void {
-    const id = this.container()?.id;
-    if (!id) return;
-    this.consoleLoading.set(true);
-    this.containerService.getLogs(id).subscribe({
-      next: (log) => {
-        this.consoleOutput.set(log);
-        this.consoleLoading.set(false);
-      },
-      error: () => {
-        this.error.set('Não foi possível obter o console.');
-        this.consoleLoading.set(false);
-      }
-    });
+    this.showConsole.update(valorAtual => !valorAtual);
   }
 }
 

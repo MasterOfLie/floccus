@@ -2,7 +2,8 @@
 
     <div class="header-left">
 
-        <button class="sidebar-toggle" type="button" (click)="toggleSidebar()"
+        <!-- Desktop toggle (collapse/expand) -->
+        <button class="sidebar-toggle desktop-toggle" type="button" (click)="toggleSidebar()"
             [attr.aria-label]="collapsed() ? 'Expandir menu' : 'Recolher menu'">
 
             @if (collapsed()) {
@@ -10,6 +11,14 @@
             } @else {
             <i class="bi bi-list"></i>
             }
+
+        </button>
+
+        <!-- Mobile toggle (open drawer) -->
+        <button class="sidebar-toggle mobile-toggle" type="button" (click)="toggleMobileSidebar()"
+            aria-label="Abrir menu">
+
+            <i class="bi bi-list"></i>
 
         </button>
 

@@ -1,3 +1,10 @@
+:host {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
 .header {
     height: 72px;
 
@@ -10,6 +17,8 @@
     background: #ffffff;
 
     border-bottom: 1px solid #e5e7eb;
+
+    flex-shrink: 0;
 }
 
 
@@ -23,7 +32,7 @@
 }
 
 
-/* BOTÃO SIDEBAR */
+/* BOTÕES SIDEBAR */
 
 .sidebar-toggle {
     width: 38px;
@@ -53,6 +62,15 @@
     background: #f3f4f6;
 
     color: #111827;
+}
+
+/* Desktop: mostra desktop-toggle, esconde mobile-toggle */
+.mobile-toggle {
+    display: none;
+}
+
+.desktop-toggle {
+    display: flex;
 }
 
 
@@ -158,4 +176,44 @@
     color: #6b7280;
 
     font-size: 11px;
+}
+
+
+/* ===========================
+   RESPONSIVO - MOBILE (≤768px)
+   =========================== */
+
+@media (max-width: 768px) {
+
+    .header {
+        padding: 0 16px;
+    }
+
+    /* Mobile: mostra mobile-toggle, esconde desktop-toggle */
+    .mobile-toggle {
+        display: flex;
+    }
+
+    .desktop-toggle {
+        display: none;
+    }
+
+    /* Esconder subtítulo no mobile */
+    .header-title span {
+        display: none;
+    }
+
+    .header-title h1 {
+        font-size: 18px;
+    }
+
+    /* Esconder texto do perfil no mobile */
+    .profile-info {
+        display: none;
+    }
+
+    .header-actions {
+        gap: 12px;
+    }
+
 }
