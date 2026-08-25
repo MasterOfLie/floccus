@@ -11,6 +11,7 @@ service AgenteDockerService {
   rpc PararContainer (ContainerRequest) returns (ContainerResponse);
   rpc ReiniciarContainer (ContainerRequest) returns (ContainerResponse);
   rpc DetalharContainer (ContainerRequest) returns (ContainerResponse);
+  rpc StreamarLogsContainer (LogsContainerRequest) returns (stream LogContainer);
 }
 
 message ContainerModel {
@@ -47,4 +48,21 @@ message ContainerRequest {
 
 message ContainerResponse {
   ContainerModel container = 1;
+}
+
+// PROTO LOGS
+message LogsContainerRequest {
+  string id = 1;
+  int32 linhas = 2;
+}
+enum TipoLog {
+  LOG_DESCONHECIDO = 0;
+  STDOUT = 1;
+  STDERR = 2;
+}
+message LogContainer {
+  string id = 1;
+  string mensagem = 2;
+  TipoLog tipo = 3;
+  int64 timestamp = 4;
 }

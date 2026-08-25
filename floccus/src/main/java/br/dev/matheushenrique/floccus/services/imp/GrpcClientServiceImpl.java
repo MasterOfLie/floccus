@@ -2,9 +2,13 @@ package br.dev.matheushenrique.floccus.services.imp;
 
 import br.dev.matheushenrique.floccus.dto.AgenteConexaoDto;
 import br.dev.matheushenrique.floccus.services.GrpcClientService;
+import br.dev.matheushenrique.grpc.AgenteDockerServiceGrpc;
+import br.dev.matheushenrique.grpc.LogContainer;
+import br.dev.matheushenrique.grpc.LogsContainerRequest;
 import io.grpc.*;
 import io.grpc.stub.AbstractBlockingStub;
 import io.grpc.stub.MetadataUtils;
+import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -34,6 +38,30 @@ public class GrpcClientServiceImpl implements GrpcClientService {
             desconectarCanal(channel);
         }
     }
+
+    @Override
+    public ManagedChannel streamarLogsContainer(AgenteConexaoDto agenteConexaoDto, String containerId, int linhas, StreamObserver<LogContainer> responseObserver) {
+
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(agenteConexaoDto.host(), agenteConexaoDto.porta())
+                .usePlaintext()
+                .build();
+
+        Metadata headers = new Metadata();
+        Metadata.Key<String> API_KEY_HEADER = Metadata.Key.of("x-floccus-api-key", Metadata.ASCII_STRING_MARSHALLER);
+        headers.put(API_KEY_HEADER, agenteConexaoDto.apiKey());
+        Channel channelWithHeaders = ClientInterceptors.intercept(
+                channel,
+                MetadataUtils.newAttachHeadersInterceptor(headers)
+        );
+        AgenteDockerServiceGrpc.AgenteDockerServiceStub asyncStub = AgenteDockerServiceGrpc.newStub(channelWithHeaders);
+        LogsContainerRequest request = LogsContainerRequest.newBuilder()
+                .setId(containerId)
+                .setLinhas(linhas)
+                .build();
+        asyncStub.streamarLogsContainer(request, responseObserver);
+        return channel;
+    }
+
     private void desconectarCanal(ManagedChannel channel) {
         if (channel != null && !channel.isShutdown()) {
             try {

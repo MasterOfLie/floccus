@@ -7,7 +7,11 @@ import br.dev.matheushenrique.floccus.services.ContainerService;
 import br.dev.matheushenrique.floccus.services.GrpcClientService;
 import br.dev.matheushenrique.grpc.AgenteDockerServiceGrpc;
 import br.dev.matheushenrique.grpc.ContainerRequest;
+import br.dev.matheushenrique.grpc.LogContainer;
+import br.dev.matheushenrique.grpc.LogsContainerRequest;
+import io.grpc.ManagedChannel;
 import io.grpc.StatusRuntimeException;
+import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -139,4 +143,5 @@ public class ContainerServiceImpl implements ContainerService {
                 .redes(redes)
                 .build();
     }
+
 }

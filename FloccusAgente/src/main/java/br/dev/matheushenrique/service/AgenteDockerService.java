@@ -17,6 +17,8 @@ import java.util.List;
 public class AgenteDockerService extends AgenteDockerServiceGrpc.AgenteDockerServiceImplBase{
 
     private final DockerClient dockerClient;
+    private final FloccusLogService floccusLogService;
+
     @Override
     public void listarContainers(ListarContainersRequest request, StreamObserver<ListarContainersResponse> responseObserver) {
         log.info("[Docker API] Listando containers...");
@@ -237,5 +239,21 @@ public class AgenteDockerService extends AgenteDockerServiceGrpc.AgenteDockerSer
                     .asRuntimeException());
         }
     }
+    @Override
+    public void streamarLogsContainer(
+            LogsContainerRequest request,
+            StreamObserver<LogContainer> responseObserver
+    ) {
 
+        log.info(
+                "[Docker Logs] Iniciando stream do container {}",
+                request.getId()
+        );
+
+        floccusLogService.streamLogs(
+                request.getId(),
+                request.getLinhas(),
+                responseObserver
+        );
+    }
 }
