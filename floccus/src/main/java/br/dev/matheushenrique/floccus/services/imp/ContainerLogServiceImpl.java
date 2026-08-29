@@ -1,4 +1,5 @@
 package br.dev.matheushenrique.floccus.services.imp;
+
 import br.dev.matheushenrique.floccus.dto.AgenteConexaoDto;
 import br.dev.matheushenrique.floccus.dto.ContainerLogConnectionDTO;
 import br.dev.matheushenrique.floccus.services.ContainerLogService;
@@ -35,7 +36,7 @@ public class ContainerLogServiceImpl implements ContainerLogService {
                 100,
                 containerStreamObserver
         );
-        ContainerLogConnectionDTO conexaoAnterior = canaisAtivos.remove(headerAccessor.getSessionId()+"_"+containerId);
+        ContainerLogConnectionDTO conexaoAnterior = canaisAtivos.remove(headerAccessor.getSessionId() + "_" + containerId);
         canaisAtivos.put(headerAccessor.getSessionId() + "_" + containerId, new ContainerLogConnectionDTO(containerId, headerAccessor.getSessionId(), channel));
     }
 
@@ -55,35 +56,35 @@ public class ContainerLogServiceImpl implements ContainerLogService {
 
     @Override
     public void fecharCanaisSessao(String sessionId) {
-            canaisAtivos.entrySet().removeIf(entry -> {
-                ContainerLogConnectionDTO conexao = entry.getValue();
-                if (!conexao.sessionId().equals(sessionId)) {
-                    return false;
-                }
-                ManagedChannel channel = conexao.channel();
-                if (channel != null && !channel.isShutdown()) {
-                    log.info(
-                            "Fechando canal gRPC do container {} da sessão {}",
-                            conexao.containerId(),
-                            sessionId
-                    );
+        canaisAtivos.entrySet().removeIf(entry -> {
+            ContainerLogConnectionDTO conexao = entry.getValue();
+            if (!conexao.sessionId().equals(sessionId)) {
+                return false;
+            }
+            ManagedChannel channel = conexao.channel();
+            if (channel != null && !channel.isShutdown()) {
+                log.info(
+                        "Fechando canal gRPC do container {} da sessão {}",
+                        conexao.containerId(),
+                        sessionId
+                );
 
-                    channel.shutdown();
+                channel.shutdown();
 
-                    try {
-                        if (!channel.awaitTermination(2, TimeUnit.SECONDS)) {
-                            log.warn(
-                                    "Canal gRPC do container {} não encerrou. Forçando encerramento.",
-                                    conexao.containerId()
-                            );
-                            channel.shutdownNow();
-                        }
-                    } catch (InterruptedException e) {
+                try {
+                    if (!channel.awaitTermination(2, TimeUnit.SECONDS)) {
+                        log.warn(
+                                "Canal gRPC do container {} não encerrou. Forçando encerramento.",
+                                conexao.containerId()
+                        );
                         channel.shutdownNow();
-                        Thread.currentThread().interrupt();
                     }
+                } catch (InterruptedException e) {
+                    channel.shutdownNow();
+                    Thread.currentThread().interrupt();
                 }
-                return true;
-            });
+            }
+            return true;
+        });
     }
 }

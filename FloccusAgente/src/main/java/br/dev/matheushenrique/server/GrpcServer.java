@@ -17,6 +17,7 @@ public class GrpcServer {
 
     public void start(){
         FloccusConfig config = FloccusConfig.loadConfig();
+        System.out.println(config.getAgenteId());
         log.info("Configurações carregadas com sucesso!");
         log.info("Chave Secreta do Agente: [PROTEGIDA]");
         log.info("Conectando ao Docker Engine via: {}", config.getDockerHost());

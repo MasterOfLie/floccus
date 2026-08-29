@@ -1,0 +1,106 @@
+<div class="table-container">
+
+    @if (loading()) {
+
+    <div class="feedback-container">
+
+        <div class="loading-spinner"></div>
+
+        <span>
+            Carregando...
+        </span>
+
+    </div>
+
+    }
+
+    @else if (data().length === 0) {
+
+    <div class="empty-state">
+
+        <div class="empty-icon">
+            ≡
+        </div>
+
+        <strong>
+            Nenhum registro encontrado
+        </strong>
+
+        <span>
+            {{ emptyMessage() }}
+        </span>
+
+    </div>
+
+    }
+
+    @else {
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    @for (column of columns(); track column.key) {
+
+                    <th>
+                        {{ column.label }}
+                    </th>
+
+                    }
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @for (item of data(); track $index) {
+
+                <tr>
+
+                    @for (column of columns(); track column.key) {
+
+                    <td>
+
+                        @if (column.template) {
+
+                        <ng-container [ngTemplateOutlet]="column.template" [ngTemplateOutletContext]="{
+                        $implicit: item
+                      }" />
+
+                        }
+
+                        @else {
+
+                        {{ valorLinha(item, column) }}
+
+                        }
+
+                    </td>
+
+                    }
+
+                </tr>
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+
+
+    @if (totalPaginas() > 1) {
+
+    <app-pagination [paginaAtual]="paginaAtual()" [totalPaginas]="totalPaginas()" [totalElementos]="totalElementos()"
+        (paginaChange)="alterarPagina($event)" />
+
+    }
+
+    }
+
+</div>

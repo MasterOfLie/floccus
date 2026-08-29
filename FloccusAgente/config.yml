@@ -1,0 +1,10 @@
+floccus:
+  agent:
+    agent-id: "4b71b3b1-272b-420e-9e10-bcd3388dbbd3"
+    port: 50051
+    secret-key: "sk_floccus_wZYSgz7UNZuKbcKwmZMgUy1LxUPkBehNeDQd0X-XLKwySn8CNbawGHJrCvsmwdG8rj-F13BNHUojjqKwOg_rew"
+  backend:
+    host: "192.168.1.105"
+    port: 8080
+  docker:
+    host: "unix:///var/run/docker.sock"

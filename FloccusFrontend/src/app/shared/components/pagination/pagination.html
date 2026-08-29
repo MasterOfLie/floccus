@@ -1,0 +1,35 @@
+<div class="pagination">
+
+    <div class="pagination-info">
+
+        {{ totalElementos() }}
+        {{ totalElementos() === 1 ? 'registro' : 'registros' }}
+
+    </div>
+
+
+    <div class="pagination-controls">
+
+        <button type="button" class="pagination-button" [disabled]="paginaAtual() === 0" (click)="paginaAnterior()">
+            ‹
+        </button>
+
+
+        @for (pagina of paginas(); track pagina) {
+
+        <button type="button" class="pagination-button page-number" [class.active]="pagina === paginaAtual()"
+            (click)="irParaPagina(pagina)">
+            {{ pagina + 1 }}
+        </button>
+
+        }
+
+
+        <button type="button" class="pagination-button" [disabled]="paginaAtual() >= totalPaginas() - 1"
+            (click)="proximaPagina()">
+            ›
+        </button>
+
+    </div>
+
+</div>

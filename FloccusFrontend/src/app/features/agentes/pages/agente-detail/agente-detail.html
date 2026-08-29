@@ -1,0 +1,192 @@
+<div class="page">
+    <div class="page-header">
+        <div>
+            <h1>Detalhes do agente</h1>
+            <p>Configure e monitore a conexão do agente com o Floccus.</p>
+        </div>
+
+        <button type="button" class="back-button" routerLink="/agentes">
+            ← Voltar
+        </button>
+    </div>
+
+    @if (carregando()) {
+    <div class="loading">
+        Carregando agente...
+    </div>
+    } @else if (agente()) {
+    <div class="detail-grid">
+
+        <!-- COLUNA DA ESQUERDA: STATUS E YAML -->
+        <div class="left-column">
+
+            <!-- STATUS E MÉTRICAS -->
+            <!-- STATUS E MÉTRICAS -->
+            <div class="status-card">
+                <div class="card-header">
+                    <div>
+                        <h2>Status e Métricas</h2>
+                        <p>Métricas de hardware e conectividade em tempo real.</p>
+                    </div>
+
+                    <!-- Badge Online/Offline Dinâmico -->
+                    <span class="status-badge" [class.online]="metricas()?.online"
+                        [class.offline]="!metricas()?.online">
+                        <span class="status-dot"></span>
+                        {{ metricas()?.online ? 'Online' : 'Offline' }}
+                    </span>
+                </div>
+
+                <div class="metrics-grid">
+                    <!-- CPU -->
+                    <div class="metric-item">
+                        <span class="metric-label">Uso de CPU</span>
+                        <span class="metric-value">{{ metricas()?.cpuUsage ?? 0 | number:'1.0-1' }}%</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" [style.width.%]="metricas()?.cpuUsage ?? 0"></div>
+                        </div>
+                    </div>
+
+                    <!-- MEMÓRIA RAM -->
+                    <div class="metric-item">
+                        <span class="metric-label">Memória RAM</span>
+                        <span class="metric-value">
+                            @if (metricas()) {
+                            {{ (metricas()!.ramUsadaMb / 1024) | number:'1.1-1' }} GB / {{ (metricas()!.ramTotalMb /
+                            1024) | number:'1.1-1' }} GB
+                            } @else {
+                            -- / --
+                            }
+                        </span>
+                        <div class="progress-bar">
+                            <div class="progress-fill"
+                                [style.width.%]="metricas() ? (metricas()!.ramUsadaMb / metricas()!.ramTotalMb) * 100 : 0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ARMAZENAMENTO -->
+                    <div class="metric-item">
+                        <span class="metric-label">Armazenamento</span>
+                        <span class="metric-value">
+                            @if (metricas()) {
+                            {{ metricas()!.discoUsadoGb | number:'1.0-1' }} GB / {{ metricas()!.discoTotalGb |
+                            number:'1.0-1' }} GB
+                            } @else {
+                            -- / --
+                            }
+                        </span>
+                        <div class="progress-bar">
+                            <div class="progress-fill"
+                                [style.width.%]="metricas() ? (metricas()!.discoUsadoGb / metricas()!.discoTotalGb) * 100 : 0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TEMPO ATIVO / UPTIME -->
+                    <div class="metric-item">
+                        <span class="metric-label">Tempo Ativo (Uptime)</span>
+                        <span class="metric-value metric-text">{{ formatarUptime(metricas()?.uptime) }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- YAML -->
+            <div class="config-card">
+                <div class="card-header">
+                    <div>
+                        <h2>Configuração do agente</h2>
+                        <p>
+                            Copie esta configuração para o arquivo
+                            <strong>config.yml</strong> do agente.
+                        </p>
+                    </div>
+
+                    <button type="button" class="copy-button" (click)="copiarYaml()">
+                        ⧉ Copiar
+                    </button>
+                </div>
+
+                <div class="yaml-container">
+                    <pre><code>{{ gerarYaml() }}</code></pre>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COLUNA DA DIREITA: FORMULÁRIO -->
+        <div class="form-card">
+            <div class="card-header">
+                <div>
+                    <h2>Informações</h2>
+                    <p>Altere as configurações do agente.</p>
+                </div>
+            </div>
+
+            <form #form="ngForm" (ngSubmit)="salvar()">
+                <div class="form-group">
+                    <label for="agentId">ID do agente</label>
+                    <input id="agentId" type="text" [value]="agente()!.id" readonly />
+                    <span class="input-hint">Identificador único do agente.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="ipAgente">IP / Host do agente</label>
+                    <input id="ipAgente" type="text" name="ipAgente" [(ngModel)]="agente()!.ipAgente" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="portaAgente">Porta do agente</label>
+                    <input id="portaAgente" type="number" name="portaAgente" [(ngModel)]="agente()!.portaAgente" min="1"
+                        max="65535" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="chaveAgente">Chave do agente</label>
+                    <input id="chaveAgente" type="text" name="chaveAgente" [(ngModel)]="agente()!.chaveAgente"
+                        readonly />
+                    <span class="input-hint">A chave é gerada pelo Floccus.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="ipBackend">IP / Host do backend</label>
+                    <input id="ipBackend" type="text" name="ipBackend" [(ngModel)]="agente()!.ipBackend"
+                        placeholder="Ex: 192.168.1.100" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="backendPort">Porta do backend</label>
+                    <input id="backendPort" type="number" name="backendPort" [(ngModel)]="agente()!.portaBackend"
+                        min="1" max="65535" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="dockerHost">Docker Host</label>
+                    <input id="dockerHost" type="text" name="dockerHost" [(ngModel)]="agente()!.dockerHost" required />
+                    <span class="input-hint">Socket utilizado pelo agente para acessar o Docker.</span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" routerLink="/agentes">
+                        Cancelar
+                    </button>
+
+                    <button type="button" class="btn-primary" [disabled]="salvando()" (click)="gerarNovaChave()">
+                        Gerar nova chave
+                    </button>
+
+                    <button type="submit" class="btn-primary" [disabled]="form.invalid || salvando()">
+                        @if (salvando()) {
+                        <span class="spinner"></span>
+                        Salvando...
+                        } @else {
+                        Salvar alterações
+                        }
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    }
+</div>

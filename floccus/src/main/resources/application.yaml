@@ -1,17 +1,19 @@
 spring:
+  config:
+    import: file:.env[.properties]
   application:
     name: floccus
-
   datasource:
-    url: jdbc:sqlite:floccus.db
-    driver-class-name: org.sqlite.JDBC
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
-    # Nome da classe do Dialeto no Hibernate 7+
-    database-platform: org.hibernate.community.dialect.SQLiteDialect
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect

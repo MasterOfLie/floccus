@@ -1,5 +1,6 @@
 floccus:
   agent:
+    agent-id: "07b99e64-0ae4-49fe-aa10-7023e518da97"
     port: 50051
     secret-key: "floccus-super-secret-token-token-xyz"
   backend:

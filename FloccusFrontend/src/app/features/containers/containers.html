@@ -1,87 +1,37 @@
 <div class="page">
 
-  <!-- CABEÇALHO -->
-  <div class="page-header">
-    <div>
-      <h1>Containers</h1>
-      <p>Gerencie os containers Docker.</p>
-    </div>
+  <ng-template #statusTemplate let-container>
 
-    <button type="button" class="refresh-button" (click)="listarContainers()">
-      Atualizar
+    <span class="status" [class.running]="estaRodando(container.status)"
+      [class.exited]="!estaRodando(container.status)">
+
+      <span class="status-dot"></span>
+
+      {{ traduzirStatus(container.status) }}
+
+    </span>
+
+  </ng-template>
+
+  <ng-template #acoesTemplate let-container>
+
+    <button type="button" class="btn-abrir" (click)="abrirContainer(container); $event.stopPropagation()">
+      Abrir
     </button>
-  </div>
 
-  <!-- CARREGANDO -->
-  @if (carregando()) {
-  <div class="loading">
-    Carregando containers...
-  </div>
-  }
+  </ng-template>
 
-  <!-- ERRO -->
-  @if (erro()) {
-  <div class="error">
-    {{ erro() }}
-  </div>
-  }
+  <div class="page-header">
 
-  <!-- CONTAINERS -->
-  @if (!carregando() && !erro()) {
-  <div class="container-list">
+    <button type="button" class="btn-acao" (click)="listarContainers()" [disabled]="carregando()">
 
-    @for (container of containers(); track container.id) {
+      ↻ Recarregar
 
-    <a [routerLink]="['/containers', container.id]" class="card-link">
-      <div class="container-card">
-
-        <div class="container-header">
-          <div>
-            <h2>{{ container.nome }}</h2>
-
-            <span class="container-id">
-              {{ container.id }}
-            </span>
-          </div>
-
-          <span class="status" [ngClass]="{
-            'running': container.status.toLowerCase().includes('up') || container.status.toLowerCase().includes('running'),
-            'exited': container.status.toLowerCase().includes('exited')
-          }">
-            {{ traduzirStatus(container.status) }}
-          </span>
-        </div>
-
-        <div class="container-info">
-
-          <div>
-            <span class="label">
-              Imagem
-            </span>
-
-            <strong>
-              {{ container.image }}
-            </strong>
-          </div>
-
-          <div>
-            <span class="label">
-              Status
-            </span>
-
-            <strong>
-              {{ container.status }}
-            </strong>
-          </div>
-
-        </div>
-
-      </div>
-    </a>
-
-    }
+    </button>
 
   </div>
-  }
+
+  <app-data-table [columns]="colunas" [data]="containers()" [loading]="carregando()" [paginaAtual]="pagina()"
+    [totalPaginas]="totalPaginas()" [totalElementos]="totalElementos()" (paginaChange)="alterarPagina($event)" />
 
 </div>

@@ -1,0 +1,191 @@
+.table-container {
+    width: 100%;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 10px;
+}
+
+
+.table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+
+table {
+    width: 100%;
+
+    min-width: 700px;
+
+    border-collapse: collapse;
+}
+
+
+thead {
+    background: #f9fafb;
+}
+
+
+th {
+    padding: 13px 18px;
+
+    text-align: left;
+
+    color: #6b7280;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.05em;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+tbody tr {
+    transition: background 0.15s ease;
+}
+
+
+tbody tr:hover {
+    background: #f5f3ff;
+}
+
+
+td {
+    padding: 15px 18px;
+
+    color: #374151;
+
+    font-size: 14px;
+
+    border-bottom: 1px solid #f3f4f6;
+}
+
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.feedback-container {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    min-height: 180px;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+.loading-spinner {
+    width: 18px;
+    height: 18px;
+
+    border: 2px solid #e5e7eb;
+
+    border-top-color: #4f46e5;
+
+    border-radius: 50%;
+
+    animation: spin 0.7s linear infinite;
+}
+
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   VAZIO
+   ========================================================= */
+
+.empty-state {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    min-height: 180px;
+
+    color: #6b7280;
+}
+
+
+.empty-state strong {
+    color: #374151;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+.empty-state span {
+    color: #9ca3af;
+
+    font-size: 13px;
+}
+
+
+.empty-icon {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    margin-bottom: 6px;
+
+    border-radius: 50%;
+
+    background: #f5f3ff;
+
+    color: #4f46e5;
+
+    font-size: 18px;
+}
+
+
+@media (max-width: 700px) {
+
+    .table-container {
+        border-radius: 8px;
+    }
+
+    th,
+    td {
+        padding: 12px 14px;
+    }
+
+}

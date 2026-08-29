@@ -38,6 +38,12 @@ export class Sidebar {
       icon: 'bi-people',
       route: '/users',
       permission: 'NOT_IMPLEMENTED'
+    },
+    {
+      label: 'Agentes',
+      icon: 'bi-motherboard',
+      route: '/agentes',
+      permission: 'NOT_IMPLEMENTED'
     }
   ];
 

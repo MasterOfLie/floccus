@@ -1,0 +1,16 @@
+<div class="page">
+    <ng-template #acoesTemplate let-agente>
+
+        <button type="button" class="btn-abrir" (click)="abrirAgente(agente); $event.stopPropagation()">
+            Abrir
+        </button>
+
+    </ng-template>
+    <div class="page-header">
+        <button class="btn-acao" (click)="carregarAgentes()" [disabled]="carregando()">
+            ↻ Recarregar
+        </button>
+    </div>
+    <app-data-table [columns]="colunas" [data]="agentes()" [loading]="carregando()" [paginaAtual]="pagina()"
+        [totalPaginas]="totalPaginas()" [totalElementos]="totalElementos()" (paginaChange)="alterarPagina($event)" />
+</div>

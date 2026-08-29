@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { Client, Message } from '@stomp/stompjs';
+import { map } from 'rxjs/operators';
 import { Container } from '../../features/containers/models/ContainerModel';
 
 @Injectable({
@@ -15,9 +16,69 @@ export class ContainerService {
   private readonly wsUrl =
     `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws-floccus`;
 
-  listar(): Observable<Container[]> {
-    return this.http.get<Container[]>(this.apiUrl);
+  listar(
+    page: number = 0,
+    size: number = 10
+  ): Observable<PageResponse<Container>> {
+
+    return this.http.get<Container[]>(this.apiUrl).pipe(
+
+      map(containers => {
+
+        const inicio = page * size;
+
+        const fim = inicio + size;
+
+        const content = containers.slice(inicio, fim);
+
+        const totalElements = containers.length;
+
+        const totalPages = Math.ceil(
+          totalElements / size
+        );
+
+        return {
+          content,
+
+          number: page,
+
+          size,
+
+          totalElements,
+
+          totalPages,
+
+          numberOfElements: content.length,
+
+          first: page === 0,
+
+          last: page >= totalPages - 1,
+
+          empty: content.length === 0
+        };
+
+      })
+
+    );
+
   }
+  // Implementar paginação com PageResponse
+  // listar(
+  //   page: number = 0,
+  //   size: number = 10
+  // ): Observable<PageResponse<Container>> {
+
+  //   return this.http.get<PageResponse<Container>>(
+  //     this.apiUrl,
+  //     {
+  //       params: {
+  //         page,
+  //         size
+  //       }
+  //     }
+  //   );
+
+  // }
 
   start(id: string): Observable<void> {
     return this.http.get<void>(this.apiUrl + `/iniciar/${id}`);

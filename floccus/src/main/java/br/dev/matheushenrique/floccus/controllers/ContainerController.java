@@ -9,6 +9,7 @@ import br.dev.matheushenrique.grpc.AgenteDockerServiceGrpc;
 import br.dev.matheushenrique.grpc.ListarContainersRequest;
 import io.grpc.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,6 @@ public class ContainerController {
             List<ContainerDTO> response = containersList.stream()
                     .map(c -> new ContainerDTO(c.getId(), c.getNome(), c.getImagem(), c.getStatus(), null, null, null, null, null))
                     .toList();
-
             return ResponseEntity.ok(response);
         }catch (Exception e){
             return ResponseEntity.ok(e.getMessage());
