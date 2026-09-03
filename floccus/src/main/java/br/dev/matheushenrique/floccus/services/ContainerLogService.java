@@ -4,7 +4,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 
 public interface ContainerLogService {
 
-    void registrarCanal(String containerId, SimpMessageHeaderAccessor headerAccessor);
-    void fecharCanal (String containerId, String sessionId);
+    void registrarCanal(String aplicacaoId, SimpMessageHeaderAccessor headerAccessor);
+    void fecharCanal (String aplicacaoId, String sessionId);
     void fecharCanaisSessao (String sessionId);
 }

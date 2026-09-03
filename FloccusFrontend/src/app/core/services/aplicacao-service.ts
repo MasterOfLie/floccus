@@ -3,25 +3,25 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { Client, Message } from '@stomp/stompjs';
 import { map } from 'rxjs/operators';
-import { Container } from '../../features/containers/models/ContainerModel';
+import { AplicacaoModel } from '../../features/containers/models/AplicacaoModel';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ContainerService {
+export class AplicacaoService {
 
   private http = inject(HttpClient);
   private stompClient?: Client;
-  private readonly apiUrl = '/api/container';
+  private readonly apiUrl = '/api/aplicacoes';
   private readonly wsUrl =
     `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws-floccus`;
 
   listar(
     page: number = 0,
     size: number = 10
-  ): Observable<PageResponse<Container>> {
+  ): Observable<PageResponse<AplicacaoModel>> {
 
-    return this.http.get<Container[]>(this.apiUrl).pipe(
+    return this.http.get<AplicacaoModel[]>(this.apiUrl).pipe(
 
       map(containers => {
 
@@ -91,15 +91,15 @@ export class ContainerService {
   restart(id: string): Observable<void> {
     return this.http.get<void>(this.apiUrl + `/reiniciar/${id}`);
   }
-  detalharContainer(id: string): Observable<Container> {
-    return this.http.get<Container>(this.apiUrl + `/${id}`);
+  detalharContainer(id: string): Observable<AplicacaoModel> {
+    return this.http.get<AplicacaoModel>(this.apiUrl + `/${id}`);
   }
 
   getLogs(id: string): Observable<string> {
     return this.http.get(`${this.apiUrl}/${id}/logs`, { responseType: 'text' });
   }
 
-  conectar(containerId: string): Observable<string> {
+  conectar(aplicacaoId: string): Observable<string> {
     const subject = new Subject<string>();
 
     this.stompClient = new Client({
@@ -107,17 +107,17 @@ export class ContainerService {
       reconnectDelay: 5000,
 
       onConnect: () => {
-        console.log(`WebSocket conectado para o container ${containerId}`);
+        console.log(`WebSocket conectado para o container ${aplicacaoId}`);
 
         this.stompClient?.subscribe(
-          `/topic/logs/${containerId}`,
+          `/topic/logs/${aplicacaoId}`,
           (message: Message) => {
             subject.next(message.body);
           }
         );
 
         this.stompClient?.publish({
-          destination: `/app/logs/start/${containerId}`
+          destination: `/app/logs/start/${aplicacaoId}`
         });
       },
 
@@ -140,14 +140,14 @@ export class ContainerService {
     return subject.asObservable();
   }
 
-  desconectar(containerId: string): void {
+  desconectar(aplicacaoId: string): void {
     if (!this.stompClient) {
       return;
     }
 
     if (this.stompClient.connected) {
       this.stompClient.publish({
-        destination: `/app/logs/stop/${containerId}`
+        destination: `/app/logs/stop/${aplicacaoId}`
       });
     }
 

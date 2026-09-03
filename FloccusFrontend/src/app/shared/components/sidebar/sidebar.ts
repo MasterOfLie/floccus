@@ -27,9 +27,9 @@ export class Sidebar {
       permission: 'NOT_IMPLEMENTED'
     },
     {
-      label: 'Containers',
+      label: 'Aplicações',
       icon: 'bi-hdd-stack',
-      route: '/containers',
+      route: '/aplicacoes',
       exact: true,
       permission: 'NOT_IMPLEMENTED'
     },

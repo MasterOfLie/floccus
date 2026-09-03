@@ -2,7 +2,7 @@ import { Component, ElementRef, OnDestroy, AfterViewInit, viewChild, input, inje
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { Subscription } from 'rxjs';
-import { ContainerService } from '../../../core/services/container-service';
+import { AplicacaoService } from '../../../core/services/aplicacao-service';
 
 @Component({
   selector: 'app-terminal-logs',
@@ -12,11 +12,11 @@ import { ContainerService } from '../../../core/services/container-service';
 })
 export class TerminalLogs implements AfterViewInit, OnDestroy {
 
-  containerId = input.required<string>();
+  aplicacaoId = input.required<string>();
   terminalContainer = viewChild.required<ElementRef<HTMLDivElement>>('terminalContainer');
 
   // Injeção de dependência moderna
-  private logService = inject(ContainerService);
+  private logService = inject(AplicacaoService);
 
   private term!: Terminal;
   private fitAddon!: FitAddon;
@@ -40,7 +40,7 @@ export class TerminalLogs implements AfterViewInit, OnDestroy {
     this.term.writeln('\x1b[33mConectando ao console...\x1b[0m');
 
     // Conecta usando o valor do Signal containerId()
-    this.logSubscription = this.logService.conectar(this.containerId()).subscribe({
+    this.logSubscription = this.logService.conectar(this.aplicacaoId()).subscribe({
       next: (linha: string) => {
         this.term.write(linha);
         this.term.scrollToBottom();
@@ -58,7 +58,7 @@ export class TerminalLogs implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     window.removeEventListener('resize', this.onResize);
     this.logSubscription?.unsubscribe();
-    this.logService.desconectar(this.containerId());
+    this.logService.desconectar(this.aplicacaoId());
     this.term?.dispose();
   }
 

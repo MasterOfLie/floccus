@@ -9,36 +9,37 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { ContainerService } from '../../core/services/container-service';
-import { Container } from '../containers/models/ContainerModel';
+import { AplicacaoService } from '../../core/services/aplicacao-service';
+import { AplicacaoModel } from './models/AplicacaoModel';
 import { DataTable } from '../../shared/components/data-table/data-table';
 import { DataTableColumn } from '../../shared/models/DataTableColumn';
 
 @Component({
-  selector: 'app-containers',
+  selector: 'app-aplicacao',
   standalone: true,
   imports: [
     CommonModule,
     DataTable
   ],
-  templateUrl: './containers.html',
-  styleUrl: './containers.css'
+  templateUrl: './aplicacao.html',
+  styleUrl: './aplicacao.css'
 })
-export class Containers implements OnInit, AfterViewInit {
-  private containerService = inject(ContainerService);
+export class Aplicacao implements OnInit, AfterViewInit {
+  private aplicacaoService = inject(AplicacaoService);
   private router = inject(Router);
 
   pagina = signal(0);
   tamanhoPagina = signal(10);
-  containers = signal<Container[]>([]);
+  aplicacoes = signal<AplicacaoModel[]>([]);
   carregando = signal(false);
   totalPaginas = signal(0);
   totalElementos = signal(0);
 
   @ViewChild('statusTemplate') statusTemplate!: TemplateRef<any>;
   @ViewChild('acoesTemplate') acoesTemplate!: TemplateRef<any>;
+  @ViewChild('memoriaTemplate') memoriaTemplate!: TemplateRef<any>;
 
-  colunas: DataTableColumn<Container>[] = [];
+  colunas: DataTableColumn<AplicacaoModel>[] = [];
 
   ngOnInit(): void {
     this.listarContainers();
@@ -47,21 +48,25 @@ export class Containers implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.colunas = [
       {
-        key: 'id',
-        label: 'ID'
-      },
-      {
         key: 'nome',
         label: 'Nome'
       },
       {
-        key: 'image',
+        key: 'imagem',
         label: 'Imagem'
       },
       {
-        key: 'status',
-        label: 'Status',
-        template: this.statusTemplate
+        key: 'memoriaLimite',
+        label: 'Memória',
+        template: this.memoriaTemplate
+      },
+      {
+        key: 'cpuLimite',
+        label: 'CPU'
+      },
+      {
+        key: 'tipo',
+        label: 'Tipo'
       },
       {
         key: 'id',
@@ -78,12 +83,12 @@ export class Containers implements OnInit, AfterViewInit {
 
   listarContainers(): void {
     this.carregando.set(true);
-    this.containerService
+    this.aplicacaoService
       .listar(this.pagina(), this.tamanhoPagina())
       .subscribe({
         next: (resposta) => {
           console.log('Containers recebidos:', resposta);
-          this.containers.set(resposta.content);
+          this.aplicacoes.set(resposta.content);
           this.totalPaginas.set(resposta.totalPages);
           this.totalElementos.set(resposta.totalElements);
           this.carregando.set(false);
@@ -122,7 +127,19 @@ export class Containers implements OnInit, AfterViewInit {
     return statusMin.includes('up') || statusMin.includes('running');
   }
 
-  abrirContainer(container: Container): void {
-    this.router.navigate(['/containers', container.id]);
+  abrirContainer(aplicacao: AplicacaoModel): void {
+    this.router.navigate(['/aplicacoes', aplicacao.id]);
+  }
+  formatarMemoria(memoria: number): string {
+    if (!memoria) {
+      return '0 MB';
+    }
+
+    if (memoria >= 1024) {
+      const gb = memoria / 1024;
+      return `${gb.toFixed(1)} GB`;
+    }
+
+    return `${memoria} MB`;
   }
 }

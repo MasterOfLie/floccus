@@ -9,16 +9,16 @@
     <div class="title-area">
 
       <span class="breadcrumb">
-        Containers / Detalhes
+        Aplicações / Detalhes
       </span>
 
       <h1>
-        {{ container()?.nome }}
+        {{ aplicacao()?.nome }}
       </h1>
 
     </div>
 
-    <button type="button" class="back-button" routerLink="/containers">
+    <button type="button" class="back-button" routerLink="/aplicacoes">
 
       <i class="bi bi-arrow-left"></i>
 
@@ -40,7 +40,7 @@
     <div class="spinner"></div>
 
     <span>
-      Carregando container...
+      Carregando aplicação...
     </span>
 
   </div>
@@ -63,7 +63,7 @@
     <div>
 
       <strong>
-        Não foi possível carregar o container
+        Não foi possível carregar a aplicação
       </strong>
 
       <p>
@@ -78,18 +78,16 @@
 
 
   <!-- ================================= -->
-  <!-- CONTAINER -->
+  <!-- APLICAÇÃO -->
   <!-- ================================= -->
 
-  @else if (container()) {
-
+  @else if (aplicacao()) {
 
   <!-- ================================= -->
   <!-- RESUMO -->
   <!-- ================================= -->
 
   <div class="overview-grid">
-
 
     <!-- STATUS -->
 
@@ -101,11 +99,10 @@
 
       <div class="status">
 
-        <span class="status-dot" [class.running]="container()?.status === 'running'">
-        </span>
+        <span class="status-dot"></span>
 
         <strong>
-          {{ container()?.status }}
+          {{ aplicacao()?.status || '-' }}
         </strong>
 
       </div>
@@ -122,7 +119,7 @@
       </span>
 
       <strong class="metric">
-        {{ container()?.cpu || '0%' }}
+        {{ aplicacao()?.cpu || '-' }}
       </strong>
 
     </div>
@@ -137,7 +134,7 @@
       </span>
 
       <strong class="metric">
-        {{ container()?.memoria || '0 MB' }}
+        {{ aplicacao()?.memoria || '-' }}
       </strong>
 
     </div>
@@ -148,27 +145,19 @@
     <div class="info-card">
 
       <span class="card-label">
-
-        {{
-        container()?.status === 'running'
-        ? 'Em execução há'
-        : 'Parado há'
-        }}
-
+        Tempo de status
       </span>
 
       <strong class="time-value">
-        {{ container()?.tempoStatus || '-' }}
+        {{ aplicacao()?.tempoStatus || '-' }}
       </strong>
 
     </div>
 
   </div>
 
-
-
   <!-- ================================= -->
-  <!-- INFORMAÇÕES RECOLHÍVEIS -->
+  <!-- INFORMAÇÕES -->
   <!-- ================================= -->
 
   <details class="info-details">
@@ -192,71 +181,116 @@
 
     <div class="details">
 
-
-      <!-- NOME -->
-
       <div class="detail-item">
-
-        <span>
-          Nome
-        </span>
-
+        <span>Nome</span>
         <strong>
-          {{ container()?.nome }}
+          {{ aplicacao()?.nome || '-' }}
         </strong>
-
       </div>
-
-
-      <!-- ID -->
 
       <div class="detail-item">
-
-        <span>
-          ID
-        </span>
-
+        <span>ID da aplicação</span>
         <strong class="mono">
-          {{ container()?.id }}
+          {{ aplicacao()?.id || '-' }}
         </strong>
-
       </div>
-
-
-      <!-- IMAGEM -->
 
       <div class="detail-item">
-
-        <span>
-          Imagem
-        </span>
-
+        <span>Container ID</span>
         <strong class="mono">
-          {{ container()?.image }}
+          {{ aplicacao()?.containerId || '-' }}
         </strong>
-
       </div>
-
-
-      <!-- DIRETÓRIO -->
 
       <div class="detail-item">
-
-        <span>
-          Diretório
-        </span>
-
+        <span>Imagem</span>
         <strong class="mono">
-          {{ container()?.diretorio || '-' }}
+          {{ aplicacao()?.imagem || '-' }}
         </strong>
-
       </div>
 
+      <div class="detail-item">
+        <span>Tipo</span>
+        <strong>
+          {{ aplicacao()?.tipo || '-' }}
+        </strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Agente</span>
+        <strong class="mono">
+          {{ aplicacao()?.agenteId || '-' }}
+        </strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Porta do container</span>
+        <strong>
+          {{ aplicacao()?.portaContainer || '-' }}
+        </strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Porta externa</span>
+        <strong>
+          {{ aplicacao()?.portaExterna || '-' }}
+        </strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Domínio</span>
+        <strong class="mono">
+          {{ aplicacao()?.dominio || '-' }}
+        </strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Limite de CPU</span>
+        <strong>
+          {{ aplicacao()?.cpuLimite || '-' }}
+        </strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Limite de memória</span>
+        <strong>
+          {{ aplicacao()?.memoriaLimite || '-' }}
+        </strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Uso de CPU</span>
+        <strong>
+          {{ aplicacao()?.cpu || '-' }}
+        </strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Uso de memória</span>
+        <strong>
+          {{ aplicacao()?.memoria || '-' }}
+        </strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Criado em</span>
+        <strong>
+          {{ aplicacao()?.criadoEm || '-' }}
+        </strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Atualizado em</span>
+        <strong>
+          {{ aplicacao()?.atualizadoEm || '-' }}
+        </strong>
+      </div>
 
     </div>
 
-  </details>
 
+
+  </details>
 
 
   <!-- ================================= -->
@@ -279,13 +313,11 @@
 
         <div class="terminal-title">
 
-
           <div class="terminal-icon">
 
             <i class="bi bi-terminal"></i>
 
           </div>
-
 
           <div>
 
@@ -299,9 +331,7 @@
               Saída em tempo real
             </span>
 
-            }
-
-            @else {
+            } @else {
 
             <span>
               Console fechado
@@ -329,16 +359,15 @@
       </div>
 
 
-
       <!-- ================================= -->
       <!-- CONSOLE ABERTO -->
       <!-- ================================= -->
 
-      @if (showConsole() && container()?.id) {
+      @if (showConsole() && aplicacao()?.containerId) {
 
       <div class="terminal-wrapper">
 
-        <app-terminal-logs [containerId]="container()!.id">
+        <app-terminal-logs [aplicacaoId]="aplicacao()!.id!">
         </app-terminal-logs>
 
       </div>
@@ -354,32 +383,28 @@
 
       <div class="terminal-empty">
 
-
         <div class="terminal-empty-icon">
 
           <i class="bi bi-terminal"></i>
 
         </div>
 
-
         <strong>
           Console fechado
         </strong>
-
 
         <span>
           Abra o console para visualizar os logs.
         </span>
 
-
-        <button type="button" class="open-console-button" (click)="openConsole()">
+        <button type="button" class="open-console-button" (click)="openConsole()"
+          [disabled]="!aplicacao()?.containerId">
 
           <i class="bi bi-terminal"></i>
 
           Abrir console
 
         </button>
-
 
       </div>
 
@@ -388,13 +413,11 @@
     </div>
 
 
-
     <!-- ================================= -->
     <!-- AÇÕES -->
     <!-- ================================= -->
 
     <aside class="actions-panel">
-
 
       <div class="actions-header">
 
@@ -410,15 +433,10 @@
 
         <!-- INICIAR -->
 
-        <button type="button" class="action-button start" (click)="start()" [disabled]="
-              !container() ||
-              container()?.status === 'running'
-            ">
+        <button type="button" class="action-button start" (click)="start()">
 
           <span class="action-icon">
-
             <i class="bi bi-play-fill"></i>
-
           </span>
 
           <span>
@@ -430,15 +448,10 @@
 
         <!-- REINICIAR -->
 
-        <button type="button" class="action-button restart" (click)="restart()" [disabled]="
-              !container() ||
-              container()?.status !== 'running'
-            ">
+        <button type="button" class="action-button restart" (click)="restart()">
 
           <span class="action-icon">
-
             <i class="bi bi-arrow-clockwise"></i>
-
           </span>
 
           <span>
@@ -450,15 +463,10 @@
 
         <!-- PARAR -->
 
-        <button type="button" class="action-button stop" (click)="stop()" [disabled]="
-              !container() ||
-              container()?.status !== 'running'
-            ">
+        <button type="button" class="action-button stop" (click)="stop()">
 
           <span class="action-icon">
-
             <i class="bi bi-stop-fill"></i>
-
           </span>
 
           <span>
@@ -470,7 +478,8 @@
 
         <!-- CONSOLE -->
 
-        <button type="button" class="action-button console" (click)="openConsole()" [disabled]="!container()">
+        <button type="button" class="action-button console" (click)="openConsole()"
+          [disabled]="!aplicacao()?.containerId">
 
           <span class="action-icon">
 
@@ -480,13 +489,7 @@
           </span>
 
           <span>
-
-            {{
-            showConsole()
-            ? 'Fechar'
-            : 'Console'
-            }}
-
+            {{ showConsole() ? 'Fechar' : 'Console' }}
           </span>
 
         </button>
@@ -500,4 +503,5 @@
   </section>
 
   }
+
 </div>

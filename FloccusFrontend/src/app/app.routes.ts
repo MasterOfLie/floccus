@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { Dashboard } from './features/dashboard/dashboard';
 import { Users } from './features/users/users';
-import { Containers } from './features/containers/containers';
-import { ContainerDetail } from './features/containers/pages/container-detail/container-detail';
+import { Aplicacao } from './features/containers/aplicacao';
+import { AplicacaoDetail } from './features/containers/pages/container-detail/aplicacao-detail';
 import { Agentes } from './features/agentes/agentes';
 import { AgenteCreate } from './features/agentes/pages/agente-create/agente-create';
 import { AgenteDetail } from './features/agentes/pages/agente-detail/agente-detail';
@@ -21,12 +21,12 @@ export const routes: Routes = [
         component: Users
       },
       {
-        path: 'containers',
-        component: Containers
+        path: 'aplicacoes',
+        component: Aplicacao
       },
       {
-        path: 'containers/:id',
-        component: ContainerDetail
+        path: 'aplicacoes/:id',
+        component: AplicacaoDetail
       },
       {
         path: 'agentes',

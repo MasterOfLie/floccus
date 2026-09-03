@@ -13,14 +13,14 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 public class ContainerLogController {
     private final ContainerLogService containerLogService;
 
-    @MessageMapping("/logs/start/{containerId}")
-    public void iniciarStreamDeLogs(@DestinationVariable String containerId, SimpMessageHeaderAccessor headerAccessor) {
-        containerLogService.registrarCanal(containerId, headerAccessor);
+    @MessageMapping("/logs/start/{aplicacaoId}")
+    public void iniciarStreamDeLogs(@DestinationVariable String aplicacaoId, SimpMessageHeaderAccessor headerAccessor) {
+        containerLogService.registrarCanal(aplicacaoId, headerAccessor);
     }
 
-    @MessageMapping("/logs/stop/{containerId}")
-    public void pararStreamDeLogs(@DestinationVariable String containerId, SimpMessageHeaderAccessor headerAccessor) {
-        containerLogService.fecharCanal(containerId, headerAccessor.getSessionId());
+    @MessageMapping("/logs/stop/{aplicacaoId}")
+    public void pararStreamDeLogs(@DestinationVariable String aplicacaoId, SimpMessageHeaderAccessor headerAccessor) {
+        containerLogService.fecharCanal(aplicacaoId, headerAccessor.getSessionId());
     }
 
 }

@@ -20,6 +20,9 @@
     </button>
 
   </ng-template>
+  <ng-template #memoriaTemplate let-aplicacao>
+    {{ formatarMemoria(aplicacao.memoriaLimite) }}
+  </ng-template>
 
   <div class="page-header">
 
@@ -31,7 +34,7 @@
 
   </div>
 
-  <app-data-table [columns]="colunas" [data]="containers()" [loading]="carregando()" [paginaAtual]="pagina()"
+  <app-data-table [columns]="colunas" [data]="aplicacoes()" [loading]="carregando()" [paginaAtual]="pagina()"
     [totalPaginas]="totalPaginas()" [totalElementos]="totalElementos()" (paginaChange)="alterarPagina($event)" />
 
 </div>

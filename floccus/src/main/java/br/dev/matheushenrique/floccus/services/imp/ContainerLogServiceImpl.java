@@ -2,6 +2,10 @@ package br.dev.matheushenrique.floccus.services.imp;
 
 import br.dev.matheushenrique.floccus.dto.AgenteConexaoDto;
 import br.dev.matheushenrique.floccus.dto.ContainerLogConnectionDTO;
+import br.dev.matheushenrique.floccus.models.Agente;
+import br.dev.matheushenrique.floccus.models.Aplicacao;
+import br.dev.matheushenrique.floccus.repository.AgenteRepository;
+import br.dev.matheushenrique.floccus.repository.AplicacaoRepository;
 import br.dev.matheushenrique.floccus.services.ContainerLogService;
 import br.dev.matheushenrique.floccus.services.GrpcClientService;
 import br.dev.matheushenrique.grpc.LogContainer;
@@ -24,29 +28,42 @@ public class ContainerLogServiceImpl implements ContainerLogService {
 
     private final GrpcClientService grpcClientService;
     private final SimpMessagingTemplate messagingTemplate;
+    private final AplicacaoRepository aplicacaoRepository;
+    private final AgenteRepository agenteRepository;
     private final Map<String, ContainerLogConnectionDTO> canaisAtivos = new ConcurrentHashMap<>();
 
     @Override
-    public void registrarCanal(String containerId, SimpMessageHeaderAccessor headerAccessor) {
-        AgenteConexaoDto agente = new AgenteConexaoDto("localhost", 50051, "floccus-super-secret-token-token-xyz");
-        StreamObserver<LogContainer> containerStreamObserver = new ContainerLogObserver(containerId, messagingTemplate);
-        ManagedChannel channel = grpcClientService.streamarLogsContainer(
-                agente,
-                containerId,
-                100,
-                containerStreamObserver
-        );
-        ContainerLogConnectionDTO conexaoAnterior = canaisAtivos.remove(headerAccessor.getSessionId() + "_" + containerId);
-        canaisAtivos.put(headerAccessor.getSessionId() + "_" + containerId, new ContainerLogConnectionDTO(containerId, headerAccessor.getSessionId(), channel));
+    public void registrarCanal(String aplicacaoId, SimpMessageHeaderAccessor headerAccessor) {
+        Aplicacao aplicacao = aplicacaoRepository.findById(aplicacaoId).orElseThrow(() -> new RuntimeException("Aplicação não encontrada"));
+        Agente agente = agenteRepository.findById(aplicacao.getAgenteId()).orElseThrow(() -> new RuntimeException("Agente não encontrado"));
+        AgenteConexaoDto agenteConexaoDto = new AgenteConexaoDto(agente.getIpAgente(), agente.getPortaAgente(), agente.getChaveAgente());
+        String chave = headerAccessor.getSessionId() + "_" + aplicacaoId;
+
+        ContainerLogConnectionDTO conexaoAnterior = canaisAtivos.remove(chave);
+        if (conexaoAnterior != null && conexaoAnterior.channel() != null) {
+            conexaoAnterior.channel().shutdownNow();
+        }
+        StreamObserver<LogContainer> containerStreamObserver = new ContainerLogObserver(aplicacaoId, messagingTemplate);
+        ManagedChannel channel = grpcClientService.streamarLogsContainer(agenteConexaoDto, aplicacao.getContainerId(), 100, containerStreamObserver);
+        canaisAtivos.put(chave, new ContainerLogConnectionDTO(aplicacaoId, headerAccessor.getSessionId(), channel));
     }
 
     @Override
-    public void fecharCanal(String containerId, String sessionId) {
-        ContainerLogConnectionDTO containerLogConnection = canaisAtivos.remove(sessionId + "_" + containerId);
+    public void fecharCanal(String aplicacaoId, String sessionId) {
+        String chave = sessionId + "_" + aplicacaoId;
+        ContainerLogConnectionDTO containerLogConnection = canaisAtivos.remove(chave);
+        if (containerLogConnection == null) {
+            log.info("Nenhum canal gRPC ativo encontrado para a aplicação {} da sessão {}", aplicacaoId, sessionId);
+            return;
+        }
         ManagedChannel channel = containerLogConnection.channel();
         if (channel != null && !channel.isShutdown()) {
+            log.info("Fechando canal gRPC da aplicação {} da sessão {}", aplicacaoId, sessionId);
             try {
-                channel.shutdownNow().awaitTermination(2, TimeUnit.SECONDS);
+                channel.shutdownNow();
+                if (!channel.awaitTermination(2, TimeUnit.SECONDS)) {
+                    log.warn("Canal gRPC da aplicação {} não encerrou.", aplicacaoId);
+                }
             } catch (InterruptedException e) {
                 channel.shutdownNow();
                 Thread.currentThread().interrupt();
@@ -63,20 +80,13 @@ public class ContainerLogServiceImpl implements ContainerLogService {
             }
             ManagedChannel channel = conexao.channel();
             if (channel != null && !channel.isShutdown()) {
-                log.info(
-                        "Fechando canal gRPC do container {} da sessão {}",
-                        conexao.containerId(),
-                        sessionId
-                );
+                log.info("Fechando canal gRPC do container {} da sessão {}", conexao.containerId(), sessionId);
 
                 channel.shutdown();
 
                 try {
                     if (!channel.awaitTermination(2, TimeUnit.SECONDS)) {
-                        log.warn(
-                                "Canal gRPC do container {} não encerrou. Forçando encerramento.",
-                                conexao.containerId()
-                        );
+                        log.warn("Canal gRPC do container {} não encerrou. Forçando encerramento.", conexao.containerId());
                         channel.shutdownNow();
                     }
                 } catch (InterruptedException e) {
