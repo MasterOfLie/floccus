@@ -22,7 +22,7 @@ export class Sidebar {
     {
       label: 'Dashboard',
       icon: 'bi-house',
-      route: '/dashboard',
+      route: '/',
       exact: true,
       permission: 'NOT_IMPLEMENTED'
     },

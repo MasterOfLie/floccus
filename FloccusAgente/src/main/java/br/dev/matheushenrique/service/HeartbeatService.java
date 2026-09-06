@@ -57,7 +57,7 @@ public class HeartbeatService {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .timeout(Duration.ofSeconds(5))
-                    .header("Authorization", "Bearer " + config.getSecretKey())
+//                    .header("Authorization", "Bearer " + config.getSecretKey())
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();

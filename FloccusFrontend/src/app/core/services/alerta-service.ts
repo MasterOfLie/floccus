@@ -24,6 +24,31 @@ export class AlertaService {
         });
     }
 
+    erroToast(mensagem: string): void {
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            text: mensagem || 'Erro desconhecido, entre em contato com o administrador',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+    }
+
+    sucessoToast(mensagem: string): void {
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            text: mensagem || 'Sucesso',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+    }
+
+
     confirmar(
         mensagem: string,
         titulo = 'Confirmação'

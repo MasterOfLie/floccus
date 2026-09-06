@@ -2,26 +2,19 @@
 
     <div class="header-left">
 
-        <!-- Desktop toggle (collapse/expand) -->
         <button class="sidebar-toggle desktop-toggle" type="button" (click)="toggleSidebar()"
             [attr.aria-label]="collapsed() ? 'Expandir menu' : 'Recolher menu'">
 
-            @if (collapsed()) {
             <i class="bi bi-list"></i>
-            } @else {
-            <i class="bi bi-list"></i>
-            }
 
         </button>
 
-        <!-- Mobile toggle (open drawer) -->
         <button class="sidebar-toggle mobile-toggle" type="button" (click)="toggleMobileSidebar()"
             aria-label="Abrir menu">
 
             <i class="bi bi-list"></i>
 
         </button>
-
 
         <div class="header-title">
 
@@ -40,28 +33,82 @@
 
     <div class="header-actions">
 
-        <button class="header-button" type="button">
+        <!-- <button class="header-button" type="button" aria-label="Notificações">
             <i class="bi bi-bell"></i>
-        </button>
+        </button> -->
 
 
-        <div class="profile">
+        <div class="account-menu-container">
 
-            <div class="profile-avatar">
-                M
+            <button class="profile" type="button" (click)="toggleAccountMenu()"
+                [attr.aria-expanded]="accountMenuOpen()">
+
+                <div class="profile-avatar">
+                    {{ usuario?.nome?.[0] }}
+                </div>
+
+                <div class="profile-info">
+
+                    <strong>
+                        {{ usuario?.nome }}
+                    </strong>
+
+                    <span>
+                        @if (isAdmin()) {
+                        Administrador
+                        } @else {
+                        Usuário
+                        }
+                    </span>
+
+                </div>
+
+                <i class="bi bi-chevron-down profile-arrow"></i>
+
+            </button>
+
+
+            @if (accountMenuOpen()) {
+
+            <div class="account-menu">
+
+                <button class="account-menu-item" type="button" (click)="abrirPerfil()">
+
+                    <i class="bi bi-person"></i>
+                    <span>Perfil</span>
+
+                </button>
+
+
+                <button class="account-menu-item" type="button" (click)="abrirConfiguracoes()">
+
+                    <i class="bi bi-gear"></i>
+                    <span>Configurações</span>
+
+                </button>
+
+
+                <button class="account-menu-item" type="button" (click)="abrirContasRecursos()">
+
+                    <i class="bi bi-person-vcard"></i>
+                    <span>Contas de recursos</span>
+
+                </button>
+
+
+                <div class="account-menu-divider"></div>
+
+
+                <button class="account-menu-item logout-item" type="button" (click)="logout()">
+
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Sair</span>
+
+                </button>
+
             </div>
 
-            <div class="profile-info">
-
-                <strong>
-                    Matheus
-                </strong>
-
-                <span>
-                    Administrador
-                </span>
-
-            </div>
+            }
 
         </div>
 

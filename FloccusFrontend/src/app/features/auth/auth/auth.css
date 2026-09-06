@@ -1,0 +1,414 @@
+:host {
+    display: block;
+
+    width: 100%;
+    min-height: 100vh;
+}
+
+
+/* ===========================
+   PÁGINA
+   =========================== */
+
+.auth-page {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px 20px;
+
+    background: #ffffff;
+    color: #111827;
+
+    box-sizing: border-box;
+}
+
+
+/* ===========================
+   CONTAINER
+   =========================== */
+
+.auth-container {
+    width: 100%;
+    max-width: 430px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* ===========================
+   LOGO
+   =========================== */
+
+.auth-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 28px;
+}
+
+.auth-logo img {
+    width: 190px;
+    height: auto;
+
+    object-fit: contain;
+}
+
+
+/* ===========================
+   CARD
+   =========================== */
+
+.auth-card {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 32px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+
+/* ===========================
+   HEADER
+   =========================== */
+
+.auth-header {
+    margin-bottom: 28px;
+
+    text-align: center;
+}
+
+.auth-header h1 {
+    margin: 0 0 8px;
+
+    font-size: 24px;
+    font-weight: 600;
+
+    color: #111827;
+}
+
+.auth-header p {
+    margin: 0;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    color: #6b7280;
+}
+
+
+/* ===========================
+   FORMULÁRIO
+   =========================== */
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+/* ===========================
+   CAMPOS
+   =========================== */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.form-group label,
+.label-row label {
+    font-size: 13px;
+    font-weight: 500;
+
+    color: #374151;
+}
+
+
+/* ===========================
+   LABEL + LINK
+   =========================== */
+
+.label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+.forgot-password {
+    font-size: 12px;
+
+    color: #4f46e5;
+
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.forgot-password:hover {
+    color: #4338ca;
+}
+
+
+/* ===========================
+   INPUT
+   =========================== */
+
+.form-group input {
+    width: 100%;
+    height: 46px;
+
+    box-sizing: border-box;
+
+    padding: 0 14px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    background: #ffffff;
+    color: #111827;
+
+    font-size: 14px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: #9ca3af;
+}
+
+.form-group input:hover {
+    border-color: #9ca3af;
+}
+
+.form-group input:focus {
+    border-color: #4f46e5;
+
+    box-shadow:
+        0 0 0 3px rgba(79, 70, 229, 0.10);
+}
+
+
+/* ===========================
+   SENHA
+   =========================== */
+
+.password-input {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+}
+
+.password-input input {
+    padding-right: 75px;
+}
+
+.password-toggle {
+    position: absolute;
+
+    right: 10px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #4f46e5;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    padding: 5px;
+
+    transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+    color: #4338ca;
+}
+
+
+/* ===========================
+   CHECKBOX
+   =========================== */
+
+.remember {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    color: #6b7280;
+}
+
+.remember input {
+    width: 16px;
+    height: 16px;
+
+    margin: 0;
+
+    accent-color: #4f46e5;
+
+    cursor: pointer;
+}
+
+
+/* ===========================
+   BOTÃO
+   =========================== */
+
+.submit-button {
+    width: 100%;
+    height: 46px;
+
+    margin-top: 2px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #4f46e5;
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease,
+        box-shadow 0.2s ease;
+}
+
+.submit-button:hover {
+    background: #4338ca;
+
+    box-shadow:
+        0 4px 12px rgba(79, 70, 229, 0.18);
+}
+
+.submit-button:active {
+    transform: translateY(1px);
+}
+
+
+/* ===========================
+   RODAPÉ
+   =========================== */
+
+.auth-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    margin-top: 26px;
+
+    font-size: 13px;
+
+    color: #6b7280;
+}
+
+.auth-footer button {
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #4f46e5;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+.auth-footer button:hover {
+    color: #4338ca;
+}
+
+
+/* ===========================
+   COPYRIGHT
+   =========================== */
+
+.auth-copyright {
+    margin-top: 24px;
+
+    font-size: 11px;
+
+    color: #9ca3af;
+
+    text-align: center;
+}
+
+
+@media (max-width: 500px) {
+
+    .auth-page {
+        padding: 24px 16px;
+    }
+
+    .auth-logo {
+        margin-bottom: 22px;
+    }
+
+    .auth-logo img {
+        width: 165px;
+    }
+
+    .auth-card {
+        padding: 24px 20px;
+
+        border-radius: 10px;
+    }
+
+    .auth-header h1 {
+        font-size: 22px;
+    }
+
+    .auth-footer {
+        flex-direction: column;
+
+        gap: 6px;
+    }
+
+}
