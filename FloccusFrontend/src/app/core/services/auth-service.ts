@@ -10,7 +10,7 @@ export class AuthService {
     private http = inject(HttpClient);
     private router = inject(Router);
 
-    private readonly apiUrl = '/auth';
+    private readonly apiUrl = '/api/auth';
     currentUser = signal<AuthResponse | null>(this.obterUsuarioDoCache());
 
     login(dados: LoginRequest) {

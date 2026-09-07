@@ -30,10 +30,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers(
-                                "/auth/login",
-                                "/auth/register",
+                                "/api/auth/login",
+                                "/api/auth/register",
                                 "/api/agentes/*/heartbeat",
                                 "/ws-floccus",
+                                "/api/github/**",
                                 "/ws-floccus/**"
                         ).permitAll()
                         .anyRequest().authenticated()
