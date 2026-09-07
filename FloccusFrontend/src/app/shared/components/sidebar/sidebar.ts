@@ -44,6 +44,11 @@ export class Sidebar {
       icon: 'bi-motherboard',
       route: '/agentes',
       permission: 'NOT_IMPLEMENTED'
+    }, {
+      label: 'Git',
+      icon: 'bi-git',
+      route: '/git/github',
+      permission: 'NOT_IMPLEMENTED'
     }
   ];
 

@@ -1,0 +1,39 @@
+<div class="github-setup">
+
+    <div class="github-icon">
+        <i class="bi bi-github"></i>
+    </div>
+
+    <div class="github-content">
+        <h2>Integração com GitHub</h2>
+
+        <p>
+            Conecte sua conta do GitHub ao Floccus para permitir
+            que suas aplicações utilizem seus repositórios.
+        </p>
+
+        <button type="button" class="github-button" (click)="iniciarIntegracao()">
+
+            <i class="bi bi-github"></i>
+
+            <span>Conectar com GitHub</span>
+
+        </button>
+    </div>
+
+</div>
+
+<div class="page-header">
+    <button type="button" class="btn-acao" (click)="listarGithubApps()" [disabled]="carregando()">
+        ↻ Recarregar
+    </button>
+</div>
+
+<ng-template #acoesTemplate let-app>
+    <button type="button" class="btn-remover" (click)="removerGithub(app); $event.stopPropagation()">
+        Remover
+    </button>
+</ng-template>
+
+<app-data-table [columns]="colunas" [data]="githubApps()" [loading]="carregando()" [paginaAtual]="pagina()"
+    [totalPaginas]="totalPaginas()" [totalElementos]="totalElementos()" (paginaChange)="alterarPagina($event)" />

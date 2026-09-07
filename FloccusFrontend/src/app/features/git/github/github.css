@@ -1,0 +1,163 @@
+.github-setup {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    padding: 24px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    background: #fff;
+}
+
+.github-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 52px;
+    height: 52px;
+
+    border-radius: 10px;
+
+    background: #f3f4f6;
+
+    font-size: 28px;
+}
+
+.github-content {
+    flex: 1;
+}
+
+.github-content h2 {
+    margin: 0 0 6px;
+
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.github-content p {
+    margin: 0 0 16px;
+
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.github-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 10px 16px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #24292f;
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: background 0.2s;
+}
+
+.github-button:hover {
+    background: #32383f;
+}
+
+.btn-acao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    height: 42px;
+
+    padding: 0 16px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-acao span {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.btn-acao:hover:not(:disabled) {
+    background: #f5f3ff;
+
+    border-color: #c7d2fe;
+
+    color: #4f46e5;
+}
+
+.btn-acao:active:not(:disabled) {
+    background: #ede9fe;
+}
+
+.btn-acao:focus-visible {
+    outline: none;
+
+    border-color: #4f46e5;
+
+    box-shadow:
+        0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.btn-acao:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+}
+
+.btn-remover {
+    height: 32px;
+
+    padding: 0 12px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #991b1b;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.btn-remover:hover {
+    background: #f9fafb;
+
+    border-color: #d1d5db;
+
+    color: #991b1b;
+}

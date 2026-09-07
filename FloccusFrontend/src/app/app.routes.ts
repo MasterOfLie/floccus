@@ -54,6 +54,13 @@ export const routes: Routes = [
         path: 'agentes/:id',
         component: AgenteDetail,
         canActivate: [authGuard]
+      },
+      {
+        path: 'git/github',
+        loadComponent: () =>
+          import('./features/git/github/github')
+            .then(m => m.Github),
+        canActivate: [authGuard]
       }
 
     ],
