@@ -1,16 +1,39 @@
-<div class="page">
-    <ng-template #acoesTemplate let-agente>
+<div class="card-container">
+    <!-- Cabeçalho do Card -->
+    <header class="card-header">
+        <div class="header-titles">
+            <h2>Agentes</h2>
+            <p>Gerencie os agentes conectados ao Floccus.</p>
+        </div>
+        <div class="header-stats">
+            <span class="text-muted">Total de Agentes: 12 (1 Ativo)</span>
+        </div>
+    </header>
 
-        <button type="button" class="btn-abrir" (click)="abrirAgente(agente); $event.stopPropagation()">
-            Abrir
-        </button>
-
-    </ng-template>
-    <div class="page-header">
-        <button class="btn-acao" (click)="carregarAgentes()" [disabled]="carregando()">
-            ↻ Recarregar
-        </button>
+    <!-- Barra de Ferramentas -->
+    <div class="card-toolbar">
+        <div class="toolbar-actions">
+            <button class="btn btn-primary" routerLink="/agentes/criar">
+                Adicionar Novo Agente
+            </button>
+        </div>
+        <div class="toolbar-filters">
+            <button type="button" class="btn btn-secondary" (click)="carregarAgentes()" [disabled]="carregando()">
+                ↻ Recarregar
+            </button>
+        </div>
     </div>
-    <app-data-table [columns]="colunas" [data]="agentes()" [loading]="carregando()" [paginaAtual]="pagina()"
-        [totalPaginas]="totalPaginas()" [totalElementos]="totalElementos()" (paginaChange)="alterarPagina($event)" />
+    <div class="table-responsive">
+        <ng-template #acoesTemplate let-agente>
+
+            <button type="button" class="btn-action" (click)="abrirAgente(agente); $event.stopPropagation()"
+                data-tooltip="Visualizar">
+                <i class="bi bi-eye"></i>
+            </button>
+
+        </ng-template>
+        <app-data-table [columns]="colunas" [data]="agentes()" [loading]="carregando()" [paginaAtual]="pagina()"
+            [totalPaginas]="totalPaginas()" [totalElementos]="totalElementos()"
+            (paginaChange)="alterarPagina($event)" />
+    </div>
 </div>

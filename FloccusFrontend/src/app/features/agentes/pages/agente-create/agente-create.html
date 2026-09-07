@@ -1,176 +1,100 @@
-<div class="page">
-
-    <!-- CABEÇALHO -->
+<div class="card-container page">
+    <!-- CABEÇALHO DA PÁGINA -->
     <div class="page-header">
-
         <div>
             <h1>Criar agente</h1>
-
-            <p>
-                Configure um novo agente para conectar ao Floccus.
-            </p>
+            <p>Configure um novo agente para conectar ao Floccus.</p>
         </div>
-
     </div>
 
-
-    <!-- FORMULÁRIO -->
+    <!-- CARD DO FORMULÁRIO -->
     <div class="form-card">
+        <div class="card-header">
+            <div>
+                <h2>Informações do agente</h2>
+                <p>Informe os dados necessários para que o Floccus consiga se comunicar com o agente.</p>
+            </div>
+        </div>
 
         <form (ngSubmit)="criarAgente()" #form="ngForm">
 
-            <!-- INFORMAÇÕES DO AGENTE -->
+            <!-- SEÇÃO: REDE DO AGENTE -->
             <div class="form-section">
+                <h3 class="section-title"><i class="bi bi-hdd-network"></i> Rede do Agente</h3>
 
-                <div class="section-header">
+                <div class="form-row">
+                    <div class="form-group flex-2">
+                        <label for="ipAgente">IP / Host do agente</label>
+                        <input id="ipAgente" type="text" name="ipAgente" [(ngModel)]="agente.ipAgente"
+                            placeholder="Ex: localhost ou 192.168.1.100" required />
+                        <span class="input-hint">Endereço onde o agente está executando.</span>
+                    </div>
 
-                    <h2>Informações do agente</h2>
-
-                    <p>
-                        Informe os dados necessários para que o Floccus
-                        consiga se comunicar com o agente.
-                    </p>
-
+                    <div class="form-group flex-1">
+                        <label for="portaAgente">Porta</label>
+                        <input id="portaAgente" type="number" name="portaAgente" [(ngModel)]="agente.portaAgente"
+                            placeholder="Ex: 50051" min="1" max="65535" required />
+                        <span class="input-hint">Porta utilizada pelo serviço gRPC.</span>
+                    </div>
                 </div>
+            </div>
 
+            <!-- SEÇÃO: CONEXÃO COM O BACKEND -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="bi bi-globe"></i> Conexão com o Backend</h3>
 
-                <!-- IP DO AGENTE -->
-                <div class="form-group">
+                <div class="form-row">
+                    <div class="form-group flex-2">
+                        <label for="ipBackend">IP / Host do backend</label>
+                        <input id="ipBackend" type="text" name="ipBackend" [(ngModel)]="agente.ipBackend"
+                            placeholder="Ex: backend.floccus.com" required />
+                        <span class="input-hint">Endereço que o agente utilizará para se conectar ao backend.</span>
+                    </div>
 
-                    <label for="ipAgente">
-                        IP / Host do agente
-                    </label>
-
-                    <input id="ipAgente" type="text" name="ipAgente" [(ngModel)]="agente.ipAgente"
-                        placeholder="Ex: localhost ou 192.168.1.100" required />
-
-                    <span class="input-hint">
-                        Endereço onde o agente está executando.
-                    </span>
-
+                    <div class="form-group flex-1">
+                        <label for="portaBackend">Porta do backend</label>
+                        <input id="portaBackend" type="text" name="portaBackend" [(ngModel)]="agente.portaBackend"
+                            placeholder="Ex: 8080" required />
+                        <span class="input-hint">Porta que o agente utilizará para se conectar.</span>
+                    </div>
                 </div>
+            </div>
 
+            <!-- SEÇÃO: CONTÊINER & ACESSO -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="bi bi-box-seam"></i> Ambiente Docker</h3>
 
-                <!-- PORTA DO AGENTE -->
                 <div class="form-group">
-
-                    <label for="portaAgente">
-                        Porta do agente
-                    </label>
-
-                    <input id="portaAgente" type="number" name="portaAgente" [(ngModel)]="agente.portaAgente"
-                        placeholder="Ex: 50051" min="1" max="65535" required />
-
-                    <span class="input-hint">
-                        Porta utilizada pelo serviço gRPC do agente.
-                    </span>
-
-                </div>
-
-
-                <!-- IP BACKEND -->
-                <div class="form-group">
-
-                    <label for="ipBackend">
-                        IP / Host do backend
-                    </label>
-
-                    <input id="ipBackend" type="text" name="ipBackend" [(ngModel)]="agente.ipBackend"
-                        placeholder="Ex: localhost ou backend.floccus.com" required />
-
-                    <span class="input-hint">
-                        Endereço que o agente utilizará para se conectar ao backend.
-                    </span>
-
-                </div>
-
-
-                <!-- PORTA BACKEND (ADICIONADO) -->
-                <div class="form-group">
-
-                    <label for="portaBackend">
-                        Porta do backend
-                    </label>
-
-                    <input id="portaBackend" type="text" name="portaBackend" [(ngModel)]="agente.portaBackend"
-                        placeholder="Ex: 8080 ou 50050" required />
-
-                    <span class="input-hint">
-                        Porta que o agente utilizará para se conectar ao backend.
-                    </span>
-
-                </div>
-
-
-                <!-- DOCKER HOST (ADICIONADO) -->
-                <div class="form-group">
-
-                    <label for="dockerHost">
-                        Docker Host
-                    </label>
-
+                    <label for="dockerHost">Docker Host</label>
                     <input id="dockerHost" type="text" name="dockerHost" [(ngModel)]="agente.dockerHost"
-                        placeholder="Ex: unix:///var/run/docker.sock ou tcp://127.0.0.1:2375" required />
-
-                    <span class="input-hint">
-                        Caminho do socket Unix ou URL TCP da API do Docker.
-                    </span>
-
+                        placeholder="Ex: unix:///var/run/docker.sock" required />
+                    <span class="input-hint">Caminho do socket Unix ou URL TCP da API do Docker.</span>
                 </div>
 
+                <!-- ALERTA DE INFORMAÇÃO -->
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle-fill"></i>
+                    <div class="alert-content">
+                        <strong>Chave de acesso</strong>
+                        <p>A chave de acesso do agente será gerada automaticamente pelo Floccus após o cadastro.</p>
+                    </div>
+                </div>
             </div>
-
-
-            <!-- INFORMAÇÕES DA CONFIGURAÇÃO -->
-            <div class="info-box">
-
-                <div class="info-icon">
-                    i
-                </div>
-
-                <div>
-
-                    <strong>
-                        Chave de acesso
-                    </strong>
-
-                    <p>
-                        A chave de acesso do agente será gerada automaticamente
-                        pelo Floccus após o cadastro.
-                    </p>
-
-                </div>
-
-            </div>
-
 
             <!-- AÇÕES -->
             <div class="form-actions">
-
                 <button type="button" class="btn-secondary" routerLink="/agentes">
                     Cancelar
                 </button>
-
                 <button type="submit" class="btn-primary" [disabled]="form.invalid || carregando()">
-
                     @if (carregando()) {
-
-                    <span class="spinner"></span>
-
-                    Criando...
-
+                    <span class="spinner"></span> Criando...
                     } @else {
-
                     Criar agente
-
                     }
-
                 </button>
-
             </div>
 
         </form>
-
     </div>
-
 </div>

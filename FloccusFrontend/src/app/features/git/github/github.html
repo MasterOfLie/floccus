@@ -1,39 +1,41 @@
-<div class="github-setup">
+<div class="card-container">
+    <!-- Cabeçalho do Card -->
+    <header class="card-header">
+        <div class="header-titles">
+            <h2>GitHub</h2>
+            <p>Gerencie as integrações com o GitHub.</p>
+        </div>
+        <div class="header-stats">
+            <span class="text-muted">Total de Apps: {{totalElementos()}}</span>
+        </div>
+    </header>
 
-    <div class="github-icon">
-        <i class="bi bi-github"></i>
+    <!-- Barra de Ferramentas -->
+    <div class="card-toolbar">
+        <div class="toolbar-actions">
+            <button type="button" class="github-button" (click)="iniciarIntegracao()">
+
+                <i class="bi bi-github"></i>
+
+                <span>Conectar com GitHub</span>
+
+            </button>
+        </div>
+        <div class="toolbar-filters">
+            <button type="button" class="btn btn-secondary" (click)="listarGithubApps()" [disabled]="carregando()">
+                ↻ Recarregar
+            </button>
+        </div>
     </div>
+    <div class="table-responsive">
+        <ng-template #acoesTemplate let-app>
+            <button type="button" class="btn-action btn-danger" (click)="removerGithub(app); $event.stopPropagation()">
+                <i class="bi bi-trash3"></i>
+            </button>
+        </ng-template>
 
-    <div class="github-content">
-        <h2>Integração com GitHub</h2>
-
-        <p>
-            Conecte sua conta do GitHub ao Floccus para permitir
-            que suas aplicações utilizem seus repositórios.
-        </p>
-
-        <button type="button" class="github-button" (click)="iniciarIntegracao()">
-
-            <i class="bi bi-github"></i>
-
-            <span>Conectar com GitHub</span>
-
-        </button>
+        <app-data-table [columns]="colunas" [data]="githubApps()" [loading]="carregando()" [paginaAtual]="pagina()"
+            [totalPaginas]="totalPaginas()" [totalElementos]="totalElementos()"
+            (paginaChange)="alterarPagina($event)" />
     </div>
-
 </div>
-
-<div class="page-header">
-    <button type="button" class="btn-acao" (click)="listarGithubApps()" [disabled]="carregando()">
-        ↻ Recarregar
-    </button>
-</div>
-
-<ng-template #acoesTemplate let-app>
-    <button type="button" class="btn-remover" (click)="removerGithub(app); $event.stopPropagation()">
-        Remover
-    </button>
-</ng-template>
-
-<app-data-table [columns]="colunas" [data]="githubApps()" [loading]="carregando()" [paginaAtual]="pagina()"
-    [totalPaginas]="totalPaginas()" [totalElementos]="totalElementos()" (paginaChange)="alterarPagina($event)" />

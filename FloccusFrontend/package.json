@@ -21,6 +21,7 @@
     "@stomp/stompjs": "^7.3.0",
     "@xterm/addon-fit": "^0.11.0",
     "@xterm/xterm": "^6.0.0",
+    "chart.js": "^4.5.1",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.26.25",
     "tslib": "^2.3.0",

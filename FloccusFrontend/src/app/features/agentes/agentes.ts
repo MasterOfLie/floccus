@@ -4,13 +4,13 @@ import { AgenteService } from '../../core/services/agente-service';
 import { Agente } from './models/AgenteModel';
 import { DataTableColumn } from '../../shared/models/DataTableColumn';
 import { DataTable } from '../../shared/components/data-table/data-table';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-agentes',
   standalone: true,
-  imports: [CommonModule, DataTable],
+  imports: [CommonModule, DataTable, RouterLink],
   templateUrl: './agentes.html',
   styleUrl: './agentes.css'
 })

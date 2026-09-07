@@ -1,40 +1,57 @@
-<div class="page">
+<div class="card-container">
+  <!-- Cabeçalho do Card -->
+  <header class="card-header">
+    <div class="header-titles">
+      <h2>Aplicações</h2>
+      <p>Gerencie as aplicações conectadas ao Floccus.</p>
+    </div>
+    <div class="header-stats">
+      <span class="text-muted">Total de Aplicações: {{totalElementos()}} </span>
+    </div>
+  </header>
 
-  <ng-template #statusTemplate let-container>
+  <!-- Barra de Ferramentas -->
+  <div class="card-toolbar">
+    <div class="toolbar-actions">
+      <button class="btn btn-primary" routerLink="/agentes/criar">
+        Adicionar Nova Aplicação
+      </button>
+    </div>
+    <div class="toolbar-filters">
+      <button type="button" class="btn btn-secondary" (click)="listarContainers()" [disabled]="carregando()">
+        ↻ Recarregar
+      </button>
+    </div>
+  </div>
+  <div class="table-responsive">
 
-    <span class="status" [class.running]="estaRodando(container.status)"
-      [class.exited]="!estaRodando(container.status)">
 
-      <span class="status-dot"></span>
+    <ng-template #statusTemplate let-container>
 
-      {{ traduzirStatus(container.status) }}
+      <span class="status" [class.running]="estaRodando(container.status)"
+        [class.exited]="!estaRodando(container.status)">
 
-    </span>
+        <span class="status-dot"></span>
 
-  </ng-template>
+        {{ traduzirStatus(container.status) }}
 
-  <ng-template #acoesTemplate let-container>
+      </span>
 
-    <button type="button" class="btn-abrir" (click)="abrirContainer(container); $event.stopPropagation()">
-      Abrir
-    </button>
+    </ng-template>
 
-  </ng-template>
-  <ng-template #memoriaTemplate let-aplicacao>
-    {{ formatarMemoria(aplicacao.memoriaLimite) }}
-  </ng-template>
+    <ng-template #acoesTemplate let-container>
 
-  <div class="page-header">
+      <button type="button" class="btn-abrir" (click)="abrirContainer(container); $event.stopPropagation()"
+        data-tooltip="Visualizar">
+        <i class="bi bi-eye"></i>
+      </button>
 
-    <button type="button" class="btn-acao" (click)="listarContainers()" [disabled]="carregando()">
-
-      ↻ Recarregar
-
-    </button>
+    </ng-template>
+    <ng-template #memoriaTemplate let-aplicacao>
+      {{ formatarMemoria(aplicacao.memoriaLimite) }}
+    </ng-template>
+    <app-data-table [columns]="colunas" [data]="aplicacoes()" [loading]="carregando()" [paginaAtual]="pagina()"
+      [totalPaginas]="totalPaginas()" [totalElementos]="totalElementos()" (paginaChange)="alterarPagina($event)" />
 
   </div>
-
-  <app-data-table [columns]="colunas" [data]="aplicacoes()" [loading]="carregando()" [paginaAtual]="pagina()"
-    [totalPaginas]="totalPaginas()" [totalElementos]="totalElementos()" (paginaChange)="alterarPagina($event)" />
-
 </div>

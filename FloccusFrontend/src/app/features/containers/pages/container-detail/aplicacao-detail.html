@@ -1,507 +1,178 @@
-<div class="page">
-
-  <!-- ================================= -->
-  <!-- HEADER -->
-  <!-- ================================= -->
-
+<div class="card-container page">
   <div class="page-header">
-
     <div class="title-area">
-
-      <span class="breadcrumb">
-        Aplicações / Detalhes
-      </span>
-
-      <h1>
-        {{ aplicacao()?.nome }}
-      </h1>
-
+      <h1>{{aplicacao()?.nome || '...'}}</h1>
     </div>
 
-    <button type="button" class="back-button" routerLink="/aplicacoes">
+    @if (aplicacao()) {
+    <div class="app-header-actions">
+      <button type="button" class="app-btn app-start" (click)="start()" title="Iniciar">
+        <i class="bi bi-play-fill"></i> <span>Iniciar</span>
+      </button>
+      <button type="button" class="app-btn app-restart" (click)="restart()" title="Reiniciar">
+        <i class="bi bi-arrow-clockwise"></i> <span>Reiniciar</span>
+      </button>
+      <button type="button" class="app-btn app-stop" (click)="stop()" title="Parar">
+        <i class="bi bi-stop-fill"></i> <span>Parar</span>
+      </button>
 
-      <i class="bi bi-arrow-left"></i>
+      <div class="app-divider"></div>
 
-      <span>Voltar</span>
+      <button type="button" class="app-btn app-console-btn" (click)="openConsole()"
+        [disabled]="!aplicacao()?.containerId">
+        <i class="bi" [class.bi-terminal]="!showConsole()" [class.bi-x-lg]="showConsole()"></i>
+        <span>{{ showConsole() ? 'Fechar' : 'Console' }}</span>
+      </button>
 
-    </button>
-
+      <button type="button" class="app-back-button" routerLink="/aplicacoes" title="Voltar">
+        <i class="bi bi-arrow-left"></i> <span>Voltar</span>
+      </button>
+    </div>
+    }
   </div>
-
-
-  <!-- ================================= -->
-  <!-- LOADING -->
-  <!-- ================================= -->
 
   @if (loading()) {
-
   <div class="state-card">
-
     <div class="spinner"></div>
-
-    <span>
-      Carregando aplicação...
-    </span>
-
+    <span>Carregando aplicação...</span>
   </div>
-
   }
-
-
-  <!-- ================================= -->
-  <!-- ERROR -->
-  <!-- ================================= -->
-
   @else if (error()) {
-
   <div class="state-card error">
-
-    <div class="error-icon">
-      <i class="bi bi-exclamation-triangle"></i>
-    </div>
-
+    <div class="error-icon"><i class="bi bi-exclamation-triangle"></i></div>
     <div>
-
-      <strong>
-        Não foi possível carregar a aplicação
-      </strong>
-
-      <p>
-        {{ error() }}
-      </p>
-
+      <strong>Não foi possível carregar a aplicação</strong>
+      <p>{{ error() }}</p>
     </div>
-
   </div>
-
   }
-
-
-  <!-- ================================= -->
-  <!-- APLICAÇÃO -->
-  <!-- ================================= -->
-
   @else if (aplicacao()) {
 
-  <!-- ================================= -->
-  <!-- RESUMO -->
-  <!-- ================================= -->
-
-  <div class="overview-grid">
-
-    <!-- STATUS -->
-
-    <div class="info-card">
-
-      <span class="card-label">
-        Status
-      </span>
-
-      <div class="status">
-
-        <span class="status-dot"></span>
-
-        <strong>
-          {{ aplicacao()?.status || '-' }}
-        </strong>
-
+  <div class="overview-grid premium-grid">
+    <div class="info-card status-card">
+      <span class="card-label">Estado do Servidor</span>
+      <div class="status-uptime-wrapper">
+        <div class="status-badge-large"
+          [class.running]="aplicacao()?.status === 'running' || aplicacao()?.status === 'online'">
+          <i class="bi"
+            [class.bi-check-circle-fill]="aplicacao()?.status === 'running' || aplicacao()?.status === 'online'"
+            [class.bi-x-circle-fill]="aplicacao()?.status !== 'running' && aplicacao()?.status !== 'online'"></i>
+          {{ aplicacao()?.status || 'Desconhecido' }}
+        </div>
+        <span class="time-value">Uptime: {{ aplicacao()?.tempoStatus || '-' }}</span>
       </div>
-
     </div>
 
-
-    <!-- CPU -->
-
-    <div class="info-card">
-
-      <span class="card-label">
-        CPU
-      </span>
-
-      <strong class="metric">
-        {{ aplicacao()?.cpu || '-' }}
-      </strong>
-
+    <div class="info-card chart-card">
+      <span class="card-label"><i class="bi bi-cpu"></i> Uso de CPU</span>
+      <div class="circular-chart">
+        <div class="circular-chart-inner">
+          <strong class="metric">{{ aplicacao()?.cpu || '-' }}</strong>
+        </div>
+      </div>
     </div>
 
-
-    <!-- MEMÓRIA -->
-
-    <div class="info-card">
-
-      <span class="card-label">
-        Memória
-      </span>
-
-      <strong class="metric">
-        {{ aplicacao()?.memoria || '-' }}
-      </strong>
-
+    <div class="info-card chart-card">
+      <span class="card-label"><i class="bi bi-memory"></i> Memória</span>
+      <div class="circular-chart">
+        <div class="circular-chart-inner">
+          <strong class="metric value-small">{{ aplicacao()?.memoria || '-' }}</strong>
+          <small class="limit-text">Lim: {{ aplicacao()?.memoriaLimite || '-' }}</small>
+        </div>
+      </div>
     </div>
-
-
-    <!-- TEMPO -->
-
-    <div class="info-card">
-
-      <span class="card-label">
-        Tempo de status
-      </span>
-
-      <strong class="time-value">
-        {{ aplicacao()?.tempoStatus || '-' }}
-      </strong>
-
-    </div>
-
   </div>
 
-  <!-- ================================= -->
-  <!-- INFORMAÇÕES -->
-  <!-- ================================= -->
-
   <details class="info-details">
-
     <summary class="info-summary">
-
       <div class="info-summary-left">
-
         <i class="bi bi-info-circle"></i>
-
-        <span>
-          Informações
-        </span>
-
+        <span>Informações da Aplicação</span>
       </div>
-
       <i class="bi bi-chevron-down info-chevron"></i>
-
     </summary>
 
-
     <div class="details">
-
       <div class="detail-item">
         <span>Nome</span>
-        <strong>
-          {{ aplicacao()?.nome || '-' }}
-        </strong>
+        <strong>{{ aplicacao()?.nome || '-' }}</strong>
       </div>
-
       <div class="detail-item">
         <span>ID da aplicação</span>
-        <strong class="mono">
-          {{ aplicacao()?.id || '-' }}
-        </strong>
+        <div class="copy-cell">
+          <strong class="mono">{{ aplicacao()?.id || '-' }}</strong>
+        </div>
       </div>
-
       <div class="detail-item">
         <span>Container ID</span>
-        <strong class="mono">
-          {{ aplicacao()?.containerId || '-' }}
-        </strong>
+        <div class="copy-cell">
+          <strong class="mono">{{ aplicacao()?.containerId || '-' }}</strong>
+        </div>
       </div>
-
       <div class="detail-item">
         <span>Imagem</span>
-        <strong class="mono">
-          {{ aplicacao()?.imagem || '-' }}
-        </strong>
+        <strong class="mono">{{ aplicacao()?.imagem || '-' }}</strong>
       </div>
-
       <div class="detail-item">
         <span>Tipo</span>
-        <strong>
-          {{ aplicacao()?.tipo || '-' }}
-        </strong>
+        <strong>{{ aplicacao()?.tipo || '-' }}</strong>
       </div>
-
       <div class="detail-item">
         <span>Agente</span>
-        <strong class="mono">
-          {{ aplicacao()?.agenteId || '-' }}
-        </strong>
+        <strong class="mono">{{ aplicacao()?.agenteId || '-' }}</strong>
       </div>
-
       <div class="detail-item">
-        <span>Porta do container</span>
-        <strong>
-          {{ aplicacao()?.portaContainer || '-' }}
-        </strong>
+        <span>Porta (Container / Externa)</span>
+        <strong>{{ aplicacao()?.portaContainer || '-' }} <i class="bi bi-arrow-right text-muted"></i> {{
+          aplicacao()?.portaExterna || '-' }}</strong>
       </div>
-
-      <div class="detail-item">
-        <span>Porta externa</span>
-        <strong>
-          {{ aplicacao()?.portaExterna || '-' }}
-        </strong>
-      </div>
-
       <div class="detail-item">
         <span>Domínio</span>
-        <strong class="mono">
-          {{ aplicacao()?.dominio || '-' }}
-        </strong>
+        <strong class="mono">{{ aplicacao()?.dominio || '-' }}</strong>
       </div>
-
-      <div class="detail-item">
-        <span>Limite de CPU</span>
-        <strong>
-          {{ aplicacao()?.cpuLimite || '-' }}
-        </strong>
-      </div>
-
-      <div class="detail-item">
-        <span>Limite de memória</span>
-        <strong>
-          {{ aplicacao()?.memoriaLimite || '-' }}
-        </strong>
-      </div>
-
-      <div class="detail-item">
-        <span>Uso de CPU</span>
-        <strong>
-          {{ aplicacao()?.cpu || '-' }}
-        </strong>
-      </div>
-
-      <div class="detail-item">
-        <span>Uso de memória</span>
-        <strong>
-          {{ aplicacao()?.memoria || '-' }}
-        </strong>
-      </div>
-
       <div class="detail-item">
         <span>Criado em</span>
-        <strong>
-          {{ aplicacao()?.criadoEm || '-' }}
-        </strong>
+        <strong>{{ aplicacao()?.criadoEm || '-' }}</strong>
       </div>
-
       <div class="detail-item">
         <span>Atualizado em</span>
-        <strong>
-          {{ aplicacao()?.atualizadoEm || '-' }}
-        </strong>
+        <strong>{{ aplicacao()?.atualizadoEm || '-' }}</strong>
       </div>
-
     </div>
-
-
-
   </details>
 
-
-  <!-- ================================= -->
-  <!-- CONSOLE + AÇÕES -->
-  <!-- ================================= -->
-
   <section class="console-card">
-
-
-    <!-- ================================= -->
-    <!-- TERMINAL -->
-    <!-- ================================= -->
-
     <div class="terminal-area">
-
-
-      <!-- HEADER TERMINAL -->
-
       <div class="terminal-header">
-
         <div class="terminal-title">
-
-          <div class="terminal-icon">
-
-            <i class="bi bi-terminal"></i>
-
-          </div>
-
+          <div class="terminal-icon"><i class="bi bi-terminal"></i></div>
           <div>
-
-            <h2>
-              Console
-            </h2>
-
-            @if (showConsole()) {
-
-            <span>
-              Saída em tempo real
-            </span>
-
-            } @else {
-
-            <span>
-              Console fechado
-            </span>
-
-            }
-
+            <h2>Console</h2>
+            <span>{{ showConsole() ? 'Saída em tempo real' : 'Console fechado' }}</span>
           </div>
-
         </div>
-
-
         @if (showConsole()) {
-
-        <span class="live-indicator">
-
-          <span></span>
-
-          Ao vivo
-
-        </span>
-
+        <span class="live-indicator"><span></span> Ao vivo</span>
         }
-
       </div>
-
-
-      <!-- ================================= -->
-      <!-- CONSOLE ABERTO -->
-      <!-- ================================= -->
 
       @if (showConsole() && aplicacao()?.containerId) {
-
       <div class="terminal-wrapper">
-
-        <app-terminal-logs [aplicacaoId]="aplicacao()!.id!">
-        </app-terminal-logs>
-
+        <app-terminal-logs [aplicacaoId]="aplicacao()!.id!"></app-terminal-logs>
       </div>
-
-      }
-
-
-      <!-- ================================= -->
-      <!-- CONSOLE FECHADO -->
-      <!-- ================================= -->
-
-      @else {
-
+      } @else {
       <div class="terminal-empty">
-
-        <div class="terminal-empty-icon">
-
-          <i class="bi bi-terminal"></i>
-
-        </div>
-
-        <strong>
-          Console fechado
-        </strong>
-
-        <span>
-          Abra o console para visualizar os logs.
-        </span>
-
+        <div class="terminal-empty-icon"><i class="bi bi-terminal"></i></div>
+        <strong>Console fechado</strong>
+        <span>Abra o console para visualizar os logs.</span>
         <button type="button" class="open-console-button" (click)="openConsole()"
           [disabled]="!aplicacao()?.containerId">
-
-          <i class="bi bi-terminal"></i>
-
-          Abrir console
-
+          <i class="bi bi-terminal"></i> Abrir console
         </button>
-
       </div>
-
       }
-
     </div>
-
-
-    <!-- ================================= -->
-    <!-- AÇÕES -->
-    <!-- ================================= -->
-
-    <aside class="actions-panel">
-
-      <div class="actions-header">
-
-        <h2>
-          Ações
-        </h2>
-
-      </div>
-
-
-      <div class="actions-list">
-
-
-        <!-- INICIAR -->
-
-        <button type="button" class="action-button start" (click)="start()">
-
-          <span class="action-icon">
-            <i class="bi bi-play-fill"></i>
-          </span>
-
-          <span>
-            Iniciar
-          </span>
-
-        </button>
-
-
-        <!-- REINICIAR -->
-
-        <button type="button" class="action-button restart" (click)="restart()">
-
-          <span class="action-icon">
-            <i class="bi bi-arrow-clockwise"></i>
-          </span>
-
-          <span>
-            Reiniciar
-          </span>
-
-        </button>
-
-
-        <!-- PARAR -->
-
-        <button type="button" class="action-button stop" (click)="stop()">
-
-          <span class="action-icon">
-            <i class="bi bi-stop-fill"></i>
-          </span>
-
-          <span>
-            Parar
-          </span>
-
-        </button>
-
-
-        <!-- CONSOLE -->
-
-        <button type="button" class="action-button console" (click)="openConsole()"
-          [disabled]="!aplicacao()?.containerId">
-
-          <span class="action-icon">
-
-            <i class="bi" [class.bi-terminal]="!showConsole()" [class.bi-x-lg]="showConsole()">
-            </i>
-
-          </span>
-
-          <span>
-            {{ showConsole() ? 'Fechar' : 'Console' }}
-          </span>
-
-        </button>
-
-
-      </div>
-
-    </aside>
-
-
   </section>
 
   }
-
 </div>

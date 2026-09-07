@@ -1,18 +1,23 @@
-<div class="page">
+<div class="card-container page">
     <div class="page-header">
         <div>
-            <h1>Detalhes do agente</h1>
+            <h1>Detalhes do agente
+                @if (agente()) {
+                <span class="text-muted"> (ID: {{ agente()!.id | slice:0:8 }}...)</span>
+                }
+            </h1>
             <p>Configure e monitore a conexão do agente com o Floccus.</p>
         </div>
-
-        <button type="button" class="back-button" routerLink="/agentes">
-            ← Voltar
-        </button>
+        <div class="card-toolbar">
+            <button type="button" class="btn btn-secondary" routerLink="/agentes">
+                <i class="bi bi-arrow-left"></i> Voltar
+            </button>
+        </div>
     </div>
 
     @if (carregando()) {
     <div class="loading">
-        Carregando agente...
+        <span class="spinner"></span> Carregando detalhes do agente...
     </div>
     } @else if (agente()) {
     <div class="detail-grid">
@@ -21,72 +26,70 @@
         <div class="left-column">
 
             <!-- STATUS E MÉTRICAS -->
-            <!-- STATUS E MÉTRICAS -->
             <div class="status-card">
                 <div class="card-header">
                     <div>
-                        <h2>Status e Métricas</h2>
+                        <h2>Estado e Métricas do Sistema</h2>
                         <p>Métricas de hardware e conectividade em tempo real.</p>
                     </div>
 
-                    <!-- Badge Online/Offline Dinâmico -->
-                    <span class="status-badge" [class.online]="metricas()?.online"
-                        [class.offline]="!metricas()?.online">
-                        <span class="status-dot"></span>
-                        {{ metricas()?.online ? 'Online' : 'Offline' }}
-                    </span>
+                    <!-- Novo Agrupamento: Badge Online + Uptime -->
+                    <div class="status-uptime-wrapper">
+                        <div class="status-badge-large" [class.online]="metricas()?.online"
+                            [class.offline]="!metricas()?.online">
+                            <i class="bi" [class.bi-check-circle-fill]="metricas()?.online"
+                                [class.bi-x-circle-fill]="!metricas()?.online"></i>
+                            {{ metricas()?.online ? 'Online' : 'Offline' }}
+                        </div>
+                        @if (metricas()?.online) {
+                        <span class="uptime-text">Uptime: {{ formatarUptime(metricas()?.uptime) }}</span>
+                        }
+                    </div>
                 </div>
 
                 <div class="metrics-grid">
-                    <!-- CPU -->
-                    <div class="metric-item">
-                        <span class="metric-label">Uso de CPU</span>
-                        <span class="metric-value">{{ metricas()?.cpuUsage ?? 0 | number:'1.0-1' }}%</span>
-                        <div class="progress-bar">
-                            <div class="progress-fill" [style.width.%]="metricas()?.cpuUsage ?? 0"></div>
+                    <div class="metric-item cpu-chart-item">
+                        <span class="metric-label"><i class="bi bi-cpu"></i> CPU</span>
+
+                        <div class="cpu-chart-container">
+                            <canvas #cpuChart></canvas>
                         </div>
                     </div>
 
-                    <!-- MEMÓRIA RAM -->
+                    <!-- MEMÓRIA RAM (Gráfico Circular) -->
                     <div class="metric-item">
-                        <span class="metric-label">Memória RAM</span>
-                        <span class="metric-value">
-                            @if (metricas()) {
-                            {{ (metricas()!.ramUsadaMb / 1024) | number:'1.1-1' }} GB / {{ (metricas()!.ramTotalMb /
-                            1024) | number:'1.1-1' }} GB
-                            } @else {
-                            -- / --
-                            }
-                        </span>
-                        <div class="progress-bar">
-                            <div class="progress-fill"
-                                [style.width.%]="metricas() ? (metricas()!.ramUsadaMb / metricas()!.ramTotalMb) * 100 : 0">
+                        <span class="metric-label"><i class="bi bi-memory"></i> Memória RAM</span>
+                        <div class="circular-chart"
+                            [style.background]="'conic-gradient(#4f46e5 ' + (metricas() ? (metricas()!.ramUsadaMb / metricas()!.ramTotalMb) * 100 : 0) + '%, #e5e7eb 0)'">
+                            <div class="circular-chart-inner">
+                                <span class="metric-value value-small">
+                                    @if (metricas()) {
+                                    {{ (metricas()!.ramUsadaMb / 1024) | number:'1.1-1' }} / {{ (metricas()!.ramTotalMb
+                                    / 1024) | number:'1.1-1' }}<br><small>GB</small>
+                                    } @else {
+                                    --
+                                    }
+                                </span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- ARMAZENAMENTO -->
+                    <!-- ARMAZENAMENTO (Gráfico Circular) -->
                     <div class="metric-item">
-                        <span class="metric-label">Armazenamento</span>
-                        <span class="metric-value">
-                            @if (metricas()) {
-                            {{ metricas()!.discoUsadoGb | number:'1.0-1' }} GB / {{ metricas()!.discoTotalGb |
-                            number:'1.0-1' }} GB
-                            } @else {
-                            -- / --
-                            }
-                        </span>
-                        <div class="progress-bar">
-                            <div class="progress-fill"
-                                [style.width.%]="metricas() ? (metricas()!.discoUsadoGb / metricas()!.discoTotalGb) * 100 : 0">
+                        <span class="metric-label"><i class="bi bi-hdd"></i> Disco</span>
+                        <div class="circular-chart"
+                            [style.background]="'conic-gradient(#4f46e5 ' + (metricas() ? (metricas()!.discoUsadoGb / metricas()!.discoTotalGb) * 100 : 0) + '%, #e5e7eb 0)'">
+                            <div class="circular-chart-inner">
+                                <span class="metric-value value-small">
+                                    @if (metricas()) {
+                                    {{ metricas()!.discoUsadoGb | number:'1.0-1' }} / {{ metricas()!.discoTotalGb |
+                                    number:'1.0-1' }}<br><small>GB</small>
+                                    } @else {
+                                    --
+                                    }
+                                </span>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- TEMPO ATIVO / UPTIME -->
-                    <div class="metric-item">
-                        <span class="metric-label">Tempo Ativo (Uptime)</span>
-                        <span class="metric-value metric-text">{{ formatarUptime(metricas()?.uptime) }}</span>
                     </div>
                 </div>
             </div>
@@ -95,15 +98,11 @@
             <div class="config-card">
                 <div class="card-header">
                     <div>
-                        <h2>Configuração do agente</h2>
-                        <p>
-                            Copie esta configuração para o arquivo
-                            <strong>config.yml</strong> do agente.
-                        </p>
+                        <h2>Configuração YAML Gerada</h2>
+                        <p>Copie esta configuração para o arquivo <strong>config.yml</strong> do agente.</p>
                     </div>
-
-                    <button type="button" class="copy-button" (click)="copiarYaml()">
-                        ⧉ Copiar
+                    <button type="button" class="copy-button" (click)="copiarYaml()" title="Copiar YAML">
+                        <i class="bi bi-copy"></i> Copiar
                     </button>
                 </div>
 
@@ -118,67 +117,91 @@
         <div class="form-card">
             <div class="card-header">
                 <div>
-                    <h2>Informações</h2>
-                    <p>Altere as configurações do agente.</p>
+                    <h2>Informações do Agente</h2>
+                    <p>Altere as configurações de rede e segurança.</p>
                 </div>
             </div>
 
             <form #form="ngForm" (ngSubmit)="salvar()">
-                <div class="form-group">
-                    <label for="agentId">ID do agente</label>
-                    <input id="agentId" type="text" [value]="agente()!.id" readonly />
-                    <span class="input-hint">Identificador único do agente.</span>
+
+                <!-- SEÇÃO: IDENTIFICAÇÃO -->
+                <div class="form-section">
+                    <h3 class="section-title"><i class="bi bi-gear"></i> Identificação</h3>
+
+                    <div class="form-group">
+                        <label for="agentId">ID do agente <i class="bi bi-info-circle"
+                                title="Identificador único"></i></label>
+                        <div class="input-with-icon">
+                            <input id="agentId" type="text" [value]="agente()!.id" readonly />
+                            <i class="bi bi-lock text-muted"></i>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="ipAgente">IP / Host do agente</label>
-                    <input id="ipAgente" type="text" name="ipAgente" [(ngModel)]="agente()!.ipAgente" required />
+                <!-- SEÇÃO: REDE & BACKEND -->
+                <div class="form-section">
+                    <h3 class="section-title"><i class="bi bi-globe"></i> Rede & Backend</h3>
+
+                    <div class="form-row">
+                        <div class="form-group flex-2">
+                            <label for="ipAgente">IP / Host do agente</label>
+                            <input id="ipAgente" type="text" name="ipAgente" [(ngModel)]="agente()!.ipAgente"
+                                required />
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="portaAgente">Porta</label>
+                            <input id="portaAgente" type="number" name="portaAgente" [(ngModel)]="agente()!.portaAgente"
+                                min="1" max="65535" required />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group flex-2">
+                            <label for="ipBackend">IP / Host do backend</label>
+                            <input id="ipBackend" type="text" name="ipBackend" [(ngModel)]="agente()!.ipBackend"
+                                placeholder="Ex: 192.168.1.100" required />
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="backendPort">Porta</label>
+                            <input id="backendPort" type="number" name="backendPort"
+                                [(ngModel)]="agente()!.portaBackend" min="1" max="65535" required />
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="portaAgente">Porta do agente</label>
-                    <input id="portaAgente" type="number" name="portaAgente" [(ngModel)]="agente()!.portaAgente" min="1"
-                        max="65535" required />
-                </div>
+                <!-- SEÇÃO: CONTÊINER & SEGURANÇA -->
+                <div class="form-section">
+                    <h3 class="section-title"><i class="bi bi-shield-lock"></i> Contêiner & Segurança</h3>
 
-                <div class="form-group">
-                    <label for="chaveAgente">Chave do agente</label>
-                    <input id="chaveAgente" type="text" name="chaveAgente" [(ngModel)]="agente()!.chaveAgente"
-                        readonly />
-                    <span class="input-hint">A chave é gerada pelo Floccus.</span>
-                </div>
+                    <div class="form-group">
+                        <label for="dockerHost">Docker Host</label>
+                        <input id="dockerHost" type="text" name="dockerHost" [(ngModel)]="agente()!.dockerHost"
+                            required />
+                        <span class="input-hint">Socket utilizado pelo agente para acessar o Docker.</span>
+                    </div>
 
-                <div class="form-group">
-                    <label for="ipBackend">IP / Host do backend</label>
-                    <input id="ipBackend" type="text" name="ipBackend" [(ngModel)]="agente()!.ipBackend"
-                        placeholder="Ex: 192.168.1.100" required />
-                </div>
-
-                <div class="form-group">
-                    <label for="backendPort">Porta do backend</label>
-                    <input id="backendPort" type="number" name="backendPort" [(ngModel)]="agente()!.portaBackend"
-                        min="1" max="65535" required />
-                </div>
-
-                <div class="form-group">
-                    <label for="dockerHost">Docker Host</label>
-                    <input id="dockerHost" type="text" name="dockerHost" [(ngModel)]="agente()!.dockerHost" required />
-                    <span class="input-hint">Socket utilizado pelo agente para acessar o Docker.</span>
+                    <div class="form-group">
+                        <label for="chaveAgente">Chave da API</label>
+                        <div class="input-action-group">
+                            <input id="chaveAgente" type="text" name="chaveAgente" [(ngModel)]="agente()!.chaveAgente"
+                                readonly />
+                            <button type="button" class="btn-action-input" [disabled]="salvando()"
+                                (click)="gerarNovaChave()" title="Gerar nova chave">
+                                <i class="bi bi-arrow-repeat"></i>
+                            </button>
+                        </div>
+                        <span class="input-hint">A chave é gerada pelo Floccus. Recomendado rotacionar
+                            periodicamente.</span>
+                    </div>
                 </div>
 
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" routerLink="/agentes">
                         Cancelar
                     </button>
-
-                    <button type="button" class="btn-primary" [disabled]="salvando()" (click)="gerarNovaChave()">
-                        Gerar nova chave
-                    </button>
-
                     <button type="submit" class="btn-primary" [disabled]="form.invalid || salvando()">
                         @if (salvando()) {
-                        <span class="spinner"></span>
-                        Salvando...
+                        <span class="spinner"></span> Salvando...
                         } @else {
                         Salvar alterações
                         }
