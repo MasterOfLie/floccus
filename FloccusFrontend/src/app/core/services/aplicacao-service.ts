@@ -1,9 +1,10 @@
-import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
 import { Client, Message } from '@stomp/stompjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AplicacaoModel } from '../../features/containers/models/AplicacaoModel';
+import { AplicacaoModel } from '../../features/aplicacao/models/AplicacaoModel';
+import { CriarAplicacaoRequest } from '../../features/aplicacao/models/CriarAplicacaoRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -79,7 +80,15 @@ export class AplicacaoService {
   //   );
 
   // }
+  criarAplicacao(
+    aplicacao: CriarAplicacaoRequest
+  ): Observable<any> {
 
+    return this.http.post(
+      '/api/aplicacoes',
+      aplicacao
+    );
+  }
   start(id: string): Observable<void> {
     return this.http.get<void>(this.apiUrl + `/iniciar/${id}`);
   }

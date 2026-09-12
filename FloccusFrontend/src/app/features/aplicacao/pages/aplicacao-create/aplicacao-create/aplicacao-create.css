@@ -1,0 +1,946 @@
+/* =========================================================
+   HOST
+   ========================================================= */
+
+:host {
+    display: block;
+    min-height: 100%;
+
+    background: var(--floccus-background);
+    color: var(--floccus-text);
+
+    font-family: var(--floccus-font-family);
+}
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.page {
+    width: 100%;
+    max-width: 1040px;
+
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.page-header {
+    margin-bottom: 28px;
+}
+
+.breadcrumb {
+    color: var(--floccus-text-muted);
+
+    font-family:
+        "JetBrains Mono",
+        "Fira Code",
+        monospace;
+
+    font-size: 11px;
+}
+
+.page-header h1 {
+    margin: 6px 0 4px;
+
+    color: var(--floccus-text);
+
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.page-header p {
+    margin: 0;
+
+    color: var(--floccus-text-secondary);
+    font-size: 13px;
+}
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.search-box {
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    width: 100%;
+    height: 40px;
+
+    box-sizing: border-box;
+    padding: 0 12px;
+
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius-sm);
+
+    background: var(--floccus-surface);
+    color: var(--floccus-text);
+
+    font-family: var(--floccus-font-family);
+    font-size: 13px;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.search-box input:hover {
+    border-color: var(--floccus-border-hover);
+}
+
+.search-box input:focus {
+    outline: none;
+
+    border-color: var(--floccus-primary);
+
+    box-shadow: 0 0 0 3px var(--floccus-primary-light);
+}
+
+.search-box input::placeholder {
+    color: var(--floccus-text-muted);
+}
+
+/* =========================================================
+   REPOSITORIES
+   ========================================================= */
+
+.repositories-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+
+    border-top: 1px solid var(--floccus-border);
+}
+
+.repository-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-width: 0;
+
+    padding: 13px 2px;
+
+    background: transparent;
+
+    border-bottom: 1px solid var(--floccus-border);
+
+    transition: background 0.15s ease;
+}
+
+.repository-card:hover {
+    background: var(--floccus-surface-soft);
+}
+
+.repository-info {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    min-width: 0;
+}
+
+.repository-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    border-radius: var(--floccus-radius-sm);
+
+    background: var(--floccus-text);
+    color: var(--floccus-surface);
+
+    font-family:
+        "JetBrains Mono",
+        "Fira Code",
+        monospace;
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.repository-info h3 {
+    display: flex;
+    align-items: center;
+
+    margin: 0 0 3px;
+
+    color: var(--floccus-text);
+
+    font-size: 13.5px;
+    font-weight: 600;
+}
+
+.repository-info p {
+    margin: 0 0 4px;
+
+    overflow: hidden;
+
+    color: var(--floccus-text-secondary);
+
+    font-family:
+        "JetBrains Mono",
+        "Fira Code",
+        monospace;
+
+    font-size: 11px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.private {
+    margin-left: 7px;
+
+    color: var(--floccus-text-muted);
+    font-size: 10px;
+}
+
+.branch {
+    color: var(--floccus-primary);
+
+    font-family:
+        "JetBrains Mono",
+        "Fira Code",
+        monospace;
+
+    font-size: 10.5px;
+}
+
+.btn-configurar {
+    flex-shrink: 0;
+
+    margin-left: 16px;
+    padding: 7px 12px;
+
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius-sm);
+
+    background: var(--floccus-surface);
+    color: var(--floccus-text-secondary);
+
+    cursor: pointer;
+
+    font-family: var(--floccus-font-family);
+    font-size: 12px;
+    font-weight: 500;
+
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+.btn-configurar:hover {
+    border-color: var(--floccus-border-hover);
+
+    background: var(--floccus-surface-soft);
+    color: var(--floccus-text);
+}
+
+/* =========================================================
+   CONFIGURATION
+   ========================================================= */
+
+.configuration {
+    width: 100%;
+    max-width: 720px;
+}
+
+.configuration-header {
+    margin-bottom: 24px;
+}
+
+.btn-voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    margin: 0 0 14px;
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+    color: var(--floccus-text-secondary);
+
+    cursor: pointer;
+
+    font-family: var(--floccus-font-family);
+    font-size: 12px;
+
+    transition: color 0.15s ease;
+}
+
+.btn-voltar:hover {
+    color: var(--floccus-text);
+}
+
+.configuration-header h2 {
+    margin: 0 0 5px;
+
+    color: var(--floccus-text);
+
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+}
+
+.configuration-header p {
+    margin: 0;
+
+    color: var(--floccus-text-muted);
+
+    font-family:
+        "JetBrains Mono",
+        "Fira Code",
+        monospace;
+
+    font-size: 11px;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+form {
+    padding: 0;
+    background: transparent;
+}
+
+/* =========================================================
+   FORM SECTIONS
+   ========================================================= */
+
+.form-section {
+    margin: 0 0 24px;
+    padding: 0;
+    border: 0;
+}
+
+.form-section:last-of-type {
+    margin-bottom: 0;
+}
+
+.form-section-title {
+    margin: 0 0 13px;
+    padding-bottom: 8px;
+
+    border-bottom: 1px solid var(--floccus-border);
+
+    color: var(--floccus-text);
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Caso exista <hr> no HTML */
+hr {
+    height: 1px;
+
+    margin: 0;
+
+    border: 0;
+    border-top: 1px solid var(--floccus-border);
+
+    background: transparent;
+}
+
+/* =========================================================
+   FORM GRID
+   ========================================================= */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 14px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    min-width: 0;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    color: var(--floccus-text-secondary);
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* =========================================================
+   INPUTS / SELECTS
+   ========================================================= */
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    height: 38px;
+
+    box-sizing: border-box;
+
+    padding: 0 10px;
+
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius-sm);
+
+    background: var(--floccus-surface);
+    color: var(--floccus-text);
+
+    font-family: var(--floccus-font-family);
+    font-size: 13px;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.form-group input:hover,
+.form-group select:hover {
+    border-color: var(--floccus-border-hover);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+
+    border-color: var(--floccus-primary);
+
+    box-shadow: 0 0 0 3px var(--floccus-primary-light);
+}
+
+.form-group input::placeholder {
+    color: var(--floccus-text-muted);
+}
+
+.form-group small {
+    margin-top: -1px;
+
+    color: var(--floccus-text-muted);
+
+    font-size: 10.5px;
+}
+
+/* Campos técnicos */
+
+.form-group input[formcontrolname="portaContainer"],
+.form-group input[formcontrolname="portaExterna"],
+.form-group input[formcontrolname="dominio"] {
+    font-family:
+        "JetBrains Mono",
+        "Fira Code",
+        monospace;
+
+    font-size: 12px;
+}
+
+/* =========================================================
+   APPLICATION TYPE
+   ========================================================= */
+
+.type-options {
+    display: flex;
+    gap: 8px;
+}
+
+.type-options label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    flex: 1;
+
+    min-height: 38px;
+
+    box-sizing: border-box;
+
+    padding: 0 12px;
+
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius-sm);
+
+    background: var(--floccus-surface);
+    color: var(--floccus-text-secondary);
+
+    cursor: pointer;
+    user-select: none;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+.type-options label:hover {
+    border-color: var(--floccus-border-hover);
+    color: var(--floccus-text);
+}
+
+.type-options label:has(input:checked) {
+    border-color: var(--floccus-primary);
+
+    background: var(--floccus-primary-light);
+    color: var(--floccus-primary);
+}
+
+.type-options input {
+    display: none;
+}
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    margin-top: 30px;
+    padding-top: 18px;
+
+    border-top: 1px solid var(--floccus-border);
+}
+
+.form-actions button {
+    min-height: 36px;
+
+    padding: 0 14px;
+
+    border-radius: var(--floccus-radius-sm);
+
+    cursor: pointer;
+
+    font-family: var(--floccus-font-family);
+    font-size: 12px;
+    font-weight: 500;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.btn-cancelar {
+    border: 1px solid var(--floccus-border);
+
+    background: var(--floccus-surface);
+    color: var(--floccus-text-secondary);
+}
+
+.btn-cancelar:hover {
+    border-color: var(--floccus-border-hover);
+
+    background: var(--floccus-surface-soft);
+    color: var(--floccus-text);
+}
+
+.btn-criar {
+    border: 1px solid var(--floccus-primary);
+
+    background: var(--floccus-primary);
+    color: #ffffff;
+}
+
+.btn-criar:hover:not(:disabled) {
+    border-color: var(--floccus-primary-dark);
+    background: var(--floccus-primary-dark);
+}
+
+.btn-criar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   STATES
+   ========================================================= */
+
+.loading,
+.empty {
+    padding: 36px 20px;
+
+    color: var(--floccus-text-muted);
+
+    text-align: center;
+
+    font-size: 12px;
+}
+
+/* =========================================================
+   NG SELECT
+   ========================================================= */
+
+:host ::ng-deep .ng-select {
+    display: block;
+
+    width: 100%;
+
+    font-family: var(--floccus-font-family);
+    font-size: 13px;
+}
+
+:host ::ng-deep .ng-select .ng-select-container {
+    display: flex;
+    align-items: center;
+
+    min-height: 38px;
+    height: 38px;
+
+    box-sizing: border-box;
+
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius-sm);
+
+    background: var(--floccus-surface);
+    color: var(--floccus-text);
+
+    box-shadow: none;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+:host ::ng-deep .ng-select .ng-select-container:hover {
+    border-color: var(--floccus-border-hover);
+}
+
+:host ::ng-deep .ng-select.ng-select-focused .ng-select-container {
+    border-color: var(--floccus-primary);
+
+    box-shadow: 0 0 0 3px var(--floccus-primary-light);
+}
+
+:host ::ng-deep .ng-select.ng-select-opened .ng-select-container {
+    border-color: var(--floccus-primary);
+}
+
+/* =========================================================
+   NG SELECT VALUE CONTAINER
+   ========================================================= */
+
+:host ::ng-deep .ng-select .ng-value-container {
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+
+    padding-left: 10px;
+    padding-right: 4px;
+}
+
+:host ::ng-deep .ng-select .ng-value {
+    display: flex;
+    align-items: center;
+
+    max-width: 100%;
+
+    color: var(--floccus-text);
+
+    font-size: 13px;
+}
+
+:host ::ng-deep .ng-select .ng-value-label {
+    display: block;
+
+    overflow: hidden;
+
+    color: var(--floccus-text);
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+:host ::ng-deep .ng-select .ng-placeholder {
+    overflow: hidden;
+
+    color: var(--floccus-text-muted);
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*
+ * Importante:
+ * garante que placeholder e valor não fiquem
+ * visualmente sobrepostos.
+ */
+
+:host ::ng-deep .ng-select .ng-value-container .ng-placeholder {
+    position: static;
+}
+
+/* =========================================================
+   NG SELECT ARROW
+   ========================================================= */
+
+:host ::ng-deep .ng-select .ng-arrow-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+
+    padding-right: 6px;
+}
+
+:host ::ng-deep .ng-select .ng-arrow {
+    border-width: 5px 5px 0;
+
+    border-color:
+        var(--floccus-text-muted) transparent transparent;
+}
+
+:host ::ng-deep .ng-select.ng-select-opened .ng-arrow {
+    border-width: 0 5px 5px;
+
+    border-color:
+        transparent transparent var(--floccus-text-muted);
+}
+
+/* =========================================================
+   NG SELECT CLEAR
+   ========================================================= */
+
+:host ::ng-deep .ng-select .ng-clear-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--floccus-text-muted);
+}
+
+:host ::ng-deep .ng-select .ng-clear-wrapper:hover {
+    color: var(--floccus-text-secondary);
+}
+
+/* =========================================================
+   NG SELECT DROPDOWN
+   ========================================================= */
+
+:host ::ng-deep .ng-dropdown-panel {
+    margin-top: 3px;
+
+    overflow: hidden;
+
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius-sm);
+
+    background: var(--floccus-surface);
+
+    box-shadow: var(--floccus-shadow);
+
+    z-index: 1000;
+}
+
+:host ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items {
+    padding: 4px 0;
+}
+
+/* =========================================================
+   NG SELECT OPTIONS
+   ========================================================= */
+
+:host ::ng-deep .ng-dropdown-panel .ng-option {
+    display: flex;
+    align-items: center;
+
+    min-height: 38px;
+
+    box-sizing: border-box;
+
+    padding: 8px 11px;
+
+    background: var(--floccus-surface);
+    color: var(--floccus-text);
+
+    font-size: 12.5px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.1s ease,
+        color 0.1s ease;
+}
+
+:host ::ng-deep .ng-dropdown-panel .ng-option:hover {
+    background: var(--floccus-surface-soft);
+    color: var(--floccus-text);
+}
+
+:host ::ng-deep .ng-dropdown-panel .ng-option.ng-option-marked {
+    background: var(--floccus-surface-soft);
+    color: var(--floccus-text);
+}
+
+:host ::ng-deep .ng-dropdown-panel .ng-option.ng-option-selected {
+    background: var(--floccus-primary-light);
+    color: var(--floccus-primary);
+}
+
+/* =========================================================
+   CUSTOM SELECT OPTION
+   ========================================================= */
+
+.select-option {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+
+    gap: 2px;
+}
+
+.select-option strong {
+    overflow: hidden;
+
+    color: var(--floccus-text);
+
+    font-size: 12.5px;
+    font-weight: 500;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.select-option span {
+    overflow: hidden;
+
+    color: var(--floccus-text-muted);
+
+    font-family:
+        "JetBrains Mono",
+        "Fira Code",
+        monospace;
+
+    font-size: 10.5px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   NG SELECT SEARCH HEADER
+   ========================================================= */
+
+:host ::ng-deep .ng-dropdown-panel .ng-dropdown-header {
+    padding: 7px;
+
+    border-bottom: 1px solid var(--floccus-border);
+
+    background: var(--floccus-surface);
+}
+
+:host ::ng-deep .ng-dropdown-panel .ng-dropdown-header input {
+    width: 100%;
+    height: 32px;
+
+    box-sizing: border-box;
+
+    padding: 0 8px;
+
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius-sm);
+
+    background: var(--floccus-surface);
+    color: var(--floccus-text);
+
+    font-family: var(--floccus-font-family);
+    font-size: 12px;
+}
+
+:host ::ng-deep .ng-dropdown-panel .ng-dropdown-header input:hover {
+    border-color: var(--floccus-border-hover);
+}
+
+:host ::ng-deep .ng-dropdown-panel .ng-dropdown-header input:focus {
+    outline: none;
+
+    border-color: var(--floccus-primary);
+
+    box-shadow: 0 0 0 3px var(--floccus-primary-light);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+    .page {
+        padding: 20px 16px 48px;
+    }
+
+    .page-header {
+        margin-bottom: 22px;
+    }
+
+    .page-header h1 {
+        font-size: 22px;
+    }
+
+    .configuration {
+        max-width: none;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    .type-options {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .repository-card {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 11px;
+    }
+
+    .btn-configurar {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+}

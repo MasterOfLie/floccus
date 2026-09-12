@@ -1,10 +1,10 @@
-import { Component, inject, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AgenteService } from '../../core/services/agente-service';
-import { Agente } from './models/AgenteModel';
-import { DataTableColumn } from '../../shared/models/DataTableColumn';
-import { DataTable } from '../../shared/components/data-table/data-table';
+import { Component, inject, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { AgenteService } from '../../core/services/agente-service';
+import { DataTable } from '../../shared/components/data-table/data-table';
+import { DataTableColumn } from '../../shared/models/DataTableColumn';
+import { Agente } from './models/AgenteModel';
 
 
 @Component({
@@ -34,10 +34,9 @@ export class Agentes implements OnInit {
   colunas: DataTableColumn<Agente>[] = [
 
     {
-      key: 'id',
-      label: 'ID'
+      key: 'nome',
+      label: 'Nome'
     },
-
     {
       key: 'ipAgente',
       label: 'IP'
@@ -47,11 +46,6 @@ export class Agentes implements OnInit {
       key: 'portaAgente',
       label: 'Porta'
     },
-
-    {
-      key: 'chaveAgente',
-      label: 'Chave'
-    }
 
   ];
 

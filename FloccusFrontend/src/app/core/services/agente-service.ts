@@ -1,10 +1,10 @@
-import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Client, Message } from '@stomp/stompjs';
 import { Observable, Subject } from 'rxjs';
+import { AgenteMetricas } from '../../features/agentes/models/AgenteMetricas';
 import { Agente } from '../../features/agentes/models/AgenteModel';
 import { CriarAgenteRequest } from '../../features/agentes/models/CriarAgenteRequest';
-import { Client, Message } from '@stomp/stompjs';
-import { AgenteMetricas } from '../../features/agentes/models/AgenteMetricas';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +18,8 @@ export class AgenteService {
         `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws-floccus`;
     listar(
         page: number = 0,
-        size: number = 10
+        size: number = 10,
+        paginado: boolean = true
     ): Observable<PageResponse<Agente>> {
 
         return this.http.get<PageResponse<Agente>>(
@@ -26,7 +27,8 @@ export class AgenteService {
             {
                 params: {
                     page: page,
-                    size: size
+                    size: size,
+                    paginado: paginado
                 }
             }
         );

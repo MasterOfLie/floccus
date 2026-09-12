@@ -1,8 +1,5 @@
 @import 'xterm/css/xterm.css';
-
-* {
-    box-sizing: border-box;
-}
+@import "@ng-select/ng-select/themes/default.theme.css";
 
 /* =========================================================
    BASE E CABEÇALHO
@@ -21,18 +18,20 @@
 .page-header h1 {
     margin: 0;
     font-size: 24px;
-    font-weight: 600;
-    color: #111827;
+    font-weight: 650;
+    color: var(--floccus-text);
+    letter-spacing: -0.2px;
 }
 
 .page-header p {
     margin: 6px 0 0;
-    color: #6b7280;
+    color: var(--floccus-text-secondary);
     font-size: 14px;
+    line-height: 1.5;
 }
 
 .text-muted {
-    color: #6b7280;
+    color: var(--floccus-text-secondary);
 }
 
 /* =========================================================
@@ -54,9 +53,10 @@
 .status-card,
 .config-card,
 .form-card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    background: var(--floccus-surface);
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius);
+    box-shadow: var(--floccus-shadow);
     overflow: hidden;
 }
 
@@ -66,19 +66,19 @@
     justify-content: space-between;
     gap: 16px;
     padding: 20px;
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid var(--floccus-border);
 }
 
 .card-header h2 {
     margin: 0;
-    color: #111827;
+    color: var(--floccus-text);
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 650;
 }
 
 .card-header p {
     margin: 5px 0 0;
-    color: #9ca3af;
+    color: var(--floccus-text-muted);
     font-size: 12px;
     line-height: 1.5;
 }
@@ -104,24 +104,23 @@
 }
 
 .status-badge-large.online {
-    background: #ecfdf5;
-    color: #059669;
-    border: 1px solid #a7f3d0;
+    background: var(--floccus-success-light);
+    color: var(--floccus-success);
+    border: 1px solid var(--floccus-success);
 }
 
 .status-badge-large.offline {
-    background: #fef2f2;
-    color: #dc2626;
-    border: 1px solid #fecaca;
+    background: var(--floccus-danger-light);
+    color: var(--floccus-danger);
+    border: 1px solid var(--floccus-danger);
 }
 
 .uptime-text {
     font-size: 12px;
-    color: #6b7280;
+    color: var(--floccus-text-secondary);
     font-weight: 500;
 }
 
-/* Removido o espaçamento excessivo do topo e alinhada a altura */
 .metrics-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -138,17 +137,16 @@
     justify-content: center;
     gap: 6px;
     padding: 16px;
-    background: #f9fafb;
-    border: 1px solid #f3f4f6;
-    border-radius: 8px;
+    background: var(--floccus-surface-soft);
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius-sm);
     box-sizing: border-box;
     min-height: 160px;
-    /* Garante que todos os cards fiquem simétricos */
 }
 
 .metric-label {
     font-size: 12px;
-    color: #6b7280;
+    color: var(--floccus-text-secondary);
     font-weight: 500;
     display: flex;
     align-items: center;
@@ -177,8 +175,8 @@
 
 .cpu-current-value {
     font-size: 18px;
-    font-weight: 600;
-    color: #111827;
+    font-weight: 650;
+    color: var(--floccus-text);
 }
 
 /* =========================================================
@@ -198,7 +196,7 @@
 .circular-chart-inner {
     width: 84px;
     height: 84px;
-    background-color: #f9fafb;
+    background-color: var(--floccus-surface-soft);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -209,20 +207,20 @@
 .circular-chart-inner .metric-value {
     font-size: 18px;
     margin: 0;
-    font-weight: 600;
-    color: #111827;
+    font-weight: 650;
+    color: var(--floccus-text);
 }
 
 .circular-chart-inner .value-small {
     font-size: 13px;
     line-height: 1.2;
-    font-weight: 600;
-    color: #111827;
+    font-weight: 650;
+    color: var(--floccus-text);
 }
 
 .circular-chart-inner small {
     font-size: 10px;
-    color: #6b7280;
+    color: var(--floccus-text-secondary);
     font-weight: 500;
 }
 
@@ -231,13 +229,13 @@
    ========================================================= */
 .yaml-container {
     padding: 20px;
-    background: #111827;
+    background: var(--floccus-text);
     overflow-x: auto;
 }
 
 .yaml-container pre {
     margin: 0;
-    color: #e5e7eb;
+    color: var(--floccus-border);
     font-family: 'JetBrains Mono', 'Fira Code', monospace;
     font-size: 13px;
     line-height: 1.7;
@@ -256,16 +254,16 @@
     padding: 8px 12px;
     border: 0;
     border-radius: 7px;
-    background: #4f46e5;
+    background: var(--floccus-primary);
     color: #ffffff;
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     transition: background 0.2s;
 }
 
 .copy-button:hover {
-    background: #4338ca;
+    background: var(--floccus-primary-dark);
 }
 
 /* =========================================================
@@ -278,7 +276,7 @@
 .form-section {
     margin-bottom: 16px;
     padding-bottom: 12px;
-    border-bottom: 1px dashed #e5e7eb;
+    border-bottom: 1px dashed var(--floccus-border);
 }
 
 .form-section:last-of-type {
@@ -289,17 +287,16 @@
 
 .section-title {
     font-size: 14px;
-    font-weight: 600;
-    color: #374151;
+    font-weight: 650;
+    color: var(--floccus-text);
     margin: 0 0 12px 0;
-    /* Reduzido de 16px */
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
 .section-title i {
-    color: #4f46e5;
+    color: var(--floccus-primary);
 }
 
 .form-row {
@@ -332,7 +329,7 @@
 }
 
 .form-group label {
-    color: #374151;
+    color: var(--floccus-text);
     font-size: 13px;
     font-weight: 500;
 }
@@ -341,38 +338,38 @@
     width: 100%;
     height: 40px;
     padding: 0 12px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    background: #ffffff;
-    color: #374151;
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius-sm);
+    background: var(--floccus-surface);
+    color: var(--floccus-text);
     font-size: 13px;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-group input:hover {
-    border-color: #d1d5db;
+    border-color: var(--floccus-border-hover);
 }
 
 .form-group input:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    border-color: var(--floccus-primary);
+    box-shadow: 0 0 0 3px rgba(83, 82, 237, 0.1);
 }
 
 .form-group input:read-only {
-    background: #f9fafb;
-    color: #6b7280;
+    background: var(--floccus-surface-soft);
+    color: var(--floccus-text-secondary);
     cursor: not-allowed;
 }
 
 .input-hint {
-    color: #9ca3af;
+    color: var(--floccus-text-muted);
     font-size: 11px;
     margin-top: 4px;
 }
 
 /* =========================================================
-   GRUPOS DE AÇÃO NOS INPUTS (Botão Gerar Chave / Ícone Cadeado)
+   GRUPOS DE AÇÃO NOS INPUTS
    ========================================================= */
 .input-with-icon,
 .input-action-group {
@@ -401,18 +398,18 @@
 .btn-action-input {
     height: 40px;
     padding: 0 16px;
-    border: 1px solid #e5e7eb;
-    background: #f9fafb;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
+    border: 1px solid var(--floccus-border);
+    background: var(--floccus-surface-soft);
+    border-top-right-radius: var(--floccus-radius-sm);
+    border-bottom-right-radius: var(--floccus-radius-sm);
     cursor: pointer;
-    color: #4f46e5;
+    color: var(--floccus-primary);
     transition: all 0.2s;
 }
 
 .btn-action-input:hover {
-    background: #e0e7ff;
-    border-color: #c7d2fe;
+    background: var(--floccus-primary-light);
+    border-color: var(--floccus-border-hover);
 }
 
 /* =========================================================
@@ -423,19 +420,17 @@
     justify-content: flex-end;
     gap: 10px;
     margin-top: 16px;
-    /* Reduzido de 24px */
     padding-top: 16px;
-    /* Reduzido de 20px */
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid var(--floccus-border);
 }
 
 .btn-secondary,
 .btn-primary {
     height: 40px;
     padding: 0 16px;
-    border-radius: 8px;
+    border-radius: var(--floccus-radius-sm);
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -443,26 +438,27 @@
 }
 
 .btn-secondary {
-    border: 1px solid #e5e7eb;
-    background: #ffffff;
-    color: #374151;
+    border: 1px solid var(--floccus-border);
+    background: var(--floccus-surface);
+    color: var(--floccus-text);
     transition: background 0.2s, border-color 0.2s;
 }
 
 .btn-secondary:hover {
-    background: #f9fafb;
-    border-color: #d1d5db;
+    background: var(--floccus-surface-soft);
+    border-color: var(--floccus-border-hover);
 }
 
 .btn-primary {
     border: 0;
-    background: #4f46e5;
+    background: var(--floccus-primary);
     color: #ffffff;
-    transition: background 0.2s;
+    transition: background 0.2s, box-shadow 0.2s;
 }
 
 .btn-primary:hover:not(:disabled) {
-    background: #4338ca;
+    background: var(--floccus-primary-dark);
+    box-shadow: 0 4px 12px rgba(83, 82, 237, 0.14);
 }
 
 .btn-primary:disabled {
@@ -473,7 +469,7 @@
 .loading {
     padding: 40px;
     text-align: center;
-    color: #6b7280;
+    color: var(--floccus-text-secondary);
     font-size: 14px;
     display: flex;
     align-items: center;
@@ -485,7 +481,7 @@
     display: inline-block;
     width: 14px;
     height: 14px;
-    border: 2px solid rgba(107, 114, 128, 0.3);
+    border: 2px solid rgba(109, 112, 128, 0.3);
     border-top-color: currentColor;
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
@@ -539,7 +535,6 @@
 
     .status-uptime-wrapper {
         align-items: flex-start;
-        /* Alinha o status a esquerda no celular */
         margin-top: 8px;
     }
 

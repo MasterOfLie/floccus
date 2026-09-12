@@ -1,7 +1,8 @@
-import { Injectable, Service } from '@angular/core';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { GithubDTO } from '../../features/git/github/models/GithubModel';
+import { GitHubRepository } from '../../features/git/github/models/GitHubRepository';
 
 @Injectable({
     providedIn: 'root'
@@ -44,5 +45,7 @@ export class GithubService {
             `${this.apiUrl}/github/${id}`
         );
     }
+    listarRepositorios(): Observable<GitHubRepository[]> {
+        return this.http.get<GitHubRepository[]>(`${this.apiUrl}/github/repositories`);
+    }
 }
-

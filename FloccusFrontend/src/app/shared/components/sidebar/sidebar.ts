@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive, NavigationEnd, Router } from '@angular/router';
-import { SidebarService } from '../../../core/services/sidebar';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs';
-import { MenuItem } from '../../../features/containers/models/MenuItem';
+import { SidebarService } from '../../../core/services/sidebar';
+import { MenuItem } from '../../../features/aplicacao/models/MenuItem';
 
 @Component({
   selector: 'app-sidebar',

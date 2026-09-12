@@ -17,7 +17,12 @@
         </div>
 
         <form (ngSubmit)="criarAgente()" #form="ngForm">
-
+            <div class="form-group flex-2">
+                <label for="nome">Nome</label>
+                <input id="nome" type="text" name="nome" [(ngModel)]="agente.nome" placeholder="Ex: Servidor Web"
+                    required />
+                <span class="input-hint">Nome descritivo para identificar o agente.</span>
+            </div>
             <!-- SEÇÃO: REDE DO AGENTE -->
             <div class="form-section">
                 <h3 class="section-title"><i class="bi bi-hdd-network"></i> Rede do Agente</h3>

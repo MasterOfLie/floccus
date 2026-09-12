@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -7,19 +8,19 @@ import {
   inject,
   signal
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AplicacaoService } from '../../core/services/aplicacao-service';
-import { AplicacaoModel } from './models/AplicacaoModel';
 import { DataTable } from '../../shared/components/data-table/data-table';
 import { DataTableColumn } from '../../shared/models/DataTableColumn';
+import { AplicacaoModel } from './models/AplicacaoModel';
 
 @Component({
   selector: 'app-aplicacao',
   standalone: true,
   imports: [
     CommonModule,
-    DataTable
+    DataTable,
+    RouterLink
   ],
   templateUrl: './aplicacao.html',
   styleUrl: './aplicacao.css'

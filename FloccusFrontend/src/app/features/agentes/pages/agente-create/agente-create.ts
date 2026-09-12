@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
-import { AgenteService } from '../../../../core/services/agente-service';
-import { CriarAgenteRequest } from '../../models/CriarAgenteRequest';
 import { FormsModule } from '@angular/forms';
+import { AgenteService } from '../../../../core/services/agente-service';
 import { AlertaService } from '../../../../core/services/alerta-service';
+import { CriarAgenteRequest } from '../../models/CriarAgenteRequest';
 
 @Component({
   selector: 'app-agente-create',
@@ -16,11 +16,12 @@ export class AgenteCreate {
   private readonly agenteService = inject(AgenteService);
   private readonly alertaService = inject(AlertaService);
   agente: CriarAgenteRequest = {
+    nome: '',
     ipAgente: 'localhost',
     portaAgente: 50051,
     ipBackend: 'localhost',
     portaBackend: "8080",
-    dockerHost: 'unix:///var/run/docker.sock'
+    dockerHost: 'unix:///var/run/docker.sock',
   };
   carregando = signal(false);
   criarAgente(): void {
@@ -37,7 +38,7 @@ export class AgenteCreate {
         },
 
         error: (error) => {
-          this.alertaService.erro('Erro ao criar agente: ' + error.message);
+          this.alertaService.erro(error.error.message);
 
           this.carregando.set(false);
 

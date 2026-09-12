@@ -1,12 +1,13 @@
 import { Routes } from '@angular/router';
-import { Dashboard } from './features/dashboard/dashboard';
-import { Users } from './features/users/users';
-import { Aplicacao } from './features/containers/aplicacao';
-import { AplicacaoDetail } from './features/containers/pages/container-detail/aplicacao-detail';
+import { authGuard } from './core/config/authGuard';
 import { Agentes } from './features/agentes/agentes';
 import { AgenteCreate } from './features/agentes/pages/agente-create/agente-create';
 import { AgenteDetail } from './features/agentes/pages/agente-detail/agente-detail';
-import { authGuard } from './core/config/authGuard';
+import { Aplicacao } from './features/aplicacao/aplicacao';
+import { AplicacaoCreate } from './features/aplicacao/pages/aplicacao-create/aplicacao-create/aplicacao-create';
+import { AplicacaoDetail } from './features/aplicacao/pages/aplicacao-detail/aplicacao-detail';
+import { Dashboard } from './features/dashboard/dashboard';
+import { Users } from './features/users/users';
 
 export const routes: Routes = [
   {
@@ -36,6 +37,11 @@ export const routes: Routes = [
         canActivate: [authGuard]
       },
       {
+        path: 'aplicacoes/criar',
+        component: AplicacaoCreate,
+        canActivate: [authGuard]
+      },
+      {
         path: 'aplicacoes/:id',
         component: AplicacaoDetail,
         canActivate: [authGuard]
@@ -45,6 +51,7 @@ export const routes: Routes = [
         component: Agentes,
         canActivate: [authGuard]
       },
+
       {
         path: 'agentes/criar',
         component: AgenteCreate,
@@ -55,13 +62,15 @@ export const routes: Routes = [
         component: AgenteDetail,
         canActivate: [authGuard]
       },
+
       {
         path: 'git/github',
         loadComponent: () =>
           import('./features/git/github/github')
             .then(m => m.Github),
         canActivate: [authGuard]
-      }
+      },
+
 
     ],
     canActivate: [authGuard]

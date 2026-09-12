@@ -3,13 +3,11 @@
     @if (loading()) {
 
     <div class="feedback-container">
-
         <div class="loading-spinner"></div>
 
         <span>
             Carregando...
         </span>
-
     </div>
 
     }
@@ -19,7 +17,7 @@
     <div class="empty-state">
 
         <div class="empty-icon">
-            ≡
+            <i class="bi bi-inbox"></i>
         </div>
 
         <strong>
@@ -41,7 +39,6 @@
         <table>
 
             <thead>
-
                 <tr>
 
                     @for (column of columns(); track column.key) {
@@ -53,9 +50,7 @@
                     }
 
                 </tr>
-
             </thead>
-
 
             <tbody>
 
@@ -69,9 +64,7 @@
 
                         @if (column.template) {
 
-                        <ng-container [ngTemplateOutlet]="column.template" [ngTemplateOutletContext]="{
-                        $implicit: item
-                      }" />
+                        <ng-container *ngTemplateOutlet="column.template; context: { $implicit: item }" />
 
                         }
 
@@ -86,13 +79,14 @@
                     }
 
                 </tr>
+
                 }
 
             </tbody>
+
         </table>
 
     </div>
-
 
     @if (totalPaginas() > 1) {
 
