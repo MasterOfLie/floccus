@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, FormsModule } from '@angular/forms';
-import { AuthService } from '../../../core/services/auth-service';
+import { FormsModule } from '@angular/forms';
 import { RegisterRequest } from '../../../core/config/auth/models/AuthModel';
 import { AlertaService } from '../../../core/services/alerta-service';
+import { AuthService } from '../../../core/services/auth-service';
 
 @Component({
   selector: 'app-auth',
@@ -16,7 +16,7 @@ export class Auth {
   private authService = inject(AuthService);
   private alertaService = inject(AlertaService);
 
-  modo: 'login' | 'registro' = 'login';
+  modo: 'login' | 'registro' | 'recuperar' = 'login';
 
   mostrarSenha = false;
   carregando = false;
@@ -39,10 +39,16 @@ export class Auth {
     terms: false
   };
 
+  recuperacaoData = {
+    email: '',
+    token: '',
+    novaSenha: '',
+    confirmarSenha: ''
+  };
 
-  alterarModo(modo: 'login' | 'registro'): void {
-    this.modo = modo;
 
+  alterarModo(novoModo: 'login' | 'registro' | 'recuperar'): void {
+    this.modo = novoModo;
     this.erro = '';
     this.mostrarSenha = false;
   }
@@ -65,7 +71,7 @@ export class Auth {
     }).subscribe({
       next: () => {
         this.carregando = false;
-        window.location.href = '/';
+        window.location.href = '/aplicacoes';
       },
 
       error: (erro) => {
@@ -112,7 +118,7 @@ export class Auth {
     this.authService.register(dados).subscribe({
       next: () => {
         this.carregando = false;
-        window.location.href = '/';
+        window.location.href = '/aplicacoes';
       },
 
       error: (erro) => {
@@ -121,6 +127,32 @@ export class Auth {
         this.erro =
           erro.error?.message ||
           'Não foi possível criar sua conta.';
+      }
+    });
+  }
+  solicitarRecuperacao(): void {
+    this.erro = '';
+
+    if (!this.recuperacaoData.email) {
+      this.alertaService.erroToast('Informe o seu e-mail.');
+      return;
+    }
+
+    this.carregando = true;
+
+
+    this.authService.solicitarRecuperacao(this.recuperacaoData.email).subscribe({
+      next: () => {
+        this.carregando = false;
+        this.alertaService.sucessoToast('E-mail de recuperação enviado com sucesso! Verifique sua caixa de entrada.');
+        this.alterarModo('login');
+        this.recuperacaoData.email = '';
+      },
+      error: (erro) => {
+        this.carregando = false;
+        const mensagem = erro.error?.message || 'Não foi possível enviar o e-mail de recuperação.';
+        this.alertaService.erroToast(mensagem);
+        this.erro = mensagem;
       }
     });
   }

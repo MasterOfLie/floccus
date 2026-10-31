@@ -30,9 +30,17 @@ public class AgenteController {
     }
 
     @GetMapping
-    public ResponseEntity<?> listarAgentes(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        return ResponseEntity.ok(agenteService.listarAgentes(pageable));
+    public ResponseEntity<?> listarAgentes(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+            @RequestParam(defaultValue = "true") boolean paginado, @RequestParam(defaultValue = "") String busca)
+    {
+        if (paginado) {
+            return ResponseEntity.ok(
+                    agenteService.listarAgentes(pageable, busca)
+            );
+        }
+        return ResponseEntity.ok(agenteService.listarAgentes());
     }
+
     @PutMapping("/{agenteId}")
     public ResponseEntity<?> atualizarAgente(@PathVariable String agenteId, @RequestBody AgenteDTO agenteDTO) throws Exception{
         return ResponseEntity.ok(agenteService.atualizarAgente(agenteId, agenteDTO));
@@ -53,5 +61,10 @@ public class AgenteController {
             @RequestBody AgenteMetricasDTO metricas) {
         agenteService.receberHeartbeat(id, metricas);
         return ResponseEntity.noContent().build();
+    }
+    @DeleteMapping("/{agenteId}")
+    public ResponseEntity<?> deletarAgente(@PathVariable String agenteId) throws Exception {
+        agenteService.deletarAgente(agenteId);
+        return ResponseEntity.accepted().build();
     }
 }

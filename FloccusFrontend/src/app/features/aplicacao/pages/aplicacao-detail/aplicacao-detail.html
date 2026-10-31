@@ -1,178 +1,504 @@
-<div class="card-container page">
-  <div class="page-header">
-    <div class="title-area">
-      <h1>{{aplicacao()?.nome || '...'}}</h1>
-    </div>
-
-    @if (aplicacao()) {
-    <div class="app-header-actions">
-      <button type="button" class="app-btn app-start" (click)="start()" title="Iniciar">
-        <i class="bi bi-play-fill"></i> <span>Iniciar</span>
-      </button>
-      <button type="button" class="app-btn app-restart" (click)="restart()" title="Reiniciar">
-        <i class="bi bi-arrow-clockwise"></i> <span>Reiniciar</span>
-      </button>
-      <button type="button" class="app-btn app-stop" (click)="stop()" title="Parar">
-        <i class="bi bi-stop-fill"></i> <span>Parar</span>
-      </button>
-
-      <div class="app-divider"></div>
-
-      <button type="button" class="app-btn app-console-btn" (click)="openConsole()"
-        [disabled]="!aplicacao()?.containerId">
-        <i class="bi" [class.bi-terminal]="!showConsole()" [class.bi-x-lg]="showConsole()"></i>
-        <span>{{ showConsole() ? 'Fechar' : 'Console' }}</span>
-      </button>
-
-      <button type="button" class="app-back-button" routerLink="/aplicacoes" title="Voltar">
-        <i class="bi bi-arrow-left"></i> <span>Voltar</span>
-      </button>
-    </div>
-    }
-  </div>
-
+<div class="container-card page">
   @if (loading()) {
   <div class="state-card">
     <div class="spinner"></div>
     <span>Carregando aplicação...</span>
   </div>
-  }
-  @else if (error()) {
+  } @else if (error()) {
   <div class="state-card error">
-    <div class="error-icon"><i class="bi bi-exclamation-triangle"></i></div>
+    <div class="error-icon">
+      <i class="bi bi-exclamation-triangle"></i>
+    </div>
     <div>
       <strong>Não foi possível carregar a aplicação</strong>
       <p>{{ error() }}</p>
     </div>
   </div>
-  }
-  @else if (aplicacao()) {
+  } @else if (aplicacao()) {
 
-  <div class="overview-grid premium-grid">
-    <div class="info-card status-card">
-      <span class="card-label">Estado do Servidor</span>
-      <div class="status-uptime-wrapper">
-        <div class="status-badge-large"
-          [class.running]="aplicacao()?.status === 'running' || aplicacao()?.status === 'online'">
-          <i class="bi"
-            [class.bi-check-circle-fill]="aplicacao()?.status === 'running' || aplicacao()?.status === 'online'"
-            [class.bi-x-circle-fill]="aplicacao()?.status !== 'running' && aplicacao()?.status !== 'online'"></i>
-          {{ aplicacao()?.status || 'Desconhecido' }}
-        </div>
-        <span class="time-value">Uptime: {{ aplicacao()?.tempoStatus || '-' }}</span>
-      </div>
-    </div>
+  <!-- CABEÇALHO -->
+  <header class="header">
+    <div class="header-title">
+      <h1>{{ aplicacao()?.nome || '...' }}</h1>
 
-    <div class="info-card chart-card">
-      <span class="card-label"><i class="bi bi-cpu"></i> Uso de CPU</span>
-      <div class="circular-chart">
-        <div class="circular-chart-inner">
-          <strong class="metric">{{ aplicacao()?.cpu || '-' }}</strong>
-        </div>
-      </div>
-    </div>
+      <div class="status-badge" [class.status-online]="!verificandoHeartbeat() && isOnline()"
+        [class.status-offline]="!verificandoHeartbeat() && !isOnline()"
+        [class.status-verificando]="verificandoHeartbeat()">
+        <div class="status-dot"></div>
 
-    <div class="info-card chart-card">
-      <span class="card-label"><i class="bi bi-memory"></i> Memória</span>
-      <div class="circular-chart">
-        <div class="circular-chart-inner">
-          <strong class="metric value-small">{{ aplicacao()?.memoria || '-' }}</strong>
-          <small class="limit-text">Lim: {{ aplicacao()?.memoriaLimite || '-' }}</small>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <details class="info-details">
-    <summary class="info-summary">
-      <div class="info-summary-left">
-        <i class="bi bi-info-circle"></i>
-        <span>Informações da Aplicação</span>
-      </div>
-      <i class="bi bi-chevron-down info-chevron"></i>
-    </summary>
-
-    <div class="details">
-      <div class="detail-item">
-        <span>Nome</span>
-        <strong>{{ aplicacao()?.nome || '-' }}</strong>
-      </div>
-      <div class="detail-item">
-        <span>ID da aplicação</span>
-        <div class="copy-cell">
-          <strong class="mono">{{ aplicacao()?.id || '-' }}</strong>
-        </div>
-      </div>
-      <div class="detail-item">
-        <span>Container ID</span>
-        <div class="copy-cell">
-          <strong class="mono">{{ aplicacao()?.containerId || '-' }}</strong>
-        </div>
-      </div>
-      <div class="detail-item">
-        <span>Imagem</span>
-        <strong class="mono">{{ aplicacao()?.imagem || '-' }}</strong>
-      </div>
-      <div class="detail-item">
-        <span>Tipo</span>
-        <strong>{{ aplicacao()?.tipo || '-' }}</strong>
-      </div>
-      <div class="detail-item">
-        <span>Agente</span>
-        <strong class="mono">{{ aplicacao()?.agenteId || '-' }}</strong>
-      </div>
-      <div class="detail-item">
-        <span>Porta (Container / Externa)</span>
-        <strong>{{ aplicacao()?.portaContainer || '-' }} <i class="bi bi-arrow-right text-muted"></i> {{
-          aplicacao()?.portaExterna || '-' }}</strong>
-      </div>
-      <div class="detail-item">
-        <span>Domínio</span>
-        <strong class="mono">{{ aplicacao()?.dominio || '-' }}</strong>
-      </div>
-      <div class="detail-item">
-        <span>Criado em</span>
-        <strong>{{ aplicacao()?.criadoEm || '-' }}</strong>
-      </div>
-      <div class="detail-item">
-        <span>Atualizado em</span>
-        <strong>{{ aplicacao()?.atualizadoEm || '-' }}</strong>
-      </div>
-    </div>
-  </details>
-
-  <section class="console-card">
-    <div class="terminal-area">
-      <div class="terminal-header">
-        <div class="terminal-title">
-          <div class="terminal-icon"><i class="bi bi-terminal"></i></div>
-          <div>
-            <h2>Console</h2>
-            <span>{{ showConsole() ? 'Saída em tempo real' : 'Console fechado' }}</span>
-          </div>
-        </div>
-        @if (showConsole()) {
-        <span class="live-indicator"><span></span> Ao vivo</span>
+        @if (verificandoHeartbeat()) {
+        Verificando...
+        } @else {
+        {{ aplicacao()?.status || 'OFFLINE' }}
         }
       </div>
-
-      @if (showConsole() && aplicacao()?.containerId) {
-      <div class="terminal-wrapper">
-        <app-terminal-logs [aplicacaoId]="aplicacao()!.id!"></app-terminal-logs>
-      </div>
-      } @else {
-      <div class="terminal-empty">
-        <div class="terminal-empty-icon"><i class="bi bi-terminal"></i></div>
-        <strong>Console fechado</strong>
-        <span>Abra o console para visualizar os logs.</span>
-        <button type="button" class="open-console-button" (click)="openConsole()"
-          [disabled]="!aplicacao()?.containerId">
-          <i class="bi bi-terminal"></i> Abrir console
-        </button>
-      </div>
-      }
     </div>
-  </section>
 
+    <!-- AÇÕES -->
+    <div class="action-group">
+      <button type="button" class="btn btn-primary" (click)="start()" [disabled]="isOnline()" title="Iniciar">
+        <i class="bi bi-play-fill"></i>
+        <span>Iniciar</span>
+      </button>
+
+      <button type="button" class="btn" (click)="restart()" [disabled]="!isOnline()" title="Reiniciar">
+        <i class="bi bi-arrow-clockwise"></i>
+        <span>Reiniciar</span>
+      </button>
+
+      <button type="button" class="btn" (click)="stop()" [disabled]="!isOnline()" title="Parar">
+        <i class="bi bi-stop-fill"></i>
+        <span>Parar</span>
+      </button>
+
+      <button type="button" class="btn" (click)="redeploy()" title="Redeploy">
+        <i class="bi bi-hammer"></i>
+        <span>Redeploy</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ABAS -->
+  <div class="tabs">
+    <input type="radio" name="dashboard-tabs" id="tab-overview" class="tab-inputs"
+      [checked]="!showConsole() && !showConfig()" (change)="showConsole.set(false); showConfig.set(false)">
+
+    <input type="radio" name="dashboard-tabs" id="tab-console" class="tab-inputs" [checked]="showConsole()"
+      (change)="showConsole.set(true); showConfig.set(false)">
+
+    <input type="radio" name="dashboard-tabs" id="tab-config" class="tab-inputs" [checked]="showConfig()"
+      (change)="showConfig.set(true); showConsole.set(false)">
+
+    <div class="tab-nav">
+      <label for="tab-overview" class="tab-label label-overview" [class.active]="!showConsole() && !showConfig()">
+        <i class="bi bi-grid"></i>
+        Visão Geral
+      </label>
+
+      <label for="tab-console" class="tab-label label-console" [class.active]="showConsole()">
+        <i class="bi bi-terminal"></i>
+        Console de Logs
+      </label>
+
+      <label for="tab-config" class="tab-label label-console" [class.active]="showConfig()">
+        <i class="bi bi-gear"></i>
+        Configurações
+      </label>
+    </div>
+
+    <!-- VISÃO GERAL -->
+    @if (!showConsole() && !showConfig()) {
+    <div class="tab-content">
+
+      <!-- MÉTRICAS -->
+      <div class="metrics-grid">
+
+        <!-- CPU -->
+        <div class="metric-item">
+          <div class="metric-label">Uso de CPU</div>
+
+          <div class="metric-value">
+            {{ aplicacao()?.cpu || '--' }}
+          </div>
+
+          <div class="metric-subtext">
+            Limite: {{ aplicacao()?.cpuLimite || '-' }} núcleo
+          </div>
+        </div>
+
+        <!-- MEMÓRIA -->
+        <div class="metric-item">
+          <div class="metric-label">Uso de Memória</div>
+
+          <div class="metric-value">
+            {{ aplicacao()?.memoria || '--' }}
+          </div>
+
+          <div class="metric-subtext">
+            Limite: {{ aplicacao()?.memoriaLimite || '-' }} MB
+          </div>
+        </div>
+
+      </div>
+
+      <!-- DETALHES -->
+      <div class="info-panel">
+        <h3>Detalhes da Instância</h3>
+
+        <div class="info-list">
+
+          <div class="info-list-item">
+            <span>Nome da Aplicação</span>
+            <span>{{ aplicacao()?.nome || '-' }}</span>
+          </div>
+
+          <div class="info-list-item">
+            <span>ID da Aplicação</span>
+            <span class="mono">{{ aplicacao()?.id || '-' }}</span>
+          </div>
+
+          <div class="info-list-item">
+            <span>Container ID</span>
+            <span class="mono">
+              {{ aplicacao()?.containerId || '-' }}
+            </span>
+          </div>
+
+          <div class="info-list-item">
+            <span>Imagem</span>
+            <span class="mono">{{ aplicacao()?.imagem || '-' }}</span>
+          </div>
+
+          <div class="info-list-item">
+            <span>Tipo</span>
+            <span>{{ aplicacao()?.tipo || '-' }}</span>
+          </div>
+
+          <div class="info-list-item">
+            <span>Agente</span>
+            <span class="mono">{{ aplicacao()?.nomeAgente || '-' }}</span>
+          </div>
+
+          <div class="info-list-item">
+            <span>Porta (Container / Externa)</span>
+            <span>
+              {{ aplicacao()?.portaContainer || '-' }}
+              <i class="bi bi-arrow-right"></i>
+              {{ aplicacao()?.portaExterna || '-' }}
+            </span>
+          </div>
+
+          <div class="info-list-item">
+            <span>Domínio</span>
+            <span class="mono">{{ aplicacao()?.dominio || '-' }}</span>
+          </div>
+
+          <div class="info-list-item">
+            <span>Criado em</span>
+            <span>{{ aplicacao()?.criadoEm || '-' }}</span>
+          </div>
+
+          <div class="info-list-item">
+            <span>Atualizado em</span>
+            <span>{{ aplicacao()?.atualizadoEm || '-' }}</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- CONSOLE DE LOGS -->
+    @if (showConsole()) {
+    <div class="tab-content">
+      <div class="terminal">
+
+        <div class="terminal-header">
+          <span>
+            {{
+            aplicacao()?.containerId
+            ? 'Conexão com o console em tempo real.'
+            : 'Conexão com o TTY fechada.'
+            }}
+          </span>
+
+          <span>
+            {{ aplicacao()?.containerId ? 'Ao vivo' : 'Offline' }}
+          </span>
+        </div>
+
+        @if (aplicacao()?.containerId) {
+        <div class="terminal-connected">
+          <app-terminal-logs [aplicacaoId]="aplicacao()!.id!"></app-terminal-logs>
+        </div>
+        } @else {
+        <div class="terminal-body">
+          <div class="icon">&gt;_</div>
+
+          <strong>O console está inativo.</strong>
+
+          <p>
+            Inicie a aplicação para visualizar os logs em tempo real.
+          </p>
+
+          <button type="button" class="btn console-connect-btn" (click)="openConsole()"
+            [disabled]="!aplicacao()?.containerId">
+            <i class="bi bi-terminal"></i>
+            Conectar Console
+          </button>
+        </div>
+        }
+
+      </div>
+    </div>
+    }
+    @if (showConfig()) {
+    <div class="config-layout-wrapper">
+      <!-- Menu Lateral de Configurações -->
+      <aside class="config-sidebar">
+        <nav class="config-nav">
+          <button type="button" class="nav-item" [class.active]="abaAtiva === 'geral'" (click)="abaAtiva = 'geral'">
+            <i class="bi bi-sliders"></i>
+            Geral e Recursos
+          </button>
+          <button type="button" class="nav-item" [class.active]="abaAtiva === 'variaveis'"
+            (click)="abaAtiva = 'variaveis'">
+            <i class="bi bi-key"></i>
+            Variáveis de Ambiente
+          </button>
+          <button type="button " class="nav-item btn-danger " (click)="excluirAplicacao()">
+            <i class="bi bi-trash"></i>
+            Excluir Aplicação
+          </button>
+        </nav>
+      </aside>
+
+      <!-- Conteúdo Principal das Configurações -->
+      <main class="config-content">
+
+        <!-- ABA 1: GERAL E RECURSOS (Formulário Original) -->
+        @if (abaAtiva === 'geral') {
+        <div class="card-container">
+          <div class="card-header">
+            <div class="header-titles">
+              <h2>Configurações da aplicação</h2>
+              <p>Gerencie as configurações e os recursos da sua aplicação.</p>
+            </div>
+          </div>
+
+          <form [formGroup]="formEdicao" (ngSubmit)="salvarConfiguracoes()">
+            <!-- Informações gerais -->
+            <div class="form-section-title">
+              <i class="bi bi-box"></i>
+              Informações gerais
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="nome">Nome da aplicação</label>
+                <input id="nome" type="text" formControlName="nome" placeholder="Minha aplicação">
+              </div>
+
+              <div class="form-group">
+                <label for="tipo">Tipo de aplicação</label>
+                <select id="tipo" formControlName="tipo">
+                  <option value="HTTP">HTTP</option>
+                  <option value="TCP">TCP</option>
+                  <option value="UDP">UDP</option>
+                </select>
+              </div>
+
+              <div class="form-group full">
+                <label for="imagem">Imagem Docker</label>
+                <input id="imagem" type="text" formControlName="imagem" placeholder="Ex.: node:22-alpine">
+                <span class="helper-text">
+                  Imagem utilizada para executar a aplicação no container.
+                </span>
+              </div>
+            </div>
+
+            <!-- Rede e conectividade -->
+            <div class="form-section-title">
+              <i class="bi bi-diagram-3"></i>
+              Rede e conectividade
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="portaContainer">Porta do container</label>
+                <input id="portaContainer" type="number" formControlName="portaContainer">
+              </div>
+
+              <div class="form-group">
+                <label for="portaExterna">Porta externa</label>
+                <input id="portaExterna" type="number" formControlName="portaExterna">
+              </div>
+
+              @if (formEdicao.get('tipo')?.value === 'HTTP') {
+              <div class="form-group full">
+                <label for="dominio">Domínio</label>
+                <input id="dominio" type="text" formControlName="dominio" placeholder="app.exemplo.com.br">
+              </div>
+              }
+
+              <div class="form-group">
+                <label for="redeId">Rede</label>
+                <input id="redeId" type="text" formControlName="redeId" readonly>
+              </div>
+
+              <div class="form-group">
+                <label for="agenteId">Agente</label>
+                <input id="agenteId" type="text" formControlName="agenteId" readonly>
+              </div>
+            </div>
+
+            <!-- Origem do código -->
+            <div class="form-section-title">
+              <i class="bi bi-git"></i>
+              Origem do código
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="repositorioId">Repositório</label>
+                <input id="repositorioId" type="text" formControlName="repositorioId" readonly>
+              </div>
+
+              <div class="form-group">
+                <label for="branch">Branch</label>
+                <input id="branch" type="text" formControlName="branch" readonly>
+              </div>
+
+              <div class="form-group">
+                <label for="linguagem">Linguagem</label>
+                <input id="linguagem" type="text" formControlName="linguagem">
+              </div>
+
+              <div class="form-group">
+                <label for="framework">Framework</label>
+                <input id="framework" type="text" formControlName="framework">
+              </div>
+
+              <div class="form-group">
+                <label for="runtime">Runtime</label>
+                <input id="runtime" type="text" formControlName="runtime">
+              </div>
+
+              <div class="form-group">
+                <label for="buildTool">Ferramenta de build</label>
+                <input id="buildTool" type="text" formControlName="buildTool">
+              </div>
+            </div>
+
+            <!-- Recursos -->
+            <div class="form-section-title">
+              <i class="bi bi-cpu"></i>
+              Recursos
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="memoriaLimite">Limite de memória (MB)</label>
+                <input id="memoriaLimite" type="number" formControlName="memoriaLimite" min="16">
+                <span class="helper-text">
+                  Quantidade máxima de memória disponível para o container.
+                </span>
+              </div>
+
+              <div class="form-group">
+                <label for="cpuLimite">Limite de CPU</label>
+                <input id="cpuLimite" type="number" formControlName="cpuLimite" min="1" step="1">
+                <span class="helper-text">
+                  Quantidade de CPUs que o container poderá utilizar.
+                </span>
+              </div>
+            </div>
+
+            <!-- Informações da instância -->
+            <div class="form-section-title">
+              <i class="bi bi-info-circle"></i>
+              Informações da instância
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="id">ID da aplicação</label>
+                <input id="id" type="text" [value]="aplicacao()?.id ?? ''" readonly>
+              </div>
+
+              <div class="form-group">
+                <label for="containerId">ID do container</label>
+                <input id="containerId" type="text" [value]="aplicacao()?.containerId ?? 'Não criado'" readonly>
+              </div>
+
+              <div class="form-group">
+                <label for="criadoEm">Criada em</label>
+                <input id="criadoEm" type="text" [value]="aplicacao()?.criadoEm ?? ''" readonly>
+              </div>
+
+              <div class="form-group">
+                <label for="atualizadoEm">Última atualização</label>
+                <input id="atualizadoEm" type="text" [value]="aplicacao()?.atualizadoEm ?? ''" readonly>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-criar"
+                [disabled]="formEdicao.invalid || salvando() || !formEdicao.dirty">
+                @if (salvando()) {
+                <i class="bi bi-arrow-repeat"></i> Salvando...
+                } @else {
+                <i class="bi bi-check-lg"></i> Salvar alterações
+                }
+              </button>
+            </div>
+          </form>
+        </div>
+        }
+
+        <!-- ABA 2: VARIÁVEIS DE AMBIENTE -->
+        @if (abaAtiva === 'variaveis') {
+        <div class="card-container">
+          <div class="card-header">
+            <div class="header-titles">
+              <h2>Variáveis de Ambiente</h2>
+              <p>Gerencie as chaves e valores injetados no container da aplicação.</p>
+            </div>
+          </div>
+
+          <form [formGroup]="formVariaveis" (ngSubmit)="salvarVariaveis()">
+            <div formArrayName="variaveis" class="variables-list">
+              @for (varCtrl of variaveisArray.controls; track varCtrl; let i = $index) {
+              <div [formGroupName]="i" class="variable-row">
+                <div class="form-group">
+                  <label>Chave</label>
+                  <input type="text" formControlName="chave" placeholder="EXEMPLO_CHAVE">
+                </div>
+
+                <div class="form-group">
+                  <label>Valor</label>
+                  <input [type]="varCtrl.get('secreta')?.value ? 'password' : 'text'" formControlName="valor"
+                    placeholder="valor_da_chave">
+                </div>
+
+                <div class="form-group checkbox-group">
+                  <label class="checkbox-label">
+                    <input type="checkbox" formControlName="secreta">
+                    Secreta
+                  </label>
+                </div>
+
+                <button type="button" class="btn-remover-var" (click)="removerVariavel(i)" title="Remover variável">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+              }
+            </div>
+
+            <div class="variables-actions-top">
+              <button type="button" class="btn-adicionar" (click)="adicionarVariavel()">
+                <i class="bi bi-plus-lg"></i> Adicionar Variável
+              </button>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-criar" [disabled]="salvandoVariaveis()">
+                @if (salvandoVariaveis()) {
+                <i class="bi bi-arrow-repeat"></i> Salvando variáveis...
+                } @else {
+                <i class="bi bi-check-lg"></i> Salvar Variáveis
+                }
+              </button>
+            </div>
+          </form>
+        </div>
+        }
+
+      </main>
+    </div>
+    }
+
+
+  </div>
   }
 </div>

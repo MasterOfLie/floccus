@@ -1,0 +1,288 @@
+<div class="card-container">
+    <header class="card-header">
+
+        <div class="header-titles">
+
+            <h2>Templates</h2>
+
+            <p>
+                Gerencie os templates utilizados pelo Floccus para realizar deploys.
+            </p>
+
+        </div>
+
+        <button type="button" class="btn-criar" (click)="novoTemplate()">
+            Novo template
+        </button>
+
+    </header>
+
+
+    <!-- CONTEÚDO -->
+    <div class="template-layout">
+
+        <!-- LISTA -->
+        <section class="template-list">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3>Templates cadastrados</h3>
+
+                    <p>
+                        {{ templates().length }} template(s)
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            @if (carregando()) {
+
+            <div class="empty-state">
+
+                <span>Carregando templates...</span>
+
+            </div>
+
+            } @else if (templates().length === 0) {
+
+            <div class="empty-state">
+
+                <strong>Nenhum template cadastrado</strong>
+
+                <span>
+                    Crie um template para começar a configurar os ambientes de deploy.
+                </span>
+
+            </div>
+
+            } @else {
+
+            <div class="template-items">
+
+                @for (template of templates(); track template.id) {
+
+                <article class="template-item" [class.selected]="templateSelecionado()?.id === template.id"
+                    (click)="editarTemplate(template)">
+
+                    <div class="template-item-content">
+
+                        <div class="template-icon">
+
+                            {{ template.linguagem.substring(0, 1).toUpperCase() }}
+
+                        </div>
+
+
+                        <div class="template-info">
+
+                            <strong>
+
+                                {{ template.linguagem }}
+
+                                @if (template.framework) {
+                                + {{ template.framework }}
+                                }
+
+                            </strong>
+
+                            <span>
+
+                                {{ template.runtime }}
+
+                                @if (template.versao) {
+                                · {{ template.versao }}
+                                }
+
+                            </span>
+
+                            @if (template.imagem) {
+
+                            <small class="template-image">
+
+                                <span class="image-label">
+                                    Imagem:
+                                </span>
+
+                                {{ template.imagem }}
+
+                            </small>
+
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <button type="button" class="btn-delete" title="Excluir"
+                        (click)="$event.stopPropagation(); excluirTemplate(template)">
+                        ×
+                    </button>
+
+                </article>
+
+                }
+
+            </div>
+
+            }
+
+        </section>
+
+
+        <!-- FORMULÁRIO -->
+        <section class="template-form">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3>
+                        {{ editando() ? 'Editar template' : 'Novo template' }}
+                    </h3>
+
+                    <p>
+                        Configure o ambiente utilizado durante o deploy.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form [formGroup]="formulario" (ngSubmit)="salvar()">
+
+                <div class="form-grid">
+
+                    <!-- LINGUAGEM -->
+                    <div class="form-group">
+
+                        <label>Linguagem</label>
+
+                        <input type="text" formControlName="linguagem" placeholder="Ex: Python">
+
+                    </div>
+
+
+                    <!-- FRAMEWORK -->
+                    <div class="form-group">
+
+                        <label>Framework</label>
+
+                        <input type="text" formControlName="framework" placeholder="Ex: Django">
+
+                    </div>
+
+
+                    <!-- IMAGEM -->
+                    <div class="form-group full">
+
+                        <label>Imagem Docker</label>
+
+                        <input type="text" formControlName="imagem" placeholder="Ex: python:3.12">
+
+                        <small class="helper-text">
+                            Imagem Docker utilizada para executar a aplicação.
+                        </small>
+
+                    </div>
+
+
+                    <!-- RUNTIME -->
+                    <div class="form-group">
+
+                        <label>Runtime</label>
+
+                        <input type="text" formControlName="runtime" placeholder="Ex: python:3.12">
+
+                    </div>
+
+
+                    <!-- BUILD TOOL -->
+                    <div class="form-group">
+
+                        <label>Build Tool</label>
+
+                        <input type="text" formControlName="buildTool" placeholder="Ex: pip">
+
+                    </div>
+
+
+                    <!-- VERSÃO -->
+                    <div class="form-group">
+
+                        <label>Versão</label>
+
+                        <input type="text" formControlName="versao" placeholder="Ex: 3.12">
+
+                    </div>
+
+
+                    <!-- BUILD COMMAND -->
+                    <div class="form-group full">
+
+                        <label>Comando de Build</label>
+
+                        <input type="text" formControlName="buildCommand"
+                            placeholder="Ex: pip install -r requirements.txt">
+
+                        <small class="helper-text">
+                            Comando executado para preparar a aplicação.
+                        </small>
+
+                    </div>
+
+
+                    <!-- START COMMAND -->
+                    <div class="form-group full">
+
+                        <label>Comando de Inicialização</label>
+
+                        <input type="text" formControlName="startCommand" placeholder="Ex: python app.py">
+
+                        <small class="helper-text">
+                            Comando utilizado para iniciar a aplicação.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- AÇÕES -->
+                <div class="form-actions">
+
+                    @if (editando()) {
+
+                    <button type="button" class="btn-cancelar" (click)="cancelarEdicao()">
+                        Cancelar
+                    </button>
+
+                    }
+
+                    <button type="submit" class="btn-criar" [disabled]="salvando() || formulario.invalid">
+
+                        @if (salvando()) {
+
+                        Salvando...
+
+                        } @else {
+
+                        {{ editando() ? 'Salvar alterações' : 'Criar template' }}
+
+                        }
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </div>
+</div>

@@ -19,6 +19,9 @@ export class Agentes implements OnInit {
   private router = inject(Router);
   pagina = signal(0);
 
+  loading = signal(true);
+
+  busca = signal('');
   tamanhoPagina = signal(10);
 
   agentes = signal<Agente[]>([]);
@@ -59,6 +62,8 @@ export class Agentes implements OnInit {
   }
   ngOnInit(): void {
     this.carregarAgentes();
+    this.loading.set(false);
+
   }
 
   abrirAgente(agente: Agente): void {
@@ -80,39 +85,36 @@ export class Agentes implements OnInit {
     this.agenteService
       .listar(
         this.pagina(),
-        this.tamanhoPagina()
+        this.tamanhoPagina(),
+        true,
+        this.busca()
       )
       .subscribe({
-
         next: (resposta) => {
-
-          this.agentes.set(
-            resposta.content
-          );
-
-          this.totalPaginas.set(
-            resposta.totalPages
-          );
-
-          this.totalElementos.set(
-            resposta.totalElements
-          );
-
+          this.agentes.set(resposta.content);
+          this.totalPaginas.set(resposta.totalPages);
+          this.totalElementos.set(resposta.totalElements);
           this.carregando.set(false);
-
         },
-
         error: (erro) => {
-
-          console.error(
-            'Erro ao carregar agentes:',
-            erro
-          );
-
+          console.error('Erro ao carregar agentes:', erro);
           this.carregando.set(false);
-
         }
-
       });
+  }
+  alterarBusca(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.busca.set(input.value);
+  }
+
+  pesquisarAgentes(): void {
+    this.pagina.set(0);
+    this.carregarAgentes();
+  }
+
+  limparBusca(): void {
+    this.busca.set('');
+    this.pagina.set(0);
+    this.carregarAgentes();
   }
 }

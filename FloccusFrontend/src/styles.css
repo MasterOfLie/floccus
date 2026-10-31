@@ -1,90 +1,38 @@
 @import 'xterm/css/xterm.css';
 @import "@ng-select/ng-select/themes/default.theme.css";
-
-/* =========================================================
-   FLOCCUS — DESIGN SYSTEM
-   ========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-
-    /* -----------------------------------------------------
-       BRAND
-       ----------------------------------------------------- */
-
-    --floccus-primary: #5352ed;
-    --floccus-primary-dark: #4645d8;
-    --floccus-primary-light: #efefff;
-
-
-    /* -----------------------------------------------------
-       BACKGROUND
-       ----------------------------------------------------- */
-
-    --floccus-background: #f6f7fb;
+    --floccus-primary: #18181b;
+    --floccus-primary-dark: #27272a;
+    --floccus-primary-light: #f4f4f5;
+    --floccus-background: #fcfcfc;
     --floccus-surface: #ffffff;
-    --floccus-surface-soft: #fafbff;
-
-
-    /* -----------------------------------------------------
-       TEXT
-       ----------------------------------------------------- */
-
-    --floccus-text: #20212c;
-    --floccus-text-secondary: #6d7080;
-    --floccus-text-muted: #9a9dab;
-
-
-    /* -----------------------------------------------------
-       BORDER
-       ----------------------------------------------------- */
-
-    --floccus-border: #e8e9ef;
-    --floccus-border-hover: #d4d5dd;
-
-
-    /* -----------------------------------------------------
-       STATUS
-       ----------------------------------------------------- */
-
-    --floccus-success: #20b486;
-    --floccus-success-light: #e8faf4;
-
-    --floccus-warning: #f0a43c;
-    --floccus-warning-light: #fff7e8;
-
-    --floccus-danger: #e05252;
-    --floccus-danger-light: #fff0f0;
-
-    --floccus-info: #4c9aff;
-    --floccus-info-light: #edf5ff;
-
-
-    /* -----------------------------------------------------
-       RADIUS
-       ----------------------------------------------------- */
-
-    --floccus-radius-sm: 8px;
-    --floccus-radius: 12px;
-    --floccus-radius-lg: 16px;
-
-
-    /* -----------------------------------------------------
-       SHADOW
-       ----------------------------------------------------- */
-
+    --floccus-surface-soft: #fafafa;
+    --floccus-text: #18181b;
+    --floccus-text-secondary: #71717a;
+    --floccus-text-muted: #a1a1aa;
+    --floccus-border: #e4e4e7;
+    --floccus-border-hover: #d4d4d8;
+    --floccus-success: #10b981;
+    --floccus-success-light: #d1fae5;
+    --floccus-warning: #f59e0b;
+    --floccus-warning-light: #fef3c7;
+    --floccus-danger: #ef4444;
+    --floccus-danger-light: #fef2f2;
+    --floccus-info: #3b82f6;
+    --floccus-info-light: #eff6ff;
+    --floccus-radius-sm: 4px;
+    --floccus-radius: 8px;
+    --floccus-radius-lg: 12px;
     --floccus-shadow:
-        0 2px 10px rgba(25, 30, 50, 0.035);
-
+        0 1px 3px rgba(0, 0, 0, 0.02),
+        0 1px 2px rgba(0, 0, 0, 0.01);
     --floccus-shadow-hover:
-        0 8px 25px rgba(25, 30, 50, 0.07);
-
-
-    /* -----------------------------------------------------
-       TYPOGRAPHY
-       ----------------------------------------------------- */
-
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 2px 4px -1px rgba(0, 0, 0, 0.03);
     --floccus-font-family:
-        Inter,
+        'Inter',
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
@@ -92,12 +40,8 @@
         Helvetica,
         Arial,
         sans-serif;
+    --floccus-font-mono: 'JetBrains Mono', monospace;
 }
-
-
-/* =========================================================
-   RESET GLOBAL
-   ========================================================= */
 
 * {
     box-sizing: border-box;
@@ -107,18 +51,14 @@ html,
 body {
     width: 100%;
     min-height: 100%;
-
     margin: 0;
     padding: 0;
 }
 
 body {
     background: var(--floccus-background);
-
     color: var(--floccus-text);
-
     font-family: var(--floccus-font-family);
-
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -130,40 +70,143 @@ select {
     font: inherit;
 }
 
+.floccus-swal-popup {
+    border: 1px solid var(--floccus-border) !important;
+    border-radius: var(--floccus-radius) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+    padding: 24px !important;
+    font-family: var(--floccus-font-family, 'Inter', sans-serif) !important;
+    max-width: 90% !important;
+}
 
-/* =========================================================
-   CARD CONTAINER
-   ========================================================= */
+.floccus-swal-title {
+    font-size: 1.15rem !important;
+    font-weight: 600 !important;
+    color: var(--floccus-text) !important;
+    padding: 0 !important;
+    margin-bottom: 6px !important;
+}
+
+.floccus-swal-text {
+    font-size: 0.875rem !important;
+    color: var(--floccus-text-secondary) !important;
+    margin: 0 !important;
+    line-height: 1.5 !important;
+}
+
+.floccus-swal-actions {
+    margin-top: 20px !important;
+    gap: 12px;
+}
+
+.swal-btn-custom {
+    margin: 0 !important;
+}
+
+.floccus-swal-icon {
+    border: none !important;
+    background: transparent !important;
+    margin: 0 auto 16px auto !important;
+    width: auto !important;
+    height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.floccus-swal-icon i {
+    font-size: 36px !important;
+}
+
+.swal2-popup.swal2-toast.floccus-toast-popup {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    width: auto !important;
+    max-width: 400px !important;
+    padding: 12px 16px !important;
+    background: var(--floccus-surface) !important;
+    border: 1px solid var(--floccus-border) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+    font-family: var(--floccus-font-family, 'Inter', sans-serif) !important;
+}
+
+.swal2-popup.swal2-toast .floccus-toast-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: auto !important;
+}
+
+.swal2-popup.swal2-toast .floccus-toast-icon i {
+    font-size: 20px !important;
+    line-height: 1 !important;
+}
+
+.swal2-popup.swal2-toast .floccus-toast-text {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0.875rem !important;
+    color: var(--floccus-text) !important;
+    font-weight: 500 !important;
+    text-align: left !important;
+    display: block !important;
+}
+
+.swal2-popup.swal2-toast .swal2-timer-progress-bar {
+    background-color: var(--floccus-border-hover) !important;
+    height: 3px !important;
+}
+
+.swal2-icon.swal2-success i {
+    color: var(--floccus-success) !important;
+}
+
+.swal2-icon.swal2-error i {
+    color: var(--floccus-danger) !important;
+}
+
+.swal2-icon.swal2-warning i {
+    color: var(--floccus-warning) !important;
+}
+
+.swal2-icon.swal2-success i {
+    color: var(--floccus-success) !important;
+}
+
+.swal2-icon.swal2-error i {
+    color: var(--floccus-danger) !important;
+}
+
+.swal2-icon.swal2-warning i {
+    color: var(--floccus-warning) !important;
+}
 
 .card-container {
     width: 100%;
     max-width: 100%;
-
     padding: 24px;
-
     background: var(--floccus-surface);
-
     border: 1px solid var(--floccus-border);
-
     border-radius: var(--floccus-radius);
-
     box-shadow: var(--floccus-shadow);
-
     color: var(--floccus-text);
 }
-
-
-/* =========================================================
-   CABEÇALHO DO CARD
-   ========================================================= */
 
 .card-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-
     gap: 20px;
-
     margin-bottom: 24px;
 }
 
@@ -173,50 +216,42 @@ select {
 
 .header-titles h2 {
     margin: 0 0 6px;
-
     color: var(--floccus-text);
-
-    font-size: 22px;
-    font-weight: 650;
-
+    font-size: 1.5rem;
+    font-weight: 600;
     line-height: 1.3;
-
     letter-spacing: -0.2px;
 }
 
 .header-titles p {
     margin: 0;
-
     color: var(--floccus-text-secondary);
-
-    font-size: 13px;
-
+    font-size: 0.875rem;
     line-height: 1.5;
 }
 
 .header-stats {
     flex-shrink: 0;
-
     color: var(--floccus-text-secondary);
-
-    font-size: 13px;
+    font-size: 0.875rem;
     font-weight: 500;
-
     text-align: right;
+    background: var(--floccus-surface);
+    border: 1px solid var(--floccus-border);
+    padding: 6px 12px;
+    border-radius: var(--floccus-radius-sm);
 }
 
-
-/* =========================================================
-   TOOLBAR
-   ========================================================= */
+.header-stats strong {
+    color: var(--floccus-text);
+    font-weight: 600;
+}
 
 .card-toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 16px;
-
     margin-bottom: 20px;
 }
 
@@ -224,188 +259,104 @@ select {
 .toolbar-filters {
     display: flex;
     align-items: center;
-
     gap: 10px;
 }
 
-
-/* =========================================================
-   BOTÕES
-   ========================================================= */
-
 .btn {
     min-height: 38px;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     gap: 8px;
-
-    padding: 8px 15px;
-
+    padding: 8px 16px;
     border: 1px solid transparent;
-
     border-radius: var(--floccus-radius-sm);
-
-    font-size: 13px;
-    font-weight: 600;
-
+    font-size: 0.875rem;
+    font-weight: 500;
     white-space: nowrap;
-
     cursor: pointer;
-
-    transition:
-        background-color 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease,
-        box-shadow 0.2s ease,
-        transform 0.1s ease;
+    transition: all 0.2s ease;
 }
-
-
-/* ---------------------------------------------------------
-   BOTÃO PRIMÁRIO
-   --------------------------------------------------------- */
 
 .btn-primary {
     background: var(--floccus-primary);
-
+    border-color: var(--floccus-primary);
     color: #ffffff;
 }
 
 .btn-primary:hover {
     background: var(--floccus-primary-dark);
-
-    box-shadow:
-        0 4px 12px rgba(83, 82, 237, 0.14);
+    border-color: var(--floccus-primary-dark);
 }
 
 .btn-primary:active {
     transform: translateY(1px);
 }
 
-
-/* ---------------------------------------------------------
-   BOTÃO SECUNDÁRIO
-   --------------------------------------------------------- */
-
 .btn-secondary {
     background: var(--floccus-surface);
-
     border-color: var(--floccus-border);
-
     color: var(--floccus-text);
 }
 
 .btn-secondary:hover {
-    background: var(--floccus-surface-soft);
-
+    background: var(--floccus-primary-light);
     border-color: var(--floccus-border-hover);
 }
 
-
-/* =========================================================
-   TABELA RESPONSIVA
-   ========================================================= */
-
 .table-responsive {
     width: 100%;
-
     overflow-x: auto;
-
     -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius);
 }
-
-
-/* =========================================================
-   TEXTO SECUNDÁRIO
-   ========================================================= */
 
 .text-muted {
     color: var(--floccus-text-secondary);
 }
 
-
-/* =========================================================
-   AÇÕES
-   ========================================================= */
-
 .action-buttons {
     display: flex;
     align-items: center;
     justify-content: center;
-
     gap: 5px;
 }
 
-
-/* =========================================================
-   BOTÃO DE AÇÃO
-   ========================================================= */
-
 .btn-action {
     position: relative;
-
     width: 32px;
     height: 32px;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     padding: 0;
-
-    border: none;
-
-    border-radius: 7px;
-
+    border: 1px solid transparent;
+    border-radius: var(--floccus-radius-sm);
     background: transparent;
-
     cursor: pointer;
-
-    transition:
-        background-color 0.2s ease,
-        transform 0.1s ease;
+    transition: all 0.2s ease;
 }
 
-
-/* ---------------------------------------------------------
-   ÍCONE
-   --------------------------------------------------------- */
-
 .btn-action i {
-    color: var(--floccus-primary);
-
+    color: var(--floccus-text-secondary);
     font-size: 15px;
-
     line-height: 1;
-
     transition: color 0.2s ease;
 }
 
-
-/* ---------------------------------------------------------
-   HOVER
-   --------------------------------------------------------- */
-
 .btn-action:hover {
     background: var(--floccus-primary-light);
+    border-color: var(--floccus-border);
 }
 
-
-/* ---------------------------------------------------------
-   ACTIVE
-   --------------------------------------------------------- */
+.btn-action:hover i {
+    color: var(--floccus-text);
+}
 
 .btn-action:active {
     transform: scale(0.96);
 }
-
-
-/* ---------------------------------------------------------
-   DESTRUTIVO
-   --------------------------------------------------------- */
 
 .btn-action.btn-danger i {
     color: var(--floccus-danger);
@@ -413,85 +364,128 @@ select {
 
 .btn-action.btn-danger:hover {
     background: var(--floccus-danger-light);
+    border-color: #fecaca;
 }
 
-
-/* ---------------------------------------------------------
-   FOCUS
-   --------------------------------------------------------- */
-
 .btn-action:focus-visible {
-    outline: 2px solid rgba(83, 82, 237, 0.25);
-
+    outline: 2px solid var(--floccus-border-hover);
     outline-offset: 2px;
 }
 
-
-/* =========================================================
-   TOOLTIP
-   ========================================================= */
-
 .btn-action[data-tooltip]::after {
     content: attr(data-tooltip);
-
     position: absolute;
-
     bottom: calc(100% + 8px);
     left: 50%;
-
-    transform:
-        translateX(-50%) translateY(4px);
-
+    transform: translateX(-50%) translateY(4px);
     padding: 6px 8px;
-
     background: var(--floccus-text);
-
     color: #ffffff;
-
-    border-radius: 6px;
-
-    font-size: 11px;
+    border-radius: 4px;
+    font-size: 0.75rem;
     font-weight: 500;
-
     line-height: 1;
-
     white-space: nowrap;
-
     opacity: 0;
     visibility: hidden;
-
     pointer-events: none;
-
-    transition:
-        opacity 0.15s ease,
-        transform 0.15s ease;
-
+    transition: opacity 0.15s ease, transform 0.15s ease;
     z-index: 1000;
 }
 
 .btn-action[data-tooltip]:hover::after {
     opacity: 1;
-
     visibility: visible;
-
-    transform:
-        translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(0);
 }
 
 
-/* =========================================================
-   RESPONSIVO — TABLET
-   ========================================================= */
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+    min-width: 240px;
+    padding: 3px 4px 3px 10px;
+    background: var(--floccus-surface);
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius-sm);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-box:focus-within {
+    border-color: var(--floccus-border-hover);
+    box-shadow: 0 0 0 2px rgb(24 24 27 / 5%);
+}
+
+.search-box>i {
+    flex-shrink: 0;
+    color: var(--floccus-text-muted);
+    font-size: 14px;
+}
+
+.search-box input {
+    flex: 1;
+    width: 150px;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--floccus-text);
+    font: inherit;
+    font-size: 0.8125rem;
+}
+
+.search-box input::placeholder {
+    color: var(--floccus-text-muted);
+}
+
+.btn-clear-search {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    border-radius: var(--floccus-radius-sm);
+    background: transparent;
+    color: var(--floccus-text-muted);
+    cursor: pointer;
+}
+
+.btn-clear-search:hover {
+    background: var(--floccus-primary-light);
+    color: var(--floccus-text);
+}
+
+.search-box .btn {
+    min-height: 28px;
+    padding: 4px 10px;
+    font-size: 0.8125rem;
+}
+
+@media (max-width: 600px) {
+    .search-box {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .search-box input {
+        width: auto;
+    }
+}
 
 @media (max-width: 768px) {
-
     .card-container {
         padding: 20px;
     }
 
     .card-header {
         flex-direction: column;
-
         gap: 12px;
     }
 
@@ -509,17 +503,10 @@ select {
     }
 }
 
-
-/* =========================================================
-   RESPONSIVO — CELULAR
-   ========================================================= */
-
 @media (max-width: 600px) {
-
     .card-container {
         padding: 16px;
-
-        border-radius: var(--floccus-radius-sm);
+        border-radius: var(--floccus-radius);
     }
 
     .card-header {
@@ -527,24 +514,21 @@ select {
     }
 
     .header-titles h2 {
-        font-size: 20px;
+        font-size: 1.25rem;
     }
 
     .header-titles p {
-        font-size: 12px;
-
+        font-size: 0.75rem;
         line-height: 1.5;
     }
 
     .header-stats {
-        font-size: 12px;
+        font-size: 0.75rem;
     }
 
     .card-toolbar {
         flex-direction: column;
-
         align-items: stretch;
-
         gap: 10px;
     }
 
@@ -556,26 +540,19 @@ select {
     .toolbar-actions .btn,
     .toolbar-filters .btn {
         flex: 1;
-
         width: 100%;
     }
 
     .table-responsive {
         width: calc(100% + 32px);
-
         margin: 0 -16px;
-
-        padding: 0 16px;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
     }
 }
 
-
-/* =========================================================
-   RESPONSIVO — CELULARES PEQUENOS
-   ========================================================= */
-
 @media (max-width: 400px) {
-
     .card-container {
         padding: 12px;
     }
@@ -583,22 +560,17 @@ select {
     .toolbar-actions,
     .toolbar-filters {
         flex-direction: column;
-
         width: 100%;
     }
 
     .toolbar-actions .btn,
     .toolbar-filters .btn {
         width: 100%;
-
         flex: none;
     }
 
     .table-responsive {
         width: calc(100% + 24px);
-
         margin: 0 -12px;
-
-        padding: 0 12px;
     }
 }

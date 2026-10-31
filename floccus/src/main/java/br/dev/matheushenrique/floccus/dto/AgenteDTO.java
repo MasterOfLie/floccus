@@ -3,6 +3,7 @@ package br.dev.matheushenrique.floccus.dto;
 import br.dev.matheushenrique.floccus.models.Agente;
 
 public record AgenteDTO(
+        String nome,
         String id,
         String ipAgente,
         int portaAgente,
@@ -13,6 +14,7 @@ public record AgenteDTO(
 ) {
     public AgenteDTO(Agente agente) {
         this(
+                agente.getNome(),
                 String.valueOf(agente.getId()), // ou agente.getId().toString()
                 agente.getIpAgente(),
                 agente.getPortaAgente(),

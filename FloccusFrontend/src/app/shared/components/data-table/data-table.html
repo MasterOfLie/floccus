@@ -41,13 +41,14 @@
             <thead>
                 <tr>
 
-                    @for (column of columns(); track column.key) {
 
-                    <th>
+                    @for (column of columns(); track column.key) {
+                    <th [style.width]="column.width">
                         {{ column.label }}
                     </th>
-
                     }
+
+
 
                 </tr>
             </thead>
@@ -59,22 +60,17 @@
                 <tr>
 
                     @for (column of columns(); track column.key) {
-
-                    <td>
+                    <td [style.width]="column.width">
 
                         @if (column.template) {
-
                         <ng-container *ngTemplateOutlet="column.template; context: { $implicit: item }" />
-
                         }
-
                         @else {
-
                         {{ valorLinha(item, column) }}
-
                         }
 
                     </td>
+
 
                     }
 

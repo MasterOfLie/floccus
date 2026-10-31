@@ -8,5 +8,6 @@ public interface AuthService {
 
     AuthResponseDTO registrarConta(RegisterRequestDTO registerRequestDTO);
     AuthResponseDTO login(LoginRequestDTO loginRequestDTO);
-
+    void solicitarRecuperacao(String email);
+    void redefinirSenha(String token, String novaSenha);
 }

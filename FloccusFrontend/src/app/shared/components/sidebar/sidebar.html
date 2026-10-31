@@ -10,11 +10,11 @@
 
             @if (collapsed()) {
 
-            <img src="/logo-icon.png" alt="Logo" class="logo-icon">
+            <img src="/logo-icon.png" alt="Floccus" class="logo-icon">
 
             } @else {
 
-            <img src="/logo-full.png" alt="Meu Sistema" class="logo-full">
+            <img src="/logo-color.png" alt="Floccus" class="logo-full">
 
             }
 
@@ -30,8 +30,8 @@
         @for (item of menuItems; track item.route) {
 
         <a [routerLink]="item.route" routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: item.exact ?? false }" class="navigation-item">
-
+            [routerLinkActiveOptions]="{ exact: item.exact ?? false }" class="navigation-item"
+            (mouseenter)="showTooltip($event, item.label)" (mouseleave)="hideTooltip()">
             <span class="icon">
                 <i [class]="'bi ' + item.icon"></i>
             </span>
@@ -41,38 +41,15 @@
                 {{ item.label }}
             </span>
             }
-
         </a>
 
         }
 
     </nav>
 
-
-    <!-- USUÁRIO -->
-
-    <!-- <div class="sidebar-footer">
-
-        <div class="user-avatar">
-            M
-        </div>
-
-        @if (!collapsed()) {
-
-        <div class="user-info">
-
-            <strong>
-                Matheus
-            </strong>
-
-            <span>
-                Administrador
-            </span>
-
-        </div>
-
-        }
-
-    </div> -->
-
+    @if (tooltipVisible()) {
+    <div class="sidebar-tooltip" [style.top.px]="tooltipY()">
+        {{ tooltipText() }}
+    </div>
+    }
 </aside>

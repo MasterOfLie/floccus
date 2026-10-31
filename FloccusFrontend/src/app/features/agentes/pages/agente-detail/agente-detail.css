@@ -1,171 +1,221 @@
-@import 'xterm/css/xterm.css';
-@import "@ng-select/ng-select/themes/default.theme.css";
-
-/* =========================================================
-   BASE E CABEÇALHO
-   ========================================================= */
+/* ========================================================= PAGE ========================================================= */
 .page {
     width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
-.page-header {
+/* ========================================================= HEADER ========================================================= */
+.header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin-bottom: 24px;
-}
-
-.page-header h1 {
-    margin: 0;
-    font-size: 24px;
-    font-weight: 650;
-    color: var(--floccus-text);
-    letter-spacing: -0.2px;
-}
-
-.page-header p {
-    margin: 6px 0 0;
-    color: var(--floccus-text-secondary);
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-.text-muted {
-    color: var(--floccus-text-secondary);
-}
-
-/* =========================================================
-   GRID PRINCIPAL E CARDS
-   ========================================================= */
-.detail-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr);
-    gap: 16px;
-    align-items: start;
-}
-
-.left-column {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.status-card,
-.config-card,
-.form-card {
-    background: var(--floccus-surface);
-    border: 1px solid var(--floccus-border);
-    border-radius: var(--floccus-radius);
-    box-shadow: var(--floccus-shadow);
-    overflow: hidden;
-}
-
-.card-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 20px;
-    border-bottom: 1px solid var(--floccus-border);
-}
-
-.card-header h2 {
-    margin: 0;
-    color: var(--floccus-text);
-    font-size: 16px;
-    font-weight: 650;
-}
-
-.card-header p {
-    margin: 5px 0 0;
-    color: var(--floccus-text-muted);
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-/* =========================================================
-   MÉTRICAS E STATUS (Online + Uptime)
-   ========================================================= */
-.status-uptime-wrapper {
-    display: flex;
-    flex-direction: column;
     align-items: flex-end;
-    gap: 4px;
+    gap: 24px;
+    margin-bottom: 2rem;
 }
 
-.status-badge-large {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
-    border-radius: 9999px;
-    font-size: 14px;
+.header-title {
+    min-width: 0;
+}
+
+.header-title h1 {
+    margin: 0 0 0.5rem;
+    color: var(--floccus-text);
+    font-size: 1.5rem;
     font-weight: 600;
 }
 
-.status-badge-large.online {
-    background: var(--floccus-success-light);
-    color: var(--floccus-success);
-    border: 1px solid var(--floccus-success);
-}
-
-.status-badge-large.offline {
-    background: var(--floccus-danger-light);
-    color: var(--floccus-danger);
-    border: 1px solid var(--floccus-danger);
-}
-
-.uptime-text {
-    font-size: 12px;
+.header-subtitle {
+    margin: 0;
     color: var(--floccus-text-secondary);
-    font-weight: 500;
+    font-size: 0.875rem;
 }
 
+/* ========================================================= STATUS ========================================================= */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    background: #fef2f2;
+    color: #ef4444;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #ef4444;
+}
+
+.status-badge.status-online {
+    border-color: #a7f3d0;
+    background: #ecfdf5;
+    color: #10b981;
+}
+
+.status-badge.status-online .status-dot {
+    background: #10b981;
+}
+
+/* ========================================================= ACTIONS ========================================================= */
+.action-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px;
+    background: var(--floccus-surface);
+    border: 1px solid var(--floccus-border);
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 8px 14px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--floccus-text);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:hover:not(:disabled) {
+    background: #f4f4f5;
+}
+
+.btn-primary {
+    background: var(--floccus-text);
+    color: #ffffff;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #27272a;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ========================================================= TABS ========================================================= */
+.tabs {
+    overflow: hidden;
+    background: var(--floccus-surface);
+    border: 1px solid var(--floccus-border);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.tab-inputs {
+    display: none;
+}
+
+.tab-nav {
+    display: flex;
+    background: #fafafa;
+    border-bottom: 1px solid var(--floccus-border);
+}
+
+.tab-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 1rem 1.5rem;
+    border-bottom: 2px solid transparent;
+    color: var(--floccus-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.tab-label:hover {
+    color: var(--floccus-text);
+}
+
+#tab-overview:checked~.tab-nav .label-overview,
+#tab-settings:checked~.tab-nav .label-settings {
+    background: var(--floccus-surface);
+    border-bottom-color: var(--floccus-text);
+    color: var(--floccus-text);
+}
+
+.tab-content {
+    display: none;
+    padding: 2rem;
+}
+
+#tab-overview:checked~#content-overview {
+    display: block;
+}
+
+#tab-settings:checked~#content-settings {
+    display: block;
+}
+
+/* ========================================================= METRICS ========================================================= */
 .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
-    padding: 0 20px 20px 20px;
-    box-sizing: border-box;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .metric-item {
     min-width: 0;
+    padding: 1.5rem 1.25rem;
+    background: var(--floccus-surface);
+    border: 1px solid var(--floccus-border);
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 16px;
-    background: var(--floccus-surface-soft);
-    border: 1px solid var(--floccus-border);
-    border-radius: var(--floccus-radius-sm);
-    box-sizing: border-box;
-    min-height: 160px;
+    justify-content: space-between;
 }
 
 .metric-label {
-    font-size: 12px;
+    margin-bottom: 0.5rem;
     color: var(--floccus-text-secondary);
+    font-size: 0.8rem;
     font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-/* =========================================================
-   GRÁFICO DE CPU
-   ========================================================= */
-.cpu-chart-item {
-    grid-column: span 1;
+.metric-value {
+    overflow: hidden;
+    color: var(--floccus-text);
+    font-size: 1.75rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: auto 0;
+}
+
+.metric-subtext {
+    margin-top: 0.25rem;
+    color: var(--floccus-text-secondary);
+    font-size: 0.75rem;
 }
 
 .cpu-chart-container {
-    position: relative;
     width: 100%;
-    height: 100px;
-    margin: 4px 0 0 0;
+    height: 140px;
+    margin-top: auto;
+    padding-top: 10px;
 }
 
 .cpu-chart-container canvas {
@@ -173,155 +223,80 @@
     height: 100% !important;
 }
 
-.cpu-current-value {
-    font-size: 18px;
-    font-weight: 650;
-    color: var(--floccus-text);
-}
-
-/* =========================================================
-   GRÁFICOS CIRCULARES (RAM E DISCO)
-   ========================================================= */
-.circular-chart {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin: 12px auto;
+/* ========================================================= TERMINAL / YAML ========================================================= */
+.terminal {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+    flex-direction: column;
+    overflow: hidden;
+    background: #09090b;
+    border-radius: 8px;
+    border: 1px solid var(--floccus-border);
 }
 
-.circular-chart-inner {
-    width: 84px;
-    height: 84px;
-    background-color: var(--floccus-surface-soft);
-    border-radius: 50%;
+.terminal-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    text-align: center;
+    padding: 0.75rem 1.25rem;
+    background: #18181b;
+    border-bottom: 1px solid #27272a;
+    color: #71717a;
+    font-family: monospace;
+    font-size: 0.8rem;
 }
 
-.circular-chart-inner .metric-value {
-    font-size: 18px;
-    margin: 0;
-    font-weight: 650;
-    color: var(--floccus-text);
-}
-
-.circular-chart-inner .value-small {
-    font-size: 13px;
-    line-height: 1.2;
-    font-weight: 650;
-    color: var(--floccus-text);
-}
-
-.circular-chart-inner small {
-    font-size: 10px;
-    color: var(--floccus-text-secondary);
-    font-weight: 500;
-}
-
-/* =========================================================
-   YAML E COPIAR
-   ========================================================= */
-.yaml-container {
-    padding: 20px;
-    background: var(--floccus-text);
+.terminal-body {
+    padding: 1.5rem;
     overflow-x: auto;
+    color: #d4d4d8;
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
 }
 
-.yaml-container pre {
+.terminal-body pre {
     margin: 0;
-    color: var(--floccus-border);
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
-    font-size: 13px;
-    line-height: 1.7;
-    white-space: pre;
 }
 
-.yaml-container code {
-    font-family: inherit;
-}
-
-.copy-button {
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    border: 0;
-    border-radius: 7px;
-    background: var(--floccus-primary);
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.copy-button:hover {
-    background: var(--floccus-primary-dark);
-}
-
-/* =========================================================
-   FORMULÁRIOS
-   ========================================================= */
-.form-card form {
-    padding: 16px;
-}
-
+/* ========================================================= FORMULÁRIOS ========================================================= */
 .form-section {
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px dashed var(--floccus-border);
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--floccus-border);
 }
 
-.form-section:last-of-type {
+.form-section:last-child {
     border-bottom: none;
-    margin-bottom: 0;
     padding-bottom: 0;
+    margin-bottom: 0;
 }
 
 .section-title {
-    font-size: 14px;
-    font-weight: 650;
+    font-size: 0.95rem;
+    font-weight: 600;
     color: var(--floccus-text);
-    margin: 0 0 12px 0;
+    margin: 0 0 1.25rem 0;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.section-title i {
-    color: var(--floccus-primary);
-}
-
 .form-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
-.form-section .form-row:last-of-type {
+.form-row:last-child {
     margin-bottom: 0;
-}
-
-.flex-1 {
-    flex: 1;
-}
-
-.flex-2 {
-    flex: 2;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    margin-bottom: 12px;
+    gap: 6px;
+    margin-bottom: 1.25rem;
 }
 
 .form-row .form-group {
@@ -329,167 +304,93 @@
 }
 
 .form-group label {
-    color: var(--floccus-text);
-    font-size: 13px;
+    font-size: 0.8rem;
     font-weight: 500;
+    color: var(--floccus-text-secondary);
 }
 
-.form-group input {
-    width: 100%;
-    height: 40px;
-    padding: 0 12px;
+.form-control {
+    padding: 0.6rem 0.8rem;
     border: 1px solid var(--floccus-border);
-    border-radius: var(--floccus-radius-sm);
+    border-radius: 6px;
     background: var(--floccus-surface);
     color: var(--floccus-text);
-    font-size: 13px;
+    font-size: 0.875rem;
+    font-family: inherit;
     outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: border-color 0.2s;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.form-group input:hover {
-    border-color: var(--floccus-border-hover);
+.form-control:focus {
+    border-color: var(--floccus-text);
 }
 
-.form-group input:focus {
-    border-color: var(--floccus-primary);
-    box-shadow: 0 0 0 3px rgba(83, 82, 237, 0.1);
-}
-
-.form-group input:read-only {
-    background: var(--floccus-surface-soft);
+.form-control[readonly] {
+    background: #fafafa;
     color: var(--floccus-text-secondary);
     cursor: not-allowed;
 }
 
 .input-hint {
-    color: var(--floccus-text-muted);
-    font-size: 11px;
-    margin-top: 4px;
+    font-size: 0.75rem;
+    color: var(--floccus-text-secondary);
+    margin-top: 0.25rem;
 }
 
-/* =========================================================
-   GRUPOS DE AÇÃO NOS INPUTS
-   ========================================================= */
-.input-with-icon,
-.input-action-group {
-    position: relative;
+.input-group {
     display: flex;
-    align-items: center;
     width: 100%;
 }
 
-.input-with-icon input {
-    padding-right: 36px;
-}
-
-.input-with-icon i {
-    position: absolute;
-    right: 12px;
-    font-size: 16px;
-}
-
-.input-action-group input {
+.input-group .form-control {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     border-right: none;
 }
 
-.btn-action-input {
-    height: 40px;
-    padding: 0 16px;
+.input-group .btn {
     border: 1px solid var(--floccus-border);
-    background: var(--floccus-surface-soft);
-    border-top-right-radius: var(--floccus-radius-sm);
-    border-bottom-right-radius: var(--floccus-radius-sm);
-    cursor: pointer;
-    color: var(--floccus-primary);
-    transition: all 0.2s;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    background: #fafafa;
 }
 
-.btn-action-input:hover {
-    background: var(--floccus-primary-light);
-    border-color: var(--floccus-border-hover);
+.input-group .btn:hover:not(:disabled) {
+    background: #f4f4f5;
 }
 
-/* =========================================================
-   BOTÕES E LOADING
-   ========================================================= */
 .form-actions {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    margin-top: 16px;
-    padding-top: 16px;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
     border-top: 1px solid var(--floccus-border);
 }
 
-.btn-secondary,
-.btn-primary {
-    height: 40px;
-    padding: 0 16px;
-    border-radius: var(--floccus-radius-sm);
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn-secondary {
-    border: 1px solid var(--floccus-border);
-    background: var(--floccus-surface);
-    color: var(--floccus-text);
-    transition: background 0.2s, border-color 0.2s;
-}
-
-.btn-secondary:hover {
-    background: var(--floccus-surface-soft);
-    border-color: var(--floccus-border-hover);
-}
-
-.btn-primary {
-    border: 0;
-    background: var(--floccus-primary);
-    color: #ffffff;
-    transition: background 0.2s, box-shadow 0.2s;
-}
-
-.btn-primary:hover:not(:disabled) {
-    background: var(--floccus-primary-dark);
-    box-shadow: 0 4px 12px rgba(83, 82, 237, 0.14);
-}
-
-.btn-primary:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.loading {
-    padding: 40px;
-    text-align: center;
-    color: var(--floccus-text-secondary);
-    font-size: 14px;
+/* ========================================================= STATE ========================================================= */
+.state-card {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 10px;
+    min-height: 140px;
+    background: var(--floccus-surface);
+    border: 1px solid var(--floccus-border);
+    border-radius: 8px;
+    color: var(--floccus-text-secondary);
+    font-size: 13px;
 }
 
 .spinner {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    border: 2px solid rgba(109, 112, 128, 0.3);
-    border-top-color: currentColor;
+    width: 15px;
+    height: 15px;
+    border: 2px solid var(--floccus-border);
+    border-top-color: var(--floccus-text);
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
-}
-
-.btn-primary .spinner {
-    border-color: rgba(255, 255, 255, 0.4);
-    border-top-color: #ffffff;
 }
 
 @keyframes spin {
@@ -498,76 +399,40 @@
     }
 }
 
-/* =========================================================
-   RESPONSIVO
-   ========================================================= */
-@media (max-width: 1000px) {
-    .detail-grid {
-        grid-template-columns: minmax(0, 1fr);
-        width: 100%;
-    }
+.btn-danger {
+    background: var(--floccus-danger);
+    color: #ffffff;
+    border-color: var(--floccus-danger);
 }
 
-/* =========================================================
-   CELULAR
-   ========================================================= */
-@media (max-width: 600px) {
-    .page {
-        box-sizing: border-box;
-        overflow-x: hidden;
-    }
+.btn-danger:hover {
+    background: var(--floccus-danger-light);
+    border-color: var(--floccus-danger-light);
+    color: var(--floccus-text);
+}
 
-    .page-header {
+/* ========================================================= RESPONSIVE ========================================================= */
+@media (max-width: 768px) {
+    .header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 16px;
+        gap: 1.5rem;
     }
 
-    .page-header h1 {
-        font-size: 20px;
-        overflow-wrap: anywhere;
+    .action-group {
+        width: 100%;
     }
 
-    .card-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .status-uptime-wrapper {
-        align-items: flex-start;
-        margin-top: 8px;
-    }
-
-    .metrics-grid {
-        grid-template-columns: 1fr;
+    .btn {
+        flex: 1;
     }
 
     .form-row {
-        flex-direction: column;
-        gap: 0;
-        margin-bottom: 0;
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
     }
 
-    .form-row .form-group {
-        margin-bottom: 18px;
-    }
-
-    .form-section .form-row:last-of-type .form-group:last-of-type {
-        margin-bottom: 0;
-    }
-
-    .form-actions {
-        flex-direction: column-reverse;
-    }
-
-    .btn-secondary,
-    .btn-primary {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .copy-button {
-        width: 100%;
-        justify-content: center;
+    .tab-content {
+        padding: 1.25rem;
     }
 }

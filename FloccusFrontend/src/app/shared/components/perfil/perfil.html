@@ -1,0 +1,118 @@
+@if (visible) {
+<div class="perfil-modal-overlay" (click)="fechar()" (keydown.escape)="fechar()">
+    <section class="perfil-modal" role="dialog" aria-modal="true" aria-labelledby="perfil-modal-title"
+        (click)="$event.stopPropagation()">
+        <header class="perfil-modal-header">
+            <div class="perfil-modal-heading">
+                <div class="perfil-modal-icon">
+                    <i class="bi bi-person-gear"></i>
+                </div>
+
+                <div>
+                    <h2 id="perfil-modal-title">Editar perfil</h2>
+                    <p>Atualize suas informações pessoais.</p>
+                </div>
+            </div>
+
+            <button type="button" class="perfil-modal-close" aria-label="Fechar" [disabled]="salvando()"
+                (click)="fechar()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </header>
+
+        <form [formGroup]="form" (ngSubmit)="salvar()">
+            <div class="perfil-modal-body">
+                @if (carregando()) {
+                <div class="perfil-modal-loading">
+                    <span class="perfil-spinner"></span>
+                    <span>Carregando perfil...</span>
+                </div>
+                } @else {
+                @if (erro()) {
+                <div class="perfil-feedback perfil-feedback-error" role="alert">
+                    <i class="bi bi-exclamation-circle"></i>
+                    {{ erro() }}
+                </div>
+                }
+
+                <div class="perfil-field">
+                    <label for="perfil-nome">Nome completo</label>
+
+                    <div class="perfil-input-wrapper">
+                        <i class="bi bi-person"></i>
+                        <input id="perfil-nome" type="text" formControlName="nome" placeholder="Seu nome"
+                            autocomplete="name" maxlength="150" />
+                    </div>
+
+                    @if (form.controls.nome.touched && form.controls.nome.invalid) {
+                    <span class="perfil-field-error">
+                        Informe seu nome.
+                    </span>
+                    }
+                </div>
+
+                <div class="perfil-field">
+                    <label for="perfil-email">E-mail</label>
+
+                    <div class="perfil-input-wrapper">
+                        <i class="bi bi-envelope"></i>
+                        <input id="perfil-email" type="email" formControlName="email" placeholder="seu@email.com"
+                            autocomplete="email" />
+                    </div>
+
+                    @if (form.controls.email.touched && form.controls.email.invalid) {
+                    <span class="perfil-field-error">
+                        Informe um e-mail válido.
+                    </span>
+                    }
+                </div>
+
+                <div class="perfil-section-divider"></div>
+
+                <div class="perfil-password-heading">
+                    <div>
+                        <h3>Alterar senha</h3>
+                        <p>Deixe em branco para manter a senha atual.</p>
+                    </div>
+
+                    <i class="bi bi-shield-lock"></i>
+                </div>
+
+                <div class="perfil-field">
+                    <label for="perfil-senha">Nova senha</label>
+
+                    <div class="perfil-input-wrapper">
+                        <i class="bi bi-lock"></i>
+
+                        <input id="perfil-senha" [type]="mostrarSenha() ? 'text' : 'password'" formControlName="senha"
+                            placeholder="Digite uma nova senha" autocomplete="new-password" />
+
+                        <button type="button" class="perfil-password-toggle"
+                            [attr.aria-label]="mostrarSenha() ? 'Ocultar senha' : 'Mostrar senha'"
+                            (click)="alternarSenha()">
+                            <i [class]="mostrarSenha() ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                        </button>
+                    </div>
+                </div>
+                }
+            </div>
+
+            <footer class="perfil-modal-footer">
+                <button type="button" class="btn btn-secondary" [disabled]="salvando()" (click)="fechar()">
+                    Cancelar
+                </button>
+
+                <button type="submit" class="btn btn-primary" [disabled]="carregando() || salvando()">
+                    @if (salvando()) {
+                    <span class="perfil-spinner perfil-spinner-light"></span>
+                    Salvando...
+                    } @else {
+                    <i class="bi bi-check2"></i>
+                    Salvar alterações
+                    }
+                </button>
+            </footer>
+        </form>
+    </section>
+</div>
+}

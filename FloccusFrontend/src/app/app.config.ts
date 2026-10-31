@@ -1,9 +1,10 @@
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { httpErrorInterceptor } from './core/config/httpErrorInterceptor';
 import { authInterceptor } from './core/config/authInterceptor';
+import { httpErrorInterceptor } from './core/config/httpErrorInterceptor';
+import { loadingInterceptor } from './core/config/loadingInterceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,7 +13,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([
         authInterceptor,
-        httpErrorInterceptor
+        httpErrorInterceptor,
+        loadingInterceptor
       ])
     ),
   ]

@@ -3,10 +3,7 @@ package br.dev.matheushenrique.server;
 import br.dev.matheushenrique.config.DockerClientConfig;
 import br.dev.matheushenrique.config.FloccusConfig;
 import br.dev.matheushenrique.security.AuthInterceptor;
-import br.dev.matheushenrique.service.AgenteDockerService;
-import br.dev.matheushenrique.service.FloccusLogService;
-import br.dev.matheushenrique.service.FloccusRedeService;
-import br.dev.matheushenrique.service.FloccusStatusService;
+import br.dev.matheushenrique.service.*;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.ServerInterceptors;
@@ -16,13 +13,14 @@ import lombok.extern.slf4j.Slf4j;
 public class GrpcServer {
 
     public void start(){
-        FloccusConfig config = FloccusConfig.loadConfig();
-        System.out.println(config.getAgenteId());
-        log.info("Configurações carregadas com sucesso!");
-        log.info("Chave Secreta do Agente: [PROTEGIDA]");
-        log.info("Conectando ao Docker Engine via: {}", config.getDockerHost());
-        log.info("IP mapeado do Painel Central (Spring): {}:{}", config.getBackendHost(), config.getBackendPort());
+
         try {
+            FloccusConfig config = FloccusConfig.loadConfig();
+            System.out.println(config.getAgenteId());
+            log.info("Configurações carregadas com sucesso!");
+            log.info("Chave Secreta do Agente: [PROTEGIDA]");
+            log.info("Conectando ao Docker Engine via: {}", config.getDockerHost());
+            log.info("IP mapeado do Painel Central (Spring): {}:{}", config.getBackendHost(), config.getBackendPort());
             FloccusLogService floccusLogService = new FloccusLogService(DockerClientConfig.getInstance());
             // 2. Inicializa o servidor gRPC nativo na porta configurada no .yml
             Server server = ServerBuilder.forPort(config.getAgentPort())
@@ -33,8 +31,11 @@ public class GrpcServer {
                     new AgenteDockerService(DockerClientConfig.getInstance(), floccusLogService),
                     new AuthInterceptor(config.getSecretKey())))
                     .addService(ServerInterceptors.intercept(
-                            new FloccusRedeService(DockerClientConfig.getInstance()),
+                            new AplicacaoService(DockerClientConfig.getInstance())))
+                    .addService(ServerInterceptors.intercept(
+                            new FloccusRedeService(DockerClientConfig.getInstance(), config),
                             new AuthInterceptor(config.getSecretKey())))
+
                     .build();
 
 

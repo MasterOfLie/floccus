@@ -8,5 +8,6 @@ public record RedeDTO (
         String nome,
         String subnet,
         String gateway,
-        String usuario
+        String agenteId,
+        String nomeAgente
 ){ }

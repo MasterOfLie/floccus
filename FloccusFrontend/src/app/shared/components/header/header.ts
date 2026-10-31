@@ -1,11 +1,12 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { SidebarService } from '../../../core/services/sidebar';
-import { AuthService } from '../../../core/services/auth-service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../core/services/auth-service';
+import { SidebarService } from '../../../core/services/sidebar';
+import { Perfil } from '../perfil/perfil';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [Perfil],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
@@ -15,7 +16,7 @@ export class Header implements OnInit {
   private sidebarService = inject(SidebarService);
   private authService = inject(AuthService);
   private router = inject(Router);
-
+  perfilModalAberta = signal(false);
 
   collapsed = this.sidebarService.collapsed;
   accountMenuOpen = signal(false);
@@ -65,5 +66,14 @@ export class Header implements OnInit {
   isAdmin(): boolean {
     return this.usuario?.permissoes?.includes('ROLE_ADMIN') ?? false;
   }
-
+  atualizarDadosUsuario(perfilAtualizado: any): void {
+    this.usuario = {
+      ...this.usuario,
+      nome: perfilAtualizado.nome,
+      email: perfilAtualizado.email
+    };
+    localStorage.removeItem('floccus_user');
+    localStorage.removeItem('floccus_token');
+    this.router.navigate(['/login']);
+  }
 }

@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GitHubRepository extends JpaRepository<GitHub, String> {
-    Optional<GitHub> findByUsuarioId(String id);
-
+    Optional<GitHub> findByUsuarioIdAndId(String idUsuario, String idApp);
+    Optional<GitHub> findByInstalacaoId(String instalacaoId);
     @Query("""
     SELECT new br.dev.matheushenrique.floccus.dto.GitHubDTO(
         g.id,

@@ -1,5 +1,6 @@
 package br.dev.matheushenrique.service;
 
+import br.dev.matheushenrique.config.FloccusConfig;
 import br.dev.matheushenrique.grpc.*;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateNetworkCmd;
@@ -12,6 +13,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class FloccusRedeService extends FloccusRedeServiceGrpc.FloccusRedeServiceImplBase {
     private final DockerClient dockerClient;
+    private final FloccusConfig floccusConfig;
 
     @Override
     public void criarRede(CriarRedeRequest request, StreamObserver<RedeResponse> responseObserver) {
@@ -37,6 +39,7 @@ public class FloccusRedeService extends FloccusRedeServiceGrpc.FloccusRedeServic
                     && !network.getIpam().getConfig().isEmpty()
                     ? network.getIpam().getConfig().getFirst()
                     : null;
+            floccusConfig.getTraefikManager().conectarRedeAplicacao(network.getId());
             responseObserver.onNext(RedeResponse.newBuilder()
                     .setId(network.getId())
                     .setNome(network.getName())

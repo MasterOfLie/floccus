@@ -6,13 +6,17 @@ import br.dev.matheushenrique.floccus.dto.AgenteMetricasDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 
 public interface AgenteService {
     AgenteDTO criarAgente (AgenteDTO agenteDTO) throws Exception;
-    Page<AgenteDTO> listarAgentes (Pageable pageable);
+    Page<AgenteDTO> listarAgentes (Pageable pageable, String busca);
+    List<AgenteDTO> listarAgentes();
     AgenteDTO buscarAgente (String agenteId) throws Exception;
     AgenteDTO atualizarAgente (String agenteId, AgenteDTO agenteDTO)  throws Exception;
     AgenteDTO atualizarChave (String agenteId) throws Exception;
     void receberHeartbeat(String agenteId, AgenteMetricasDTO metricas);
     void republicarMetricas(String agenteId);
+    void deletarAgente(String agenteId);
 }

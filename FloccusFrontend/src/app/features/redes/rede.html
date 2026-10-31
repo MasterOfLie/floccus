@@ -1,0 +1,65 @@
+<div class="card-container">
+    <header class="card-header">
+
+        <div class="header-titles">
+
+            <h2>Redes</h2>
+
+            <p>
+                Gerencie as redes utilizadas pelas aplicações do Floccus.
+            </p>
+
+        </div>
+
+        <div class="header-stats">
+
+            <span class="text-muted">
+                Total de Redes: {{ totalElementos() }}
+            </span>
+
+        </div>
+
+    </header>
+
+
+    <!-- Barra de Ferramentas -->
+    <div class="card-toolbar">
+
+        <div class="toolbar-actions">
+
+            <button class="btn btn-primary" routerLink="/redes/criar">
+                Adicionar Nova Rede
+            </button>
+
+        </div>
+
+        <div class="toolbar-filters">
+
+            <button type="button" class="btn btn-secondary" (click)="carregarRedes()">
+                ↻ Recarregar
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- Tabela -->
+    <div class="table-responsive">
+
+        <ng-template #acoesTemplate let-rede>
+
+            <button type="button" class="btn-action" (click)="deletarRede(rede); $event.stopPropagation()"
+                data-tooltip="Excluir">
+                <i class="bi bi-trash"></i>
+            </button>
+
+        </ng-template>
+
+
+        <app-data-table [columns]="colunas" [data]="redes()" [paginaAtual]="pagina()" [totalPaginas]="totalPaginas()"
+            [totalElementos]="totalElementos()" (paginaChange)="alterarPagina($event)" />
+
+    </div>
+
+</div>

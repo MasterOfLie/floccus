@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package floccus;
+
+option java_multiple_files = true;
+option java_package = "br.dev.matheushenrique.floccus.grpc";
+option java_outer_classname = "FloccusContainerProto";
+
+service FloccusContainerService {
+  rpc CriarAplicacao(CriarAplicacaoRequest) returns (stream DeployEvento);
+  rpc RemoverAplicacao(RemoverAplicacaoRequest) returns (RemoverAplicacaoResponse);
+}
+
+message CriarAplicacaoRequest{
+  string nome = 1;
+  string aplicacao_id = 2;
+  string repositorio_git = 3;
+  string token_git = 4;
+  string build_command = 5;
+  string start_command = 6;
+  string diretorio_arquivos = 7;
+  string imagem = 8;
+  string rede = 9;
+  int64 memoria_mb = 10;
+  double cpu = 11;
+  int32 porta_container = 12;
+  int32 porta_externa = 13;
+  TipoAplicacao tipo = 14;
+  repeated Variavel ambiente = 15;
+  string branch = 16;
+  bool redeploy = 17;
+  string container_id = 18;
+  string dominio = 19;
+}
+message CriarAplicacaoResponse {
+  bool sucesso = 1;
+  string aplicacao_id = 2;
+  string container_id = 3;
+  string nome = 4;
+  string diretorio_arquivos = 5;
+  string imagem = 6;
+  string mensagem = 7;
+}
+
+message Variavel {
+  string chave = 1;
+  string valor = 2;
+}
+
+message DeployEvento {
+  string aplicacao_id = 1;
+  string tipo = 2;
+  string mensagem = 3;
+  string container_id = 4;
+  string diretorio_arquivos = 5;
+}
+
+enum TipoAplicacao {
+  TIPO_APLICACAO_UNSPECIFICADO = 0;
+  HTTP = 1;
+  TCP = 2;
+  UDP = 3;
+}
+
+message RemoverAplicacaoRequest {
+  string aplicacao_id = 1;
+  string container_id = 2;
+  string diretorio_arquivos = 5;
+}
+
+message RemoverAplicacaoResponse {
+  bool sucesso = 1;
+  string aplicacao_id = 2;
+  string container_id = 3;
+  string mensagem = 4;
+}

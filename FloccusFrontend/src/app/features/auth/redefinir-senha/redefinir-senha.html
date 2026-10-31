@@ -1,0 +1,64 @@
+<div class="auth-page">
+    <div class="auth-container">
+
+        <!-- LOGO -->
+        <div class="auth-logo">
+            <img src="/logo-color.png" alt="Floccus">
+        </div>
+
+        <!-- CARD -->
+        <div class="auth-card">
+
+            @if (tokenValido()) {
+            <div class="auth-header">
+                <h1>Nova senha</h1>
+                <p>Digite sua nova senha abaixo para acessar a conta</p>
+            </div>
+
+            <form class="auth-form" (ngSubmit)="salvarNovaSenha()">
+
+                <!-- NOVA SENHA -->
+                <div class="form-group">
+                    <label for="nova-senha">Nova senha</label>
+                    <div class="password-input">
+                        <input id="nova-senha" [type]="mostrarSenha() ? 'text' : 'password'" [(ngModel)]="novaSenha"
+                            name="novaSenha" placeholder="••••••••" autocomplete="new-password" required>
+
+                        <button type="button" class="password-toggle" (click)="alternarSenha()">
+                            <i [class]="mostrarSenha() ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- BOTÃO -->
+                <button type="submit" class="submit-button" [disabled]="carregando()">
+                    @if (carregando()) {
+                    Salvando...
+                    } @else {
+                    Redefinir senha
+                    }
+                </button>
+
+            </form>
+            } @else {
+            <div class="auth-header">
+                <h1>Link inválido</h1>
+                <p>O link de recuperação de senha expirou ou é inválido.</p>
+            </div>
+
+            <div class="auth-footer" style="margin-top: 20px;">
+                <a routerLink="/auth" class="submit-button"
+                    style="text-align: center; text-decoration: none; display: block;">
+                    Voltar para o login
+                </a>
+            </div>
+            }
+
+        </div>
+        <!-- COPYRIGHT -->
+        <div class="auth-copyright">
+            © {{ anoAtual }} Floccus. Todos os direitos reservados.
+        </div>
+
+    </div>
+</div>

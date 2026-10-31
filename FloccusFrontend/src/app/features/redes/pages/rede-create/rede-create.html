@@ -1,0 +1,107 @@
+<div class="card-container page">
+    <div class="page-header">
+
+        <div>
+            <h2>Criar rede</h2>
+
+            <p>
+                Configure uma nova rede para conectar as aplicações do Floccus.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="form-card">
+
+        <div class="form-card-header">
+
+            <div>
+                <h3>Informações da rede</h3>
+
+                <p>
+                    Defina as configurações necessárias para criar uma nova
+                    rede no ambiente Docker.
+                </p>
+            </div>
+
+        </div>
+
+        <form (ngSubmit)="criarRede()" #form="ngForm">
+
+            <!-- CONFIGURAÇÃO -->
+
+            <div class="form-section">
+
+                <h4 class="section-title">
+                    <i class="bi bi-diagram-3"></i>
+                    Configuração da rede
+                </h4>
+
+                <div class="form-row">
+
+                    <div class="form-group flex-2">
+
+                        <label for="nome">Nome</label>
+
+                        <input id="nome" type="text" name="nome" [(ngModel)]="rede.nome" placeholder="Ex: rede-producao"
+                            required />
+
+                        <span class="input-hint">
+                            Nome utilizado para identificar a rede no Floccus.
+                        </span>
+
+                    </div>
+
+                    <div class="form-group flex-1">
+
+                        <label for="agenteId">Agente</label>
+
+                        <ng-select id="agenteId" name="agenteId" [(ngModel)]="rede.agenteId" [items]="agentes"
+                            bindLabel="nome" bindValue="id" placeholder="Selecione um agente" [loading]="carregando()"
+                            [clearable]="false" required>
+                        </ng-select>
+
+                        <span class="input-hint">
+                            Selecione o agente onde a rede será criada.
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- INFORMAÇÃO SOBRE O DRIVER -->
+
+
+
+            </div>
+
+            <!-- AÇÕES -->
+
+            <div class="form-actions">
+
+                <button type="button" class="btn btn-secondary" routerLink="/redes">
+                    Cancelar
+                </button>
+
+                <button type="submit" class="btn btn-primary" [disabled]="form.invalid || carregando()">
+
+                    @if (carregando()) {
+
+                    <span class="spinner"></span>
+                    Criando...
+
+                    } @else {
+
+                    <i class="bi bi-plus-lg"></i>
+                    Criar rede
+
+                    }
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>

@@ -32,10 +32,14 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/auth/login",
                                 "/api/auth/register",
+                                "/api/auth/redefinir-senha",
+                                "/api/auth/recuperar-senha",
                                 "/api/agentes/*/heartbeat",
+                                "/api/agentes/*/heartbeat/containers",
                                 "/ws-floccus",
                                 "/api/github/**",
-                                "/ws-floccus/**"
+                                "/ws-floccus/**",
+                                "/api/heartbeat"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

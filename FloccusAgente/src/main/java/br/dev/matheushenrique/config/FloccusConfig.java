@@ -1,4 +1,5 @@
 package br.dev.matheushenrique.config;
+import br.dev.matheushenrique.service.TraefikManager;
 import lombok.Data;
 import org.yaml.snakeyaml.Yaml;
 
@@ -18,11 +19,14 @@ public class FloccusConfig {
     private int backendPort;
     private String dockerHost;
     private String agenteId;
-
+    private String emailSsl;
+    private TraefikManager traefikManager;
     @SuppressWarnings("unchecked")
-    public static FloccusConfig loadConfig() {
+    public static FloccusConfig loadConfig() throws Exception {
         FloccusConfig config = new FloccusConfig();
         Path configPath = Paths.get("config.yml");
+        Path diretorioTraefik =
+                Path.of("/home/matheus/floccus/traefik");
         System.out.println("Working directory: " +
                 Paths.get("").toAbsolutePath());
 
@@ -46,7 +50,16 @@ public class FloccusConfig {
                 config.setBackendHost((String) backend.get("host"));
                 config.setBackendPort((int) backend.get("port"));
                 config.setDockerHost((String) docker.get("host"));
+                config.setEmailSsl((String) agent.get("email-ssl"));
             }
+            config.setTraefikManager(
+                    new TraefikManager(
+                            DockerClientConfig.getInstance(),
+                            diretorioTraefik,
+                            config
+                    )
+            );
+            config.getTraefikManager().garantirTraefik();
         } catch (Exception e) {
             throw new RuntimeException("Falha crítica ao carregar arquivo config.yml", e);
         }
@@ -59,6 +72,7 @@ public class FloccusConfig {
                         "    agent-id: \"seu-id-aqui\"\n" +
                         "    port: 50051\n" +
                         "    secret-key: \"floccus-super-secret-token-token-xyz\"\n" +
+                        "    email-ssl: \"floccus@floccus.com.br\"\n" +
                         "  backend:\n" +
                         "    host: \"localhost\"\n" +
                         "    port: 8080\n" +

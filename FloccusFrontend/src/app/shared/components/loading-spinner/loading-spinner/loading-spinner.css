@@ -1,0 +1,192 @@
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 9999;
+    color: var(--floccus-text-secondary);
+    font-size: 12px;
+}
+
+
+.floccus-loader {
+    position: relative;
+
+    width: 120px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.cloud {
+    position: absolute;
+    bottom: 10px;
+
+    background: var(--floccus-primary);
+    border-radius: 50px;
+    opacity: 0;
+
+    animation: cloud-animation 2.6s ease-in-out infinite;
+}
+
+.cloud::before,
+.cloud::after {
+    content: '';
+    position: absolute;
+    background: var(--floccus-primary);
+    border-radius: 50%;
+}
+
+
+.cloud-1 {
+    left: 15px;
+    width: 32px;
+    height: 14px;
+    animation-delay: 0s;
+}
+
+.cloud-1::before {
+    width: 14px;
+    height: 14px;
+    top: -7px;
+    left: 6px;
+}
+
+.cloud-1::after {
+    width: 10px;
+    height: 10px;
+    top: -5px;
+    left: 16px;
+}
+
+.cloud-2 {
+    left: 38px;
+    width: 40px;
+    height: 18px;
+    animation-delay: 0.6s;
+}
+
+.cloud-2::before {
+    width: 18px;
+    height: 18px;
+    top: -9px;
+    left: 8px;
+}
+
+.cloud-2::after {
+    width: 14px;
+    height: 14px;
+    top: -6px;
+    left: 20px;
+}
+
+.cloud-3 {
+    right: 32px;
+    width: 28px;
+    height: 12px;
+    animation-delay: 1.2s;
+}
+
+.cloud-3::before {
+    width: 12px;
+    height: 12px;
+    top: -6px;
+    left: 5px;
+}
+
+.cloud-3::after {
+    width: 10px;
+    height: 10px;
+    top: -4px;
+    left: 13px;
+}
+
+.cloud-4 {
+    right: 10px;
+    width: 36px;
+    height: 16px;
+    animation-delay: 1.8s;
+}
+
+.cloud-4::before {
+    width: 16px;
+    height: 16px;
+    top: -8px;
+    left: 7px;
+}
+
+.cloud-4::after {
+    width: 12px;
+    height: 12px;
+    top: -5px;
+    left: 18px;
+}
+
+
+@keyframes cloud-animation {
+    0% {
+        opacity: 0;
+        transform: translateY(12px) scale(0.4);
+    }
+
+    15% {
+        opacity: 1;
+        transform: translateY(4px) scale(0.8);
+    }
+
+    30% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(-12px) scale(1.05);
+    }
+
+    75% {
+        opacity: 0.8;
+        transform: translateY(-18px) scale(1.1);
+    }
+
+    85% {
+        opacity: 0;
+        transform: translateY(-22px) scale(1.3);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-22px) scale(0.2);
+    }
+}
+
+
+.loading-text {
+    color: var(--floccus-text-muted);
+    font-size: 11px;
+    letter-spacing: 0.3px;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    .cloud {
+        animation: none;
+        opacity: 0.8;
+        transform: scale(1);
+    }
+}

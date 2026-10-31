@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { GitHubBranchDTO } from '../../features/aplicacao/models/Branches';
 import { GithubDTO } from '../../features/git/github/models/GithubModel';
 import { GitHubRepository } from '../../features/git/github/models/GitHubRepository';
 
@@ -45,7 +46,10 @@ export class GithubService {
             `${this.apiUrl}/github/${id}`
         );
     }
-    listarRepositorios(): Observable<GitHubRepository[]> {
-        return this.http.get<GitHubRepository[]>(`${this.apiUrl}/github/repositories`);
+    listarRepositorios(gitId: string): Observable<GitHubRepository[]> {
+        return this.http.get<GitHubRepository[]>(`${this.apiUrl}/github/repositories/${gitId}`);
+    }
+    listarBranches(repositorioId: string, owner: string, repo: string): Observable<GitHubBranchDTO[]> {
+        return this.http.get<GitHubBranchDTO[]>(`${this.apiUrl}/github/branches/${repositorioId}/${owner}/${repo}`);
     }
 }

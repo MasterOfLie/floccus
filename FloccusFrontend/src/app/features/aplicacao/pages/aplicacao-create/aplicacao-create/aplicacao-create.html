@@ -1,308 +1,692 @@
 <div class="card-container">
-    <!-- Cabeçalho do Card -->
     <header class="card-header">
         <div class="header-titles">
-            <h2>Aplicações</h2>
-            <p>Gerencie as aplicações conectadas ao Floccus.</p>
+            <h2>Nova Aplicação</h2>
+            <p>Deploy rápido assistido no Floccus.</p>
+        </div>
+        <div class="wizard-stepper">
+
+            <button type="button" [class.active]="passoAtual === 1" (click)="irParaPasso(1)">
+                1. Template
+            </button>
+
+            <span class="step-line"></span>
+
+            <button type="button" [class.active]="passoAtual === 2" (click)="irParaPasso(2)">
+                2. Origem
+            </button>
+
+            <span class="step-line"></span>
+
+            <button type="button" [class.active]="passoAtual === 3" (click)="irParaPasso(3)">
+                3. Conectividade
+            </button>
+
+            <span class="step-line"></span>
+
+            <button type="button" [class.active]="passoAtual === 4" (click)="irParaPasso(4)">
+                4. Recursos
+            </button>
+
+            <span class="step-line"></span>
+
+            <button type="button" [class.active]="passoAtual === 5" [disabled]="!aplicacaoCriadaId"
+                (click)="irParaPasso(5)">
+                5. Variáveis
+            </button>
+
+            <span class="step-line"></span>
+
+            <button type="button" [class.active]="passoAtual === 6" [disabled]="!aplicacaoCriadaId"
+                (click)="irParaPasso(6)">
+                6. Deploy
+            </button>
+
         </div>
     </header>
 
-    <form [formGroup]="formulario" (ngSubmit)="criarAplicacao()" class="form-container">
-
-        <div class="form-card">
-
-            <!-- GERAL -->
-            <div class="form-section">
-
-                <div class="section-header">
-                    <h3 class="form-section-title">Geral</h3>
-                    <p class="form-section-desc">
-                        Escolha o código e o servidor onde a aplicação será executada.
-                    </p>
-                </div>
-
-                <div class="form-grid">
-
-                    <!-- REPOSITÓRIO -->
-                    <div class="form-group">
-
-                        <label>Repositório</label>
-
-                        <ng-select formControlName="repositorioId" [items]="repositorios" bindLabel="name"
-                            bindValue="id" placeholder="Selecione um repositório" [searchable]="true"
-                            [clearable]="false" [loading]="carregandoRepositorios"
-                            loadingText="Carregando repositórios..." notFoundText="Nenhum repositório encontrado"
-                            searchPlaceholder="Pesquisar repositório..." (change)="selecionarRepositorio($event)">
-
-                            <ng-template ng-option-tmp let-repo="item">
-
-                                <div class="select-option">
-                                    <strong>{{ repo.name }}</strong>
-
+    <form [formGroup]="formulario" class="form-container">
+        <div class="wizard-layout">
+            <div class="wizard-steps-content">
+                @if (passoAtual === 1) {
+                <section class="step-panel">
+                    <div class="form-section-title">Template da Aplicação</div>
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label>Template</label>
+                            <ng-select formControlName="templateId" [items]="templates" bindLabel="framework"
+                                bindValue="id" placeholder="Selecione um template" [searchable]="true"
+                                [clearable]="false" [loading]="carregandoTemplates"
+                                loadingText="Carregando templates..." notFoundText="Nenhum template encontrado"
+                                searchPlaceholder="Pesquisar template..." (change)="selecionarTemplate($event)">
+                                <ng-template ng-option-tmp let-template="item">
+                                    <div class="select-option">
+                                        <strong>
+                                            {{ template.linguagem }}
+                                            @if (template.framework) {
+                                            — {{ template.framework }}
+                                            }
+                                        </strong>
+                                        <span>
+                                            {{ template.runtime }} · {{ template.buildTool }}
+                                        </span>
+                                    </div>
+                                </ng-template>
+                                <ng-template ng-label-tmp let-template="item">
                                     <span>
-                                        {{ repo.name }}
+                                        {{ template.linguagem }}
+                                        @if (template.framework) {
+                                        — {{ template.framework }}
+                                        }
                                     </span>
-                                </div>
-
-                            </ng-template>
-
-                            <ng-template ng-label-tmp let-repo="item">
-
-                                <span>{{ repo.name }}</span>
-
-                            </ng-template>
-
-                        </ng-select>
-
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </div>
+                    @if (templateSelecionado) {
+                    <div class="template-info">
+                        <div>
+                            <strong>Linguagem</strong>
+                            <span>{{ templateSelecionado.linguagem }}</span>
+                        </div>
+                        <div>
+                            <strong>Framework</strong>
+                            <span>{{ templateSelecionado.framework || 'Nenhum' }}</span>
+                        </div>
+                        <div>
+                            <strong>Runtime</strong>
+                            <span>{{ templateSelecionado.runtime }}</span>
+                        </div>
+                        <div>
+                            <strong>Build</strong>
+                            <span>{{ templateSelecionado.buildTool }}</span>
+                        </div>
+                        <div>
+                            <strong>Versão</strong>
+                            <span>{{ templateSelecionado.versao }}</span>
+                        </div>
                     </div>
 
-
-                    <!-- AGENTE -->
-                    <div class="form-group">
-
-                        <label>Agente</label>
-
-                        <ng-select formControlName="agenteId" [items]="agentes" bindLabel="nome" bindValue="id"
-                            placeholder="Selecione um agente" [searchable]="true" [clearable]="false"
-                            [loading]="carregandoAgentes" loadingText="Carregando agentes..."
-                            notFoundText="Nenhum agente encontrado" searchPlaceholder="Pesquisar agente...">
-
-                            <ng-template ng-option-tmp let-agente="item">
-
-                                <div class="select-option">
-                                    <strong>
-                                        {{ agente.nome }}
-                                    </strong>
-
-                                    <span>
-                                        {{ agente.ipAgente }}:{{ agente.portaAgente }}
-                                    </span>
-                                </div>
-
-                            </ng-template>
-
-                            <ng-template ng-label-tmp let-agente="item">
-
-                                <span>
-                                    {{ agente.ipAgente }}:{{ agente.portaAgente }}
-                                </span>
-
-                            </ng-template>
-
-                        </ng-select>
-
+                    <div class="form-section-title">
+                        Configuração da aplicação
                     </div>
 
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label>Imagem Docker</label>
+                            <input type="text" formControlName="imagem" placeholder="Ex: php:8.3-cli">
+                            <small class="helper-text">
+                                A imagem do template foi preenchida automaticamente, mas pode ser alterada.
+                            </small>
+                        </div>
 
-                    <!-- NOME -->
-                    <div class="form-group full">
+                        <div class="form-group full">
+                            <label>Comando de build</label>
+                            <input type="text" formControlName="buildCommand"
+                                placeholder="Ex: composer install --no-interaction --prefer-dist">
+                            <small class="helper-text">
+                                Comando executado durante a preparação da aplicação.
+                            </small>
+                        </div>
 
-                        <label>Nome da aplicação</label>
-
-                        <input type="text" formControlName="nome" placeholder="Ex: meu-app-backend" />
-
+                        <div class="form-group full">
+                            <label>Comando de inicialização</label>
+                            <input type="text" formControlName="startCommand"
+                                placeholder="Ex: php artisan serve --host=0.0.0.0 --port=8000">
+                            <small class="helper-text">
+                                Comando utilizado para iniciar o container.
+                            </small>
+                        </div>
                     </div>
+                    }
+                </section>
+                }
 
-                </div>
+                @if (passoAtual === 2) {
+                <section class="step-panel">
+                    <div class="form-section-title">Origem da Aplicação</div>
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label>Git</label>
+                            <ng-select formControlName="gitId" [items]="gits" bindLabel="name" bindValue="id"
+                                placeholder="Selecione um git" [searchable]="true" [clearable]="false"
+                                [loading]="carregandoGits" loadingText="Carregando gits..."
+                                notFoundText="Nenhum git encontrado" searchPlaceholder="Pesquisar git..."
+                                (change)="selecionarGit($event)">
+                                <ng-template ng-option-tmp let-git="item">
+                                    <div class="select-option">
+                                        <span>{{ git.nomeApp }}</span>
+                                    </div>
+                                </ng-template>
+                                <ng-template ng-label-tmp let-git="item">
+                                    <span>{{ git.nomeApp }}</span>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                        <div class="form-group">
+                            <label>Repositório</label>
+                            <ng-select formControlName="repositorioId" [items]="repositorios" bindLabel="name"
+                                bindValue="id" placeholder="Selecione um repositório" [searchable]="true"
+                                [clearable]="false" [loading]="carregandoRepositorios"
+                                loadingText="Carregando repositórios..." notFoundText="Nenhum repositório encontrado"
+                                searchPlaceholder="Pesquisar repositório..." (change)="selecionarRepositorio($event)">
+                                <ng-template ng-option-tmp let-repo="item">
+                                    <div class="select-option">
+                                        <strong>{{ repo.name }}</strong>
+                                        <span>{{ repo.name }}</span>
+                                    </div>
+                                </ng-template>
+                                <ng-template ng-label-tmp let-repo="item">
+                                    <span>{{ repo.name }}</span>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                        <div class="form-group">
+                            <label>Branch</label>
+                            <ng-select formControlName="branch" [items]="branches" bindLabel="name" bindValue="name"
+                                placeholder="Selecione um branch" [searchable]="true" [clearable]="false"
+                                [loading]="carregandoBranches" loadingText="Carregando branches..."
+                                notFoundText="Nenhum branch encontrado" searchPlaceholder="Pesquisar branch..."
+                                (change)="selecionarBranch($event)">
+                                <ng-template ng-option-tmp let-item="item">
+                                    <div class="select-option">
+                                        <strong>{{ item.name }}</strong>
+                                        <span>{{ item.name }}</span>
+                                    </div>
+                                </ng-template>
+                                <ng-template ng-label-tmp let-item="item">
+                                    <span>{{ item.name }}</span>
+                                </ng-template>
+                            </ng-select>
+                        </div>
 
-            </div>
+                        <div class="form-group">
+                            <label>Agente de Destino</label>
+                            <ng-select formControlName="agenteId" [items]="agentes" bindLabel="nome" bindValue="id"
+                                placeholder="Selecione um agente" [searchable]="true" [clearable]="false"
+                                [loading]="carregandoAgentes" loadingText="Carregando agentes..."
+                                notFoundText="Nenhum agente encontrado" searchPlaceholder="Pesquisar agente...">
+                                <ng-template ng-option-tmp let-agente="item">
+                                    <div class="select-option">
+                                        <strong>{{ agente.nome }}</strong>
+                                        <span>{{ agente.ipAgente }}:{{ agente.portaAgente }}</span>
+                                    </div>
+                                </ng-template>
+                                <ng-template ng-label-tmp let-agente="item">
+                                    <span>{{ agente.nome }}</span>
+                                </ng-template>
+                            </ng-select>
+                        </div>
 
+                        <div class="form-group">
+                            <label>Nome da aplicação</label>
+                            <input type="text" formControlName="nome" placeholder="Ex: meu-app-backend">
+                        </div>
+                    </div>
+                </section>
+                }
 
-            <hr class="divider">
+                @if (passoAtual === 3) {
+                <section class="step-panel">
+                    <div class="form-section-title">Rede e Portas</div>
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label>Rede</label>
+                            <ng-select formControlName="redeId" [items]="redes" bindLabel="nome" bindValue="id"
+                                placeholder="Selecione uma rede" [searchable]="true" [clearable]="false"
+                                [loading]="carregandoRedes" loadingText="Carregando redes..."
+                                notFoundText="Nenhuma rede disponível para este agente"
+                                searchPlaceholder="Pesquisar rede..." (change)="selecionarRede($event)">
+                                <ng-template ng-option-tmp let-rede="item">
+                                    <div class="select-option">
+                                        <strong>{{ rede.nome }}</strong>
+                                        <span>
+                                            {{ rede.subnet || 'Endereçamento automático' }}
+                                            @if (rede.gateway) {
+                                            · Gateway {{ rede.gateway }}
+                                            }
+                                        </span>
+                                    </div>
+                                </ng-template>
+                                <ng-template ng-label-tmp let-rede="item">
+                                    <span>{{ rede.nome }}</span>
+                                </ng-template>
+                            </ng-select>
+                            <small class="helper-text">As redes disponíveis pertencem ao agente selecionado.</small>
+                        </div>
 
-
-            <!-- REDE -->
-            <div class="form-section">
-
-                <div class="section-header">
-                    <h3 class="form-section-title">Rede</h3>
-
-                    <p class="form-section-desc">
-                        Configurações de portas e protocolo.
-                    </p>
-                </div>
-
-                <div class="form-grid">
-
-                    <div class="form-group full">
-
-                        <label>Tipo de protocolo</label>
-
-                        <div class="type-options">
-
-                            <label class="type-radio">
-
-                                <input type="radio" value="HTTP" formControlName="tipo">
-
-                                <div class="type-content">
-
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round">
-
-                                        <circle cx="12" cy="12" r="9" />
-
-                                        <path
-                                            d="M3 12h18M12 3c2.5 2.7 3.8 6 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-6-3.8-9s1.3-6.3-3.8-9Z" />
-
-                                    </svg>
-
+                        <div class="form-group full">
+                            <label>Tipo de protocolo</label>
+                            <div class="type-options">
+                                <label class="type-radio">
+                                    <input type="radio" value="HTTP" formControlName="tipo">
                                     <span>HTTP</span>
-
-                                </div>
-
-                            </label>
-
-
-                            <label class="type-radio">
-
-                                <input type="radio" value="TCP" formControlName="tipo">
-
-                                <div class="type-content">
-
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round">
-
-                                        <rect x="3" y="7" width="18" height="10" rx="2" />
-
-                                        <path d="M7 11v2M12 11v2M17 11v2" />
-
-                                    </svg>
-
+                                </label>
+                                <label class="type-radio">
+                                    <input type="radio" value="TCP" formControlName="tipo">
                                     <span>TCP</span>
-
-                                </div>
-
-                            </label>
-
-
-                            <label class="type-radio">
-
-                                <input type="radio" value="UDP" formControlName="tipo">
-
-                                <div class="type-content">
-
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round">
-
-                                        <path d="M3 12h4l2-7 4 14 2-7h6" />
-
-                                    </svg>
-
+                                </label>
+                                <label class="type-radio">
+                                    <input type="radio" value="UDP" formControlName="tipo">
                                     <span>UDP</span>
+                                </label>
+                            </div>
+                        </div>
 
-                                </div>
+                        <div class="form-group">
+                            <label>Porta do container</label>
+                            <input type="number" formControlName="portaContainer" placeholder="8080">
+                        </div>
+                        @if (formulario.get('tipo')?.value !== 'HTTP') {
+                        <div class="form-group">
+                            <label>Porta externa</label>
+                            <input type="number" formControlName="portaExterna" placeholder="80">
+                        </div>
+                        }
+                        @if (formulario.get('tipo')?.value === 'HTTP') {
+                        <div class="form-group full">
+                            <label>Domínio</label>
+                            <input type="text" formControlName="dominio" placeholder="app.seudominio.com">
+                            <small class="helper-text">O domínio será utilizado pelo roteamento HTTP.</small>
+                        </div>
+                        }
+                    </div>
+                </section>
+                }
 
-                            </label>
+                @if (passoAtual === 4) {
+                <section class="step-panel">
+                    <div class="form-section-title">Limites de Recursos</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Memória limite (MB)</label>
+                            <input type="number" formControlName="memoriaLimite" min="1" placeholder="512">
+                        </div>
+                        <div class="form-group">
+                            <label>CPU limite (Cores)</label>
+                            <input type="number" formControlName="cpuLimite" min="1" placeholder="1">
+                        </div>
+                    </div>
+                </section>
+                }
+                @if (passoAtual === 5) {
 
+                <section class="step-panel">
+
+                    <div class="form-section-title">
+                        Variáveis de ambiente
+                    </div>
+
+                    <div class="variables-header">
+
+                        <div>
+                            <strong>Configuração das variáveis</strong>
+
+                            <small class="helper-text">
+                                Essas variáveis serão disponibilizadas para o container durante o deploy.
+                            </small>
+                        </div>
+
+                        <button type="button" class="btn-criar" (click)="adicionarVariavel()">
+                            + Adicionar variável
+                        </button>
+
+                    </div>
+
+                    @if (variaveis.length === 0) {
+
+                    <div class="empty-state">
+
+                        <strong>Nenhuma variável configurada</strong>
+
+                        <span>
+                            Adicione variáveis de ambiente que sua aplicação necessita.
+                        </span>
+
+                    </div>
+
+                    } @else {
+
+                    <div class="variables-list">
+
+                        @for (variavel of variaveis; track $index) {
+
+                        <div class="variable-row">
+
+                            <div class="form-group">
+
+                                <label>Nome</label>
+
+                                <input type="text" [value]="variavel.chave"
+                                    (input)="alterarNomeVariavel($index, $event)" placeholder="DATABASE_HOST">
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>Valor</label>
+
+                                <input [type]="variavel.secreta ? 'password' : 'text'" [value]="variavel.valor"
+                                    (input)="alterarValorVariavel($index, $event)" placeholder="Valor da variável">
+
+                            </div>
+
+                            <div class="variable-actions">
+
+                                <label class="variable-secret">
+
+                                    <input type="checkbox" [checked]="variavel.secreta"
+                                        (change)="alterarSecretaVariavel($index, $event)">
+
+                                    Secreta
+
+                                </label>
+
+                                <button type="button" class="btn-remover" (click)="removerVariavel($index)">
+                                    Remover
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        }
+
+                    </div>
+
+                    }
+
+                </section>
+
+                }
+                @if (passoAtual === 6) {
+                <section class="step-panel deploy-panel">
+
+                    <div class="form-section-title">
+                        Deploy da Aplicação
+                    </div>
+
+                    @if (!realizandoDeploy && !deployConcluido && !deployErro) {
+
+                    <div class="deploy-intro">
+                        <div class="deploy-intro-icon">
+                        </div>
+
+                        <div>
+                            <strong>Aplicação pronta para deploy</strong>
+
+                            <span>
+                                Revise as configurações e inicie o deploy da aplicação.
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="deploy-resumo">
+
+                        <div class="deploy-resumo-item">
+                            <span>Aplicação</span>
+                            <strong>
+                                {{ formulario.get('nome')?.value }}
+                            </strong>
+                        </div>
+
+                        <div class="deploy-resumo-item">
+                            <span>Template</span>
+                            <strong>
+                                {{ templateSelecionado?.linguagem }}
+                                @if (templateSelecionado?.framework) {
+                                — {{ templateSelecionado.framework }}
+                                }
+                            </strong>
+                        </div>
+
+                        <div class="deploy-resumo-item">
+                            <span>Agente</span>
+                            <strong>
+                                {{ getNomeAgente() }}
+                            </strong>
+                        </div>
+
+                        <div class="deploy-resumo-item">
+                            <span>Rede</span>
+                            <strong>
+                                {{ redeSelecionada?.nome }}
+                            </strong>
+                        </div>
+
+                        <div class="deploy-resumo-item">
+                            <span>Protocolo</span>
+                            <strong>
+                                {{ formulario.get('tipo')?.value }}
+                            </strong>
+                        </div>
+
+                        <div class="deploy-resumo-item">
+                            <span>Porta</span>
+                            <strong>
+                                {{ formulario.get('portaContainer')?.value }}
+
+                                @if (formulario.get('tipo')?.value !== 'HTTP') {
+                                → {{ formulario.get('portaExterna')?.value }}
+                                }
+                            </strong>
+                        </div>
+
+                        <div class="deploy-resumo-item">
+                            <span>Memória</span>
+                            <strong>
+                                {{ formulario.get('memoriaLimite')?.value }} MB
+                            </strong>
+                        </div>
+
+                        <div class="deploy-resumo-item">
+                            <span>CPU</span>
+                            <strong>
+                                {{ formulario.get('cpuLimite')?.value }} vCPU
+                            </strong>
                         </div>
 
                     </div>
 
+                    }
 
-                    <div class="form-group">
+                    @if (realizandoDeploy || deployConcluido || deployErro) {
 
-                        <label>Porta do container</label>
+                    <div class="deploy-status">
 
-                        <input type="number" formControlName="portaContainer" placeholder="8080">
+                        <div class="deploy-status-header">
+
+                            <div>
+                                @if (realizandoDeploy) {
+                                <strong>Realizando deploy...</strong>
+                                <span>Acompanhe abaixo o progresso da aplicação.</span>
+                                }
+
+                                @if (deployConcluido) {
+                                <strong class="status-sucesso">
+                                    Deploy concluído
+                                </strong>
+
+                                <span>
+                                    A aplicação foi implantada com sucesso.
+                                </span>
+                                }
+
+                                @if (deployErro) {
+                                <strong class="status-erro">
+                                    Erro no deploy
+                                </strong>
+
+                                <span>
+                                    Ocorreu um erro durante a implantação.
+                                </span>
+                                }
+                            </div>
+
+                            @if (realizandoDeploy) {
+                            <span class="deploy-spinner"></span>
+                            }
+
+                            @if (deployConcluido) {
+                            <span class="deploy-check">
+                                ✓
+                            </span>
+                            }
+
+                            @if (deployErro) {
+                            <span class="deploy-error-icon">
+                                !
+                            </span>
+                            }
+
+                        </div>
+
+                        <div class="deploy-etapas">
+
+                            @for (etapa of deployEtapas; track $index) {
+
+                            <div class="deploy-etapa" [class.atual]="etapa.atual" [class.concluida]="etapa.concluida"
+                                [class.erro]="etapa.tipo === 'ERRO'">
+
+                                <div class="etapa-icone">
+
+                                    @if (etapa.concluida) {
+                                    ✓
+                                    }
+                                    @else if (etapa.tipo === 'ERRO') {
+                                    !
+                                    }
+                                    @else if (etapa.atual) {
+                                    <span class="spinner"></span>
+                                    }
+                                    @else {
+                                    •
+                                    }
+
+                                </div>
+
+                                <div class="etapa-info">
+
+                                    <strong>
+                                        {{ etapa.tipo }}
+                                    </strong>
+
+                                    <span>
+                                        {{ etapa.mensagem }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            }
+
+                        </div>
+
+                        @if (deployConcluido) {
+
+                        <div class="deploy-final sucesso">
+                            ✓ Aplicação implantada e iniciada com sucesso.
+                        </div>
+
+                        }
+
+                        @if (deployErro) {
+
+                        <div class="deploy-final erro">
+
+                            ✕ O deploy não pôde ser concluído.
+
+                        </div>
+
+                        }
 
                     </div>
 
+                    }
 
-                    <div class="form-group">
-
-                        <label>Porta externa</label>
-
-                        <input type="number" formControlName="portaExterna" placeholder="80">
-
-                    </div>
-
-
-                    <div class="form-group full" *ngIf="formulario.get('tipo')?.value === 'HTTP'">
-
-                        <label>Domínio</label>
-
-                        <input type="text" formControlName="dominio" placeholder="app.seudominio.com">
-
-                        <small class="helper-text">
-                            O domínio será utilizado pelo roteamento HTTP.
-                        </small>
-
-                    </div>
-
-                </div>
-
+                </section>
+                }
             </div>
 
-
-            <hr class="divider">
-
-
-            <!-- RECURSOS -->
-            <div class="form-section">
-
-                <div class="section-header">
-
-                    <h3 class="form-section-title">
-                        Recursos
-                    </h3>
-
-                    <p class="form-section-desc">
-                        Limites de recursos do container.
-                    </p>
-
-                </div>
-
-
-                <div class="form-grid">
-
-                    <div class="form-group">
-
-                        <label>Memória limite (MB)</label>
-
-                        <input type="number" formControlName="memoriaLimite" min="1" placeholder="512">
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>CPU limite (Cores)</label>
-
-                        <input type="number" formControlName="cpuLimite" min="1" placeholder="1">
-
-                    </div>
-
-                </div>
-
-            </div>
-
+            <aside class="wizard-summary-card">
+                <h4>Resumo do Deploy</h4>
+                <ul>
+                    <li>
+                        <strong>Template:</strong>
+                        {{ templateSelecionado?.linguagem || 'Não definido' }}
+                        @if (templateSelecionado?.framework) {
+                        — {{ templateSelecionado.framework }}
+                        }
+                    </li>
+                    <li>
+                        <strong>App:</strong>
+                        {{ formulario.get('nome')?.value || 'Não definido' }}
+                    </li>
+                    <li>
+                        <strong>Agente:</strong>
+                        {{ getNomeAgente() }}
+                    </li>
+                    <li>
+                        <strong>Rede:</strong>
+                        {{ redeSelecionada?.nome || 'Não definida' }}
+                    </li>
+                    <li>
+                        <strong>Protocolo:</strong>
+                        {{ formulario.get('tipo')?.value || 'Não definido' }}
+                    </li>
+                    <li>
+                        <strong>Portas:</strong>
+                        {{ formulario.get('portaContainer')?.value || '?' }} → {{ formulario.get('portaExterna')?.value
+                        || '?' }}
+                    </li>
+                    <li>
+                        <strong>RAM / CPU:</strong>
+                        {{ formulario.get('memoriaLimite')?.value || '?' }}MB / {{ formulario.get('cpuLimite')?.value ||
+                        '?' }}vCPU
+                    </li>
+                </ul>
+            </aside>
         </div>
 
+        <div class="form-actions wizard-nav-actions">
 
-        <!-- AÇÕES -->
-        <div class="form-actions">
-
+            @if (passoAtual === 1) {
             <button type="button" class="btn-cancelar" (click)="cancelarConfiguracao()">
-
                 Cancelar
-
             </button>
+            }
 
+            @if (passoAtual > 1 && passoAtual < 5) { <button type="button" class="btn-cancelar"
+                (click)="passoAnterior()">
+                Voltar
+                </button>
+                }
 
-            <button type="submit" class="btn-criar" [disabled]="salvando || formulario.invalid">
+                @if (passoAtual < 4) { <button type="button" class="btn-criar" (click)="proximoPasso()">
+                    Próximo
+                    </button>
+                    }
 
-                <svg *ngIf="salvando" class="spinner" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2">
+                    @if (passoAtual === 4) {
+                    <button type="button" class="btn-criar" [disabled]="salvando" (click)="criarAplicacao()">
+                        {{ salvando ? 'Criando...' : 'Criar aplicação' }}
+                    </button>
+                    }
 
-                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                    @if (passoAtual === 5) {
+                    <button type="button" class="btn-criar" [disabled]="salvando" (click)="salvarVariaveis()">
+                        {{ salvando ? 'Salvando...' : 'Continuar para deploy' }}
+                    </button>
+                    }
 
-                </svg>
-
-                {{ salvando ? 'Criando...' : 'Criar aplicação' }}
-
-            </button>
+                    @if (passoAtual === 6) {
+                    <button type="button" class="btn-criar" [disabled]="realizandoDeploy"
+                        (click)="iniciarDeploy(aplicacaoCriadaId!)">
+                        {{ realizandoDeploy ? 'Realizando deploy...' : 'Fazer deploy' }}
+                    </button>
+                    }
 
         </div>
-
     </form>
 </div>

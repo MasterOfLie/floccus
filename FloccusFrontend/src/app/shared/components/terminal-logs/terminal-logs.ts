@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnDestroy, AfterViewInit, viewChild, input, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, input, OnDestroy, viewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
-import { Subscription } from 'rxjs';
 import { AplicacaoService } from '../../../core/services/aplicacao-service';
 
 @Component({
@@ -42,7 +42,8 @@ export class TerminalLogs implements AfterViewInit, OnDestroy {
     // Conecta usando o valor do Signal containerId()
     this.logSubscription = this.logService.conectar(this.aplicacaoId()).subscribe({
       next: (linha: string) => {
-        this.term.write(linha);
+        const linhaFormatada = linha.replace(/\n/g, '\r\n');
+        this.term.write(linhaFormatada);
         this.term.scrollToBottom();
       },
       error: () => this.term.writeln('\r\n\x1b[31m[Erro] Conexão perdida com o servidor.\x1b[0m')

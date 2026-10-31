@@ -19,6 +19,7 @@ public class Agente {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+    private String nome;
     private String ipAgente;
     private int portaAgente;
     private String chaveAgente;

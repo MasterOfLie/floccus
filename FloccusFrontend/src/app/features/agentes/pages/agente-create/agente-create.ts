@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AgenteService } from '../../../../core/services/agente-service';
 import { AlertaService } from '../../../../core/services/alerta-service';
 import { CriarAgenteRequest } from '../../models/CriarAgenteRequest';
@@ -15,6 +16,7 @@ export class AgenteCreate {
 
   private readonly agenteService = inject(AgenteService);
   private readonly alertaService = inject(AlertaService);
+  private readonly router = inject(Router);
   agente: CriarAgenteRequest = {
     nome: '',
     ipAgente: 'localhost',
@@ -35,6 +37,7 @@ export class AgenteCreate {
         next: (agenteCriado) => {
           this.carregando.set(false);
           this.alertaService.sucesso('Agente criado com sucesso');
+          this.router.navigate(['/agentes', agenteCriado.id]);
         },
 
         error: (error) => {

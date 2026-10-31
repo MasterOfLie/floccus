@@ -132,3 +132,19 @@
 
     cursor: not-allowed;
 }
+
+.status-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #9ca3af;
+}
+
+.status-dot.running {
+    background: #22c55e;
+}
+
+.status-dot.exited {
+    background: #ef4444;
+}

@@ -146,6 +146,7 @@ export class AgenteDetail implements OnInit, OnDestroy {
     agent-id: "${agente.id}"
     port: ${agente.portaAgente}
     secret-key: "${agente.chaveAgente}"
+    email-ssl: "contato@${window.location.hostname}"
   backend:
     host: "${agente.ipBackend ?? ''}"
     port: ${agente.portaBackend}
@@ -201,8 +202,10 @@ export class AgenteDetail implements OnInit, OnDestroy {
 
             fill: true,
 
-            backgroundColor: 'rgba(79, 70, 229, 0.08)',
-            borderColor: '#4f46e5'
+            borderColor: '#18181b',
+            backgroundColor: 'rgba(24, 24, 27, 0.1)',
+            pointBackgroundColor: '#18181b',
+            pointBorderColor: '#ffffff',
           }
         ]
       },
@@ -288,5 +291,29 @@ export class AgenteDetail implements OnInit, OnDestroy {
     this.graficoCpu.data.datasets[0].data = this.historicoCpu;
 
     this.graficoCpu.update('none');
+  }
+
+  excluindo = signal(false);
+
+  async excluirAgente(): Promise<void> {
+    const agente = this.agente();
+    if (!agente) return;
+
+    const confirmado = await this.alertaService.confirmar(`Tem certeza que deseja excluir o agente "${agente.nome}"?`, 'Confirmar exclusão');
+
+    if (!confirmado) {
+      return;
+    }
+    this.excluindo.set(true);
+    this.agenteService.excluir(agente.id).subscribe({
+      next: () => {
+        this.alertaService.sucesso('Agente excluído com sucesso!');
+        this.router.navigate(['/agentes']);
+      },
+      error: (erro) => {
+        this.alertaService.erro(erro.error?.message || 'Erro ao excluir agente');
+        this.excluindo.set(false);
+      }
+    });
   }
 }

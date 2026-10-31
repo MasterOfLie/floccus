@@ -1,0 +1,443 @@
+:host {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   PÁGINA
+   ========================================================= */
+
+.auth-page {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px 20px;
+
+    box-sizing: border-box;
+
+    background: var(--floccus-background, #f6f7fb);
+    color: var(--floccus-text, #20212c);
+}
+
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
+.auth-container {
+    width: 100%;
+    max-width: 430px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.auth-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 26px;
+}
+
+.auth-logo img {
+    width: 175px;
+    height: auto;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.auth-card {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 32px;
+
+    background: var(--floccus-surface, #ffffff);
+
+    border: 1px solid var(--floccus-border, #e8e9ef);
+
+    border-radius: var(--floccus-radius, 12px);
+
+    box-shadow:
+        0 8px 30px rgba(25, 30, 50, 0.05);
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.auth-header {
+    margin-bottom: 26px;
+
+    text-align: center;
+}
+
+.auth-header h1 {
+    margin: 0 0 8px;
+
+    color: var(--floccus-text, #20212c);
+
+    font-size: 23px;
+    font-weight: 700;
+
+    letter-spacing: -0.3px;
+}
+
+.auth-header p {
+    margin: 0;
+
+    color: var(--floccus-text-secondary, #6d7080);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+   ========================================================= */
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+/* =========================================================
+   CAMPOS
+   ========================================================= */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.form-group label,
+.label-row label {
+    color: var(--floccus-text, #20212c);
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   LABEL + LINK
+   ========================================================= */
+
+.label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+.forgot-password {
+    color: var(--floccus-primary, #5352ed);
+
+    font-size: 11px;
+
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease;
+}
+
+.forgot-password:hover {
+    color: var(--floccus-primary-dark, #4645d8);
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+.form-group input {
+    width: 100%;
+    height: 44px;
+
+    box-sizing: border-box;
+
+    padding: 0 13px;
+
+    border: 1px solid var(--floccus-border, #e8e9ef);
+
+    border-radius: var(--floccus-radius-sm, 8px);
+
+    outline: none;
+
+    background: var(--floccus-surface, #ffffff);
+
+    color: var(--floccus-text, #20212c);
+
+    font-family: inherit;
+    font-size: 13px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: var(--floccus-text-muted, #9a9dab);
+}
+
+.form-group input:hover {
+    border-color: #d4d5dd;
+}
+
+.form-group input:focus {
+    border-color: var(--floccus-primary, #5352ed);
+
+    box-shadow:
+        0 0 0 3px rgba(83, 82, 237, 0.10);
+}
+
+
+/* =========================================================
+   SENHA
+   ========================================================= */
+
+.password-input {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+}
+
+.password-input input {
+    padding-right: 55px;
+}
+
+.password-toggle {
+    position: absolute;
+
+    right: 9px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 32px;
+    height: 32px;
+
+    padding: 5px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: var(--floccus-text-muted, #9a9dab);
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.password-toggle:hover {
+    background: var(--floccus-primary-light, #efefff);
+
+    color: var(--floccus-primary, #5352ed);
+}
+
+
+/* =========================================================
+   CHECKBOX
+   ========================================================= */
+
+.remember {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    cursor: pointer;
+
+    color: var(--floccus-text-secondary, #6d7080);
+
+    font-size: 12px;
+}
+
+.remember input {
+    width: 15px;
+    height: 15px;
+
+    margin: 0;
+
+    accent-color: var(--floccus-primary, #5352ed);
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   BOTÃO
+   ========================================================= */
+
+.submit-button {
+    width: 100%;
+    height: 44px;
+
+    margin-top: 2px;
+
+    border: none;
+
+    border-radius: var(--floccus-radius-sm, 8px);
+
+    background: var(--floccus-primary, #5352ed);
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease,
+        box-shadow 0.2s ease;
+}
+
+.submit-button:hover {
+    background: var(--floccus-primary-dark, #4645d8);
+
+    box-shadow:
+        0 5px 14px rgba(83, 82, 237, 0.16);
+}
+
+.submit-button:active {
+    transform: translateY(1px);
+}
+
+
+/* =========================================================
+   RODAPÉ
+   ========================================================= */
+
+.auth-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    margin-top: 24px;
+
+    color: var(--floccus-text-secondary, #6d7080);
+
+    font-size: 12px;
+}
+
+.auth-footer button {
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--floccus-primary, #5352ed);
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease;
+}
+
+.auth-footer button:hover {
+    color: var(--floccus-primary-dark, #4645d8);
+}
+
+
+/* =========================================================
+   COPYRIGHT
+   ========================================================= */
+
+.auth-copyright {
+    margin-top: 20px;
+
+    color: var(--floccus-text-muted, #9a9dab);
+
+    font-size: 10px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 500px) {
+
+    .auth-page {
+        padding: 24px 16px;
+    }
+
+    .auth-logo {
+        margin-bottom: 22px;
+    }
+
+    .auth-logo img {
+        width: 160px;
+    }
+
+    .auth-card {
+        padding: 26px 20px;
+
+        border-radius: var(--floccus-radius, 12px);
+    }
+
+    .auth-header h1 {
+        font-size: 21px;
+    }
+
+    .auth-form {
+        gap: 17px;
+    }
+
+    .auth-footer {
+        flex-direction: column;
+
+        gap: 5px;
+    }
+}

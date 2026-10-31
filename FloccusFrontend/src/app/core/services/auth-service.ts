@@ -1,8 +1,8 @@
-import { inject, Injectable, signal } from '@angular/core';
-import { AuthResponse, LoginRequest, RegisterRequest } from '../config/auth/models/AuthModel';
-import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs';
+import { inject, Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable, tap } from 'rxjs';
+import { AuthResponse, LoginRequest, RegisterRequest } from '../config/auth/models/AuthModel';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -44,4 +44,12 @@ export class AuthService {
         const userStr = localStorage.getItem('floccus_user');
         return userStr ? JSON.parse(userStr) : null;
     }
+    solicitarRecuperacao(email: string): Observable<any> {
+        return this.http.post('/api/auth/recuperar-senha', { email });
+    }
+
+    redefinirSenha(token: string, novaSenha: string): Observable<any> {
+        return this.http.post('/api/auth/redefinir-senha', { token, novaSenha });
+    }
+
 }

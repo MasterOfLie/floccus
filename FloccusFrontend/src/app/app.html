@@ -1,1 +1,4 @@
 <router-outlet />
+@if (loadingService.loading()) {
+<app-loading-spinner [loading]="true" text="Carregando..." />
+}

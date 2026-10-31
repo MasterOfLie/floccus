@@ -35,7 +35,7 @@ export class Aplicacao implements OnInit, AfterViewInit {
   carregando = signal(false);
   totalPaginas = signal(0);
   totalElementos = signal(0);
-
+  statusPorAplicacao = signal<Record<string, string>>({});
   @ViewChild('statusTemplate') statusTemplate!: TemplateRef<any>;
   @ViewChild('acoesTemplate') acoesTemplate!: TemplateRef<any>;
   @ViewChild('memoriaTemplate') memoriaTemplate!: TemplateRef<any>;
@@ -49,13 +49,19 @@ export class Aplicacao implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.colunas = [
       {
+        key: 'status',
+        label: 'Status',
+        template: this.statusTemplate,
+        width: '60px'
+      },
+      {
         key: 'nome',
         label: 'Nome'
       },
-      {
-        key: 'imagem',
-        label: 'Imagem'
-      },
+      // {
+      //   key: 'imagem',
+      //   label: 'Imagem'
+      // },
       {
         key: 'memoriaLimite',
         label: 'Memória',
@@ -68,6 +74,14 @@ export class Aplicacao implements OnInit, AfterViewInit {
       {
         key: 'tipo',
         label: 'Tipo'
+      },
+      {
+        key: 'nomeAgente',
+        label: 'Agente'
+      },
+      {
+        key: 'nomeRede',
+        label: 'Rede'
       },
       {
         key: 'id',
@@ -99,25 +113,36 @@ export class Aplicacao implements OnInit, AfterViewInit {
           this.carregando.set(false);
         }
       });
+    this.aplicacaoService.listarMonitoramento().subscribe({
+      next: (monitoramento) => {
+
+        const status: Record<string, string> = {};
+
+        for (const heartbeat of Object.values(monitoramento)) {
+
+          for (const container of heartbeat.containers) {
+            status[container.aplicacaoId] = container.status;
+          }
+
+        }
+
+        this.statusPorAplicacao.set(status);
+      },
+
+      error: (error) => {
+        console.error('Erro ao buscar monitoramento:', error);
+      }
+    });
+
+  }
+  getStatusAplicacao(aplicacaoId: string): string {
+    const status = this.statusPorAplicacao()[aplicacaoId];
+
+    console.log('Aplicação:', aplicacaoId, 'Status:', status);
+
+    return status ?? 'Desconhecido';
   }
 
-  traduzirStatus(status: string): string {
-    if (!status) {
-      return 'Desconhecido';
-    }
-
-    const statusMin = status.toLowerCase();
-
-    if (statusMin.includes('up') || statusMin.includes('running')) {
-      return 'Em execução';
-    }
-
-    if (statusMin.includes('exited')) {
-      return 'Parado';
-    }
-
-    return status;
-  }
 
   estaRodando(status: string): boolean {
     if (!status) {

@@ -1,3 +1,4 @@
+<app-perfil [(visible)]="perfilModalAberta" (perfilAtualizado)="atualizarDadosUsuario($event)" />
 <header class="header">
 
     <div class="header-left">
@@ -71,15 +72,12 @@
             @if (accountMenuOpen()) {
 
             <div class="account-menu">
-
-                <button class="account-menu-item" type="button" (click)="abrirPerfil()">
-
-                    <i class="bi bi-person"></i>
-                    <span>Perfil</span>
-
+                <button type="button" class="account-menu-item" (click)="perfilModalAberta.set(true)">
+                    <i class="bi bi-person-circle"></i>
+                    Meu perfil
                 </button>
 
-
+                <!-- 
                 <button class="account-menu-item" type="button" (click)="abrirConfiguracoes()">
 
                     <i class="bi bi-gear"></i>
@@ -93,7 +91,7 @@
                     <i class="bi bi-person-vcard"></i>
                     <span>Contas de recursos</span>
 
-                </button>
+                </button> -->
 
 
                 <div class="account-menu-divider"></div>

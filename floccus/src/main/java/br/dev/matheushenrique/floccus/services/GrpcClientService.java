@@ -1,6 +1,8 @@
 package br.dev.matheushenrique.floccus.services;
 
 import br.dev.matheushenrique.floccus.dto.AgenteConexaoDto;
+import br.dev.matheushenrique.floccus.grpc.CriarAplicacaoRequest;
+import br.dev.matheushenrique.floccus.grpc.DeployEvento;
 import br.dev.matheushenrique.floccus.services.imp.GrpcClientServiceImpl;
 import br.dev.matheushenrique.grpc.LogContainer;
 import io.grpc.Channel;
@@ -33,5 +35,10 @@ public interface GrpcClientService {
             String containerId,
             int linhas,
             StreamObserver<LogContainer> responseObserver
+    );
+    ManagedChannel streamarDeploy(
+            AgenteConexaoDto agenteConexaoDto,
+            CriarAplicacaoRequest request,
+            StreamObserver<DeployEvento> responseObserver
     );
 }

@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Client, Message } from '@stomp/stompjs';
+import { Client, IMessage, Message, StompSubscription } from '@stomp/stompjs';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AplicacaoModel } from '../../features/aplicacao/models/AplicacaoModel';
+import { MonitoramentoResponseDTO } from '../../features/aplicacao/models/ContainerMonitoramentoDTO';
 import { CriarAplicacaoRequest } from '../../features/aplicacao/models/CriarAplicacaoRequest';
+import { VariaveisRequest } from '../../features/aplicacao/models/VariavelAplicacao';
 
 @Injectable({
   providedIn: 'root'
@@ -80,19 +82,26 @@ export class AplicacaoService {
   //   );
 
   // }
-  criarAplicacao(
-    aplicacao: CriarAplicacaoRequest
-  ): Observable<any> {
 
-    return this.http.post(
-      '/api/aplicacoes',
-      aplicacao
+  redeploy(id: string): Observable<void> {
+    return this.http.post<void>(this.apiUrl + `/redeploy/${id}`, {});
+  }
+
+  listarMonitoramento(): Observable<MonitoramentoResponseDTO> {
+    return this.http.get<MonitoramentoResponseDTO>(
+      '/api/heartbeat'
     );
+  }
+
+  criarAplicacao(aplicacao: CriarAplicacaoRequest): Observable<any> {
+    return this.http.post('/api/aplicacoes', aplicacao);
   }
   start(id: string): Observable<void> {
     return this.http.get<void>(this.apiUrl + `/iniciar/${id}`);
   }
-
+  atualizar(id: string, dados: Partial<AplicacaoModel>): Observable<AplicacaoModel> {
+    return this.http.put<AplicacaoModel>(`/api/aplicacoes/${id}`, dados);
+  }
   stop(id: string): Observable<void> {
     return this.http.get<void>(this.apiUrl + `/parar/${id}`);
   }
@@ -100,13 +109,78 @@ export class AplicacaoService {
   restart(id: string): Observable<void> {
     return this.http.get<void>(this.apiUrl + `/reiniciar/${id}`);
   }
-  detalharContainer(id: string): Observable<AplicacaoModel> {
+  buscarPorId(id: string): Observable<AplicacaoModel> {
     return this.http.get<AplicacaoModel>(this.apiUrl + `/${id}`);
   }
-
+  buscarVariaveis(aplicacaoId: string): Observable<VariaveisRequest> {
+    return this.http.get<VariaveisRequest>(`/api/variaveis/${aplicacaoId}`);
+  }
+  salvarVariaveis(aplicacaoId: string, request: VariaveisRequest): Observable<any> {
+    return this.http.put(`/api/variaveis/${aplicacaoId}`, request);
+  }
+  excluirAplicacao(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
   getLogs(id: string): Observable<string> {
     return this.http.get(`${this.apiUrl}/${id}/logs`, { responseType: 'text' });
   }
+
+  iniciarDeploy(aplicacaoId: string): Observable<void> {
+    return this.http.post<void>(
+      `${this.apiUrl}/deploy/${aplicacaoId}`,
+      {}
+    );
+  }
+
+  conectarDeploy(): Promise<void> {
+    return new Promise((resolve, reject) => {
+
+      this.stompClient = new Client({
+        brokerURL: this.wsUrl,
+
+        reconnectDelay: 5000,
+
+        onConnect: () => {
+          console.log('WebSocket conectado');
+          resolve();
+        },
+
+        onStompError: (frame) => {
+          console.error('Erro STOMP:', frame);
+          reject(frame);
+        },
+
+        onWebSocketError: (error) => {
+          console.error('Erro WebSocket:', error);
+          reject(error);
+        }
+      });
+
+      this.stompClient.activate();
+    });
+  }
+
+  inscrever(
+    aplicacaoId: string,
+    callback: (evento: DeployEvento) => void
+  ): StompSubscription | undefined {
+
+    if (!this.stompClient?.connected) {
+      console.error('WebSocket não conectado');
+      return undefined;
+    }
+
+    return this.stompClient.subscribe(
+      `/topic/deploy/${aplicacaoId}`,
+      (message: IMessage) => {
+
+        const evento: DeployEvento = JSON.parse(message.body);
+
+        callback(evento);
+      }
+    );
+  }
+
 
   conectar(aplicacaoId: string): Observable<string> {
     const subject = new Subject<string>();
@@ -162,5 +236,40 @@ export class AplicacaoService {
 
     this.stompClient.deactivate();
     this.stompClient = undefined;
+  }
+  desconectarDeploy(): void {
+    if (!this.stompClient) {
+      return;
+    }
+
+    this.stompClient.deactivate();
+    this.stompClient = undefined;
+
+    console.log('WebSocket de deploy desconectado');
+  }
+  escutarHeartbeatAgente(agenteId: string): Observable<any[]> {
+    return new Observable(observer => {
+      this.stompClient = new Client({
+        brokerURL: this.wsUrl,
+        onConnect: () => {
+          this.stompClient?.subscribe(`/topic/heartbeat/${agenteId}/containers`, (message) => {
+            const heartbeat = JSON.parse(message.body);
+            if (heartbeat && heartbeat.containers) {
+              observer.next(heartbeat.containers);
+            }
+          });
+        },
+        onStompError: (frame) => {
+          console.error('Erro no STOMP Broker:', frame.headers['message']);
+        }
+      });
+
+      this.stompClient.activate();
+      return () => {
+        if (this.stompClient) {
+          this.stompClient.deactivate();
+        }
+      };
+    });
   }
 }

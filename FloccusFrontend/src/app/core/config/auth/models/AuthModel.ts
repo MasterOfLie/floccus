@@ -16,3 +16,9 @@ export interface AuthResponse {
     email: string;
     permissoes: string[];
 }
+
+export interface RedefinirSenha {
+    email: string;
+    token: string;
+    novaSenha: string;
+}

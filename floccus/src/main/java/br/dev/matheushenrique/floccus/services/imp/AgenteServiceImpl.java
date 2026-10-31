@@ -4,6 +4,7 @@ import br.dev.matheushenrique.floccus.dto.AgenteDTO;
 import br.dev.matheushenrique.floccus.dto.AgenteMetricasDTO;
 import br.dev.matheushenrique.floccus.models.Agente;
 import br.dev.matheushenrique.floccus.repository.AgenteRepository;
+import br.dev.matheushenrique.floccus.repository.AplicacaoRepository;
 import br.dev.matheushenrique.floccus.services.AgenteService;
 import com.github.benmanes.caffeine.cache.Cache;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +25,7 @@ public class AgenteServiceImpl implements AgenteService {
     private final AgenteRepository agenteRepository;
     private final Cache<String, AgenteMetricasDTO> heartbeatCache;
     private final SimpMessagingTemplate messagingTemplate;
+    private final AplicacaoRepository aplicacaoRepository;
 
     @Override
     public AgenteDTO criarAgente(AgenteDTO agenteDTO) throws Exception {
@@ -37,6 +40,7 @@ public class AgenteServiceImpl implements AgenteService {
         String chaveAgente = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
 
         Agente agente = Agente.builder()
+                .nome(agenteDTO.nome())
                 .ipAgente(agenteDTO.ipAgente())
                 .portaAgente(agenteDTO.portaAgente())
                 .chaveAgente("sk_floccus_" + chaveAgente)
@@ -47,12 +51,21 @@ public class AgenteServiceImpl implements AgenteService {
 
         Agente agenteSalvo = agenteRepository.save(agente);
 
-        return new AgenteDTO(agenteSalvo.getId(), agenteSalvo.getIpAgente(), agenteSalvo.getPortaAgente(), agenteSalvo.getChaveAgente(), agenteSalvo.getIpBackend(), agenteSalvo.getPortaBackend(), agenteSalvo.getDockerHost());
+        return new AgenteDTO(agenteSalvo.getNome(), agenteSalvo.getId(), agenteSalvo.getIpAgente(), agenteSalvo.getPortaAgente(), agenteSalvo.getChaveAgente(), agenteSalvo.getIpBackend(), agenteSalvo.getPortaBackend(), agenteSalvo.getDockerHost());
     }
 
     @Override
-    public Page<AgenteDTO> listarAgentes(Pageable pageable) {
-        return agenteRepository.findAll(pageable).map(AgenteDTO::new);
+    public Page<AgenteDTO> listarAgentes(Pageable pageable, String busca) {
+        if (busca == null || busca.isBlank()) {
+            return agenteRepository.findAll(pageable)
+                    .map(AgenteDTO::new);
+        }
+        return agenteRepository.buscarPaginado(busca.trim(), pageable)
+                .map(AgenteDTO::new);
+    }
+    @Override
+    public List<AgenteDTO> listarAgentes() {
+        return agenteRepository.listarTodosDTO();
     }
 
     @Override
@@ -62,7 +75,7 @@ public class AgenteServiceImpl implements AgenteService {
             throw new Exception("Nenhum agente encontrado com esse Id.");
         }
 
-        return new AgenteDTO(agente.get().getId(), agente.get().getIpAgente(), agente.get().getPortaAgente(), agente.get().getChaveAgente(), agente.get().getIpBackend(), agente.get().getPortaBackend(), agente.get().getDockerHost());
+        return new AgenteDTO(agente.get().getNome(), agente.get().getId(), agente.get().getIpAgente(), agente.get().getPortaAgente(), agente.get().getChaveAgente(), agente.get().getIpBackend(), agente.get().getPortaBackend(), agente.get().getDockerHost());
     }
 
     @Override
@@ -123,6 +136,14 @@ public class AgenteServiceImpl implements AgenteService {
         }
 
         messagingTemplate.convertAndSend("/topic/agentes/" + agenteId + "/status", metricas);
+    }
+
+    @Override
+    public void deletarAgente(String agenteId) {
+        if(aplicacaoRepository.existsByAgenteId(agenteId)){
+            throw new RuntimeException("Não é possível excluir o agente pois existem aplicações vinculadas a ele.");
+        }
+        agenteRepository.deleteById(agenteId);
     }
 
     private void notificarStatus(String agenteId, AgenteMetricasDTO metricas, boolean online) {

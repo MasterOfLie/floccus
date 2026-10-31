@@ -7,4 +7,5 @@ export interface Agente {
     ipBackend: string;
     portaBackend: string;
     dockerHost: string;
+    nome: string;
 }

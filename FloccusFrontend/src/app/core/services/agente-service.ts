@@ -19,7 +19,8 @@ export class AgenteService {
     listar(
         page: number = 0,
         size: number = 10,
-        paginado: boolean = true
+        paginado: boolean = true,
+        busca: string = ''
     ): Observable<PageResponse<Agente>> {
 
         return this.http.get<PageResponse<Agente>>(
@@ -28,7 +29,8 @@ export class AgenteService {
                 params: {
                     page: page,
                     size: size,
-                    paginado: paginado
+                    paginado: paginado,
+                    busca: busca
                 }
             }
         );
@@ -39,7 +41,7 @@ export class AgenteService {
         return this.http.get<Agente>(`${this.apiUrl}/${id}`);
     }
 
-    excluir(id: number): Observable<void> {
+    excluir(id: string): Observable<void> {
         return this.http.delete<void>(`${this.apiUrl}/${id}`);
     }
     atualizar(id: string, agente: Agente): Observable<Agente> {

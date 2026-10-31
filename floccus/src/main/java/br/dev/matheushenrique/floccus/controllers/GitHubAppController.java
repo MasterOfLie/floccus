@@ -1,5 +1,6 @@
 package br.dev.matheushenrique.floccus.controllers;
 
+import br.dev.matheushenrique.floccus.dto.GitHubRepositoryDTO;
 import br.dev.matheushenrique.floccus.services.GitHubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -69,10 +71,22 @@ public class GitHubAppController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remover(Authentication authentication, @PathVariable String id) {
         gitHubService.removerGithub(authentication, id);
-
         return ResponseEntity.ok(
                 Map.of("message", "Aplicação removida com sucesso!")
         );
     }
+    @GetMapping("/repositories/{idApp}")
+    public ResponseEntity<List<GitHubRepositoryDTO>> listarRepositorios(
+            Authentication authentication, @PathVariable String idApp) {
 
+        return ResponseEntity.ok(
+                gitHubService.listarRepositorios(authentication, idApp)
+        );
+    }
+
+    @GetMapping("/branches/{idApp}/{username}/{repo}")
+    public ResponseEntity<?> listarbranches(
+            Authentication authentication,@PathVariable String idApp, @PathVariable String username, @PathVariable String repo) {
+        return ResponseEntity.ok(gitHubService.listarBranches(authentication, username, repo, idApp));
+    }
 }

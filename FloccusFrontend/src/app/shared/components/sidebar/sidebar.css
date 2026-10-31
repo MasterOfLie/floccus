@@ -9,10 +9,13 @@
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+
     background: var(--floccus-surface);
     color: var(--floccus-text);
     border-right: 1px solid var(--floccus-border);
+
     overflow: hidden;
+
     transition:
         width 0.25s ease,
         box-shadow 0.25s ease;
@@ -287,6 +290,56 @@
 /* =========================================================
    MOBILE
    ========================================================= */
+/* =========================================================
+   SIDEBAR TOOLTIP (CLEAN COM SETA)
+   ========================================================= */
+
+.sidebar-tooltip {
+    position: fixed;
+    left: 82px;
+    top: 0;
+    transform: translateY(-50%);
+    padding: 9px 14px;
+    background: var(--floccus-surface);
+    color: var(--floccus-text);
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius-sm);
+    font-family: var(--floccus-font-family);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.2;
+    white-space: nowrap;
+    z-index: 999999;
+    pointer-events: none;
+    box-shadow: var(--floccus-shadow);
+    animation: sidebarTooltipFade 0.2s ease forwards;
+}
+
+.sidebar-tooltip::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -5.5px;
+    transform: translateY(-50%) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    background: var(--floccus-surface);
+    border-bottom: 1px solid var(--floccus-border);
+    border-left: 1px solid var(--floccus-border);
+}
+
+
+@keyframes sidebarTooltipFade {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-8px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
 
 @media (max-width: 768px) {
     :host {

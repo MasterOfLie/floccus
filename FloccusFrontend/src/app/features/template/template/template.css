@@ -1,0 +1,405 @@
+.card-container {
+    width: 100%;
+    margin: 0 auto;
+    background: var(--floccus-surface);
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    overflow: hidden;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 20px 24px;
+    background: var(--floccus-surface);
+    border-bottom: 1px solid var(--floccus-border);
+}
+
+.header-titles {
+    min-width: 0;
+}
+
+.header-titles h2 {
+    margin: 0;
+    color: var(--floccus-text);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.15px;
+}
+
+.header-titles p {
+    margin: 5px 0 0;
+    color: var(--floccus-text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+
+.template-layout {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    min-height: 520px;
+}
+
+.template-list {
+    min-width: 0;
+    border-right: 1px solid var(--floccus-border);
+    background: #fafafa;
+}
+
+.template-form {
+    min-width: 0;
+    padding: 24px;
+}
+
+
+/* =========================================================
+   CABEÇALHOS DAS SEÇÕES
+   ========================================================= */
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 24px;
+}
+
+.template-form .section-header {
+    padding: 0;
+    margin-bottom: 24px;
+}
+
+.section-header h3 {
+    margin: 0;
+    color: var(--floccus-text);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.section-header p {
+    margin: 4px 0 0;
+    color: var(--floccus-text-muted);
+    font-size: 0.75rem;
+}
+
+
+/* =========================================================
+   LISTA DE TEMPLATES
+   ========================================================= */
+
+.template-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 12px 16px;
+}
+
+.template-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.template-item:hover {
+    background: var(--floccus-surface);
+    border-color: var(--floccus-border);
+}
+
+.template-item.selected {
+    background: var(--floccus-surface);
+    border-color: var(--floccus-border);
+}
+
+.template-item-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.template-icon {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--floccus-border);
+    border-radius: 6px;
+    background: var(--floccus-surface);
+    color: var(--floccus-text);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.template-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.template-info strong {
+    overflow: hidden;
+    color: var(--floccus-text);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.template-info span {
+    overflow: hidden;
+    color: var(--floccus-text-secondary);
+    font-family: monospace;
+    font-size: 0.72rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.btn-delete {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    color: var(--floccus-text-muted);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+    background: #f4f4f5;
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   ESTADO VAZIO
+   ========================================================= */
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 220px;
+    padding: 24px;
+    text-align: center;
+}
+
+.empty-state strong {
+    color: var(--floccus-text);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.empty-state span {
+    max-width: 240px;
+    color: var(--floccus-text-muted);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+   ========================================================= */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 16px;
+}
+
+.form-group {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.form-group>label {
+    color: var(--floccus-text-secondary);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.helper-text {
+    margin-top: 2px;
+    color: var(--floccus-text-muted);
+    font-size: 0.75rem;
+    line-height: 1.45;
+}
+
+.form-group input {
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    padding: 0 12px;
+    border: 1px solid var(--floccus-border);
+    border-radius: 6px;
+    outline: none;
+    background: var(--floccus-surface);
+    color: var(--floccus-text);
+    font-family: inherit;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: var(--floccus-text-muted);
+}
+
+.form-group input:hover:not(:disabled) {
+    border-color: var(--floccus-text-secondary);
+}
+
+.form-group input:focus {
+    border-color: var(--floccus-text);
+    box-shadow: 0 0 0 1px var(--floccus-text);
+}
+
+
+/* =========================================================
+   AÇÕES
+   ========================================================= */
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--floccus-border);
+}
+
+.btn-cancelar,
+.btn-criar {
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancelar {
+    border: 1px solid var(--floccus-border);
+    background: var(--floccus-surface);
+    color: var(--floccus-text);
+}
+
+.btn-cancelar:hover {
+    background: #fafafa;
+    border-color: var(--floccus-text-secondary);
+}
+
+.btn-criar {
+    border: 1px solid var(--floccus-text);
+    background: var(--floccus-text);
+    color: #ffffff;
+}
+
+.btn-criar:hover:not(:disabled) {
+    background: #27272a;
+    border-color: #27272a;
+}
+
+.btn-criar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .template-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .template-list {
+        border-right: 0;
+        border-bottom: 1px solid var(--floccus-border);
+    }
+
+    .template-form {
+        padding: 20px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .card-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 16px;
+        padding: 18px;
+    }
+
+    .card-header .btn-criar {
+        width: 100%;
+    }
+
+    .template-form {
+        padding: 18px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .btn-cancelar,
+    .btn-criar {
+        width: 100%;
+    }
+
+}

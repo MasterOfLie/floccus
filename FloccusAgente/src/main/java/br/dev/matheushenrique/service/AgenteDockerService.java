@@ -58,8 +58,19 @@ public class AgenteDockerService extends AgenteDockerServiceGrpc.AgenteDockerSer
     @Override
     public void iniciarContainer(ContainerRequest request, StreamObserver<ContainerResponse> responseObserver) {
         try {
-            dockerClient.startContainerCmd(request.getId()).exec();
-            InspectContainerResponse containerCmd = dockerClient.inspectContainerCmd(request.getId()).exec();
+
+            String id = request.getId();
+
+            log.info("Tentando iniciar container: {}", id);
+
+            log.info("Etapa 1: iniciando container");
+            dockerClient.startContainerCmd(id).exec();
+
+            log.info("Etapa 2: inspecionando container");
+            InspectContainerResponse containerCmd =
+                    dockerClient.inspectContainerCmd(id).exec();
+
+            log.info("Etapa 3: montando resposta gRPC");
             List<FloccusNetwork> redes = new ArrayList<>();
             var networkSettings = containerCmd.getNetworkSettings();
             if (networkSettings != null && networkSettings.getNetworks() != null) {

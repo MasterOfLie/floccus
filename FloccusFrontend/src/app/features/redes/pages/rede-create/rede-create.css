@@ -1,0 +1,371 @@
+.page {
+    width: 100%;
+}
+
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-header h2 {
+    margin: 0 0 6px;
+    color: var(--floccus-text);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.page-header p {
+    margin: 0;
+    color: var(--floccus-text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   FORM CARD
+   ========================================================= */
+
+.form-card {
+    background: var(--floccus-surface);
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius);
+    box-shadow: var(--floccus-shadow);
+    overflow: hidden;
+
+}
+
+.form-card-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--floccus-border);
+}
+
+.form-card-header h3 {
+    margin: 0 0 5px;
+    color: var(--floccus-text);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.form-card-header p {
+    margin: 0;
+    color: var(--floccus-text-muted);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+.form-card form {
+    padding: 20px;
+}
+
+/* =========================================================
+   SEÇÕES
+   ========================================================= */
+
+.form-section {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed var(--floccus-border);
+    height: 300px;
+}
+
+.form-section:last-of-type {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin: 0 0 14px;
+
+    color: var(--floccus-text);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.section-title i {
+    color: var(--floccus-text-secondary);
+}
+
+/* =========================================================
+   FORMULÁRIO
+   ========================================================= */
+
+.form-row {
+    display: flex;
+    gap: 12px;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.flex-2 {
+    flex: 2;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.form-row .form-group {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    color: var(--floccus-text);
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    height: 40px;
+
+    padding: 0 12px;
+
+    border: 1px solid var(--floccus-border);
+    border-radius: var(--floccus-radius);
+
+    background: var(--floccus-surface);
+    color: var(--floccus-text);
+
+    font-size: 0.8125rem;
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: var(--floccus-text-muted);
+}
+
+.form-group input:hover,
+.form-group select:hover {
+    border-color: var(--floccus-border-hover);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--floccus-text-secondary);
+
+    box-shadow: 0 0 0 3px rgba(24, 24, 27, 0.06);
+}
+
+.input-hint {
+    margin-top: 3px;
+
+    color: var(--floccus-text-muted);
+    font-size: 0.6875rem;
+    line-height: 1.4;
+}
+
+/* =========================================================
+   OPÇÕES
+   ========================================================= */
+
+.option-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 12px 0;
+}
+
+.option-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.option-info strong {
+    color: var(--floccus-text);
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.option-info span {
+    color: var(--floccus-text-muted);
+    font-size: 0.6875rem;
+}
+
+/* =========================================================
+   SWITCH
+   ========================================================= */
+
+.switch {
+    position: relative;
+
+    width: 40px;
+    height: 22px;
+
+    flex-shrink: 0;
+}
+
+.switch input {
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+
+.slider {
+    position: absolute;
+    inset: 0;
+
+    background: var(--floccus-border-hover);
+    border-radius: 999px;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.slider::before {
+    content: "";
+
+    position: absolute;
+
+    width: 16px;
+    height: 16px;
+
+    left: 3px;
+    top: 3px;
+
+    background: var(--floccus-surface);
+    border-radius: 50%;
+
+    box-shadow: var(--floccus-shadow);
+
+    transition: transform 0.2s ease;
+}
+
+.switch input:checked+.slider {
+    background: var(--floccus-primary);
+}
+
+.switch input:checked+.slider::before {
+    transform: translateX(18px);
+}
+
+/* =========================================================
+   ALERTA
+   ========================================================= */
+
+.alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    margin-top: 16px;
+    padding: 14px 16px;
+
+    border-radius: var(--floccus-radius);
+
+    font-size: 0.8125rem;
+}
+
+.alert-info {
+    background: var(--floccus-info-light);
+    border: 1px solid #bfdbfe;
+}
+
+.alert-info>i {
+    color: var(--floccus-info);
+    font-size: 18px;
+}
+
+.alert-content strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--floccus-text);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.alert-content p {
+    margin: 0;
+
+    color: var(--floccus-text-secondary);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   AÇÕES
+   ========================================================= */
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    margin-top: 20px;
+    padding-top: 16px;
+
+    border-top: 1px solid var(--floccus-border);
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.spinner {
+    width: 14px;
+    height: 14px;
+
+    display: inline-block;
+
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #ffffff;
+
+    border-radius: 50%;
+
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .form-row .form-group {
+        margin-bottom: 12px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+
+    .option-item {
+        align-items: flex-start;
+    }
+
+}

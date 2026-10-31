@@ -11,10 +11,18 @@ export interface AplicacaoModel {
     imagem: string;
     agenteId: string;
     containerId?: string;
+    redeId?: string;
     tipo: TipoAplicacao;
     portaContainer?: number;
     portaExterna?: number;
     dominio?: string;
+    linguagem?: string;
+    repositorioId?: string;
+    framework?: string;
+    runtime?: string;
+    idGitApp?: string;
+    branch?: string;
+    buildTool?: string;
     memoriaLimite?: number;
     memoria: string;
     cpuLimite?: number;
@@ -22,5 +30,7 @@ export interface AplicacaoModel {
     criadoEm?: string | Date;
     atualizadoEm?: string | Date;
     tempoStatus: string;
+    nomeAgente: string;
+    nomeRede: string;
 }
 

@@ -24,21 +24,12 @@
     </div>
   </div>
   <div class="table-responsive">
-
-
-    <ng-template #statusTemplate let-container>
-
-      <span class="status" [class.running]="estaRodando(container.status)"
-        [class.exited]="!estaRodando(container.status)">
-
-        <span class="status-dot"></span>
-
-        {{ traduzirStatus(container.status) }}
-
-      </span>
-
+    <ng-template #statusTemplate let-aplicacao>
+      <div style="text-align: center;">
+        <span class="status-dot" [class.running]="estaRodando(getStatusAplicacao(aplicacao.id))"
+          [class.exited]="!estaRodando(getStatusAplicacao(aplicacao.id))"></span>
+      </div>
     </ng-template>
-
     <ng-template #acoesTemplate let-container>
 
       <button type="button" class="btn-abrir" (click)="abrirContainer(container); $event.stopPropagation()"

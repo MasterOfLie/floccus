@@ -2,7 +2,7 @@ import { TipoAplicacao } from "./AplicacaoModel";
 
 export interface CriarAplicacaoRequest {
     nome: string;
-    repositorioId: string;
+    repositorioId?: string;
     imagem: string;
     agenteId: string;
     tipo: TipoAplicacao;

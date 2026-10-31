@@ -44,7 +44,7 @@
                             Senha
                         </label>
 
-                        <a href="#" class="forgot-password">
+                        <a href="javascript:void(0)" class="forgot-password" (click)="alterarModo('recuperar')">
                             Esqueceu a senha?
                         </a>
 
@@ -68,7 +68,7 @@
 
                 </div>
 
-                <!-- LEMBRAR -->
+                <!-- LEMBRAR
                 <label class="remember">
 
                     <input type="checkbox" name="remember" [(ngModel)]="loginData.remember">
@@ -77,7 +77,7 @@
                         Lembrar de mim
                     </span>
 
-                </label>
+                </label> -->
 
                 <!-- BOTÃO -->
                 <button type="submit" class="submit-button">
@@ -194,6 +194,42 @@
                     Entrar
                 </button>
 
+            </div>
+
+            }
+            @if (modo === 'recuperar') {
+
+            <div class="auth-header">
+                <h1>Recuperar senha</h1>
+                <p>Digite seu e-mail para receber as instruções</p>
+            </div>
+
+            <form class="auth-form" (ngSubmit)="solicitarRecuperacao()">
+
+                <!-- E-MAIL -->
+                <div class="form-group">
+                    <label for="recovery-email">E-mail</label>
+                    <input id="recovery-email" type="email" name="recoveryEmail" [(ngModel)]="recuperacaoData.email"
+                        placeholder="seu@email.com" autocomplete="email" required>
+                </div>
+
+                <!-- BOTÃO -->
+                <button type="submit" class="submit-button" [disabled]="carregando">
+                    @if (carregando) {
+                    Enviando...
+                    } @else {
+                    Enviar link de recuperação
+                    }
+                </button>
+
+            </form>
+
+            <!-- RODAPÉ -->
+            <div class="auth-footer">
+                <span>Lembrou sua senha?</span>
+                <button type="button" (click)="alterarModo('login')">
+                    Voltar para o login
+                </button>
             </div>
 
             }

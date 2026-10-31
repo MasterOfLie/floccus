@@ -1,6 +1,7 @@
 package br.dev.matheushenrique.floccus.config;
 
 import br.dev.matheushenrique.floccus.dto.AgenteMetricasDTO;
+import br.dev.matheushenrique.floccus.dto.ContainerHeartbeat;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.RemovalCause;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @Slf4j
@@ -30,5 +32,12 @@ public class CacheConfig {
 
             log.info("Agente {} ficou offline por timeout de heartbeat", agenteId);
         }).build();
+    }
+    @Bean
+    public Cache<String, ContainerHeartbeat> monitoramentoCache() {
+        return Caffeine.newBuilder()
+                .maximumSize(1000)
+                .expireAfterWrite(15, TimeUnit.SECONDS)
+                .build();
     }
 }
