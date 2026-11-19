@@ -59,36 +59,53 @@ public class FloccusRedeService extends FloccusRedeServiceGrpc.FloccusRedeServic
     }
 
     @Override
-    public void excluirRede(ExcluirRedeRequest request, StreamObserver<ExcluirRedeResponse> responseObserver) {
+    public void excluirRede(
+            ExcluirRedeRequest request,
+            StreamObserver<ExcluirRedeResponse> responseObserver) {
 
-        Network network = dockerClient.inspectNetworkCmd()
-                .withNetworkId(request.getId())
-                .exec();
-        if (!(network.getContainers() != null
-                && !network.getContainers().isEmpty())){
-            try {
-                if (request.getId().isBlank()) {
-                    throw new IllegalArgumentException("O ID da rede não pode ser vazio.");
-                }
-                dockerClient.removeNetworkCmd(request.getId()).exec();
+        try {
+            if (request.getId().isBlank()) {
+                throw new IllegalArgumentException(
+                        "O ID da rede não pode ser vazio."
+                );
+            }
+
+            Network network = dockerClient.inspectNetworkCmd()
+                    .withNetworkId(request.getId())
+                    .exec();
+
+            if (network.getContainers() != null
+                    && !network.getContainers().isEmpty()) {
+
                 ExcluirRedeResponse response = ExcluirRedeResponse.newBuilder()
-                        .setSucesso(true)
-                        .setMensagem("Rede " + request.getId() + " removida com sucesso.")
+                        .setSucesso(false)
+                        .setMensagem("Não é possível remover a rede: existem containers conectados.")
                         .build();
 
                 responseObserver.onNext(response);
                 responseObserver.onCompleted();
-
-            } catch (Exception e) {
-                ExcluirRedeResponse errorResponse = ExcluirRedeResponse.newBuilder()
-                        .setSucesso(false)
-                        .setMensagem("Falha ao remover a rede: " + e.getMessage())
-                        .build();
-                responseObserver.onNext(errorResponse);
-                responseObserver.onCompleted();
+                return;
             }
-        }
 
+            dockerClient.removeNetworkCmd(request.getId()).exec();
+
+            ExcluirRedeResponse response = ExcluirRedeResponse.newBuilder()
+                    .setSucesso(true)
+                    .setMensagem("Rede " + request.getId() + " removida com sucesso.")
+                    .build();
+
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+
+        } catch (Exception e) {
+            ExcluirRedeResponse errorResponse = ExcluirRedeResponse.newBuilder()
+                    .setSucesso(false)
+                    .setMensagem("Falha ao remover a rede: " + e.getMessage())
+                    .build();
+
+            responseObserver.onNext(errorResponse);
+            responseObserver.onCompleted();
+        }
     }
 
 }
